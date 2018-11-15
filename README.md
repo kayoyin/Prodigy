@@ -8,3 +8,4 @@ Hi I'm Kayo and I'm going to work on the neural network :)
 
 COMMIT FROM michael
 
+NICHOLAS T : AI
