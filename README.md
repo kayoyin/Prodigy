@@ -6,8 +6,6 @@ https://midifile.sapp.org/
 
 We can also use the midifile library on c++ which is made for this purpose ( You can find a lot of information and tutorials about that on github!
 
-Teach an AI to produce pieces of music
-
 Hi I'm Kayo and I'm going to work on the neural network :)
 
 COMMIT FROM michael
