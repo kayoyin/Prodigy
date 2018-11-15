@@ -1,5 +1,5 @@
 # Prodigy 
-For transla
+For translating MIDI files into lists of notes, you can use the following
 https://midifile.sapp.org/
 
 Teach an AI to produce pieces of music
