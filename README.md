@@ -18,7 +18,7 @@ We can also use the midifile library on c++ which is made for this purpose ( You
 
 Hi I'm Kayo and I'm going to work on the neural network :)
 
-Testing GitHub with atom
+Testing commit from Atom ide
 
 COMMIT FROM michael
 
