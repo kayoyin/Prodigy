@@ -1,10 +1,10 @@
-# Prodigy 
+# Prodigy
 
 ## Project description:
 
 Our aim is to train a machine learning algorithm for music composition. For this, we will use an existing LSTM library on C++ that we will use to train. Training will be done using text files, so we will also need to write an algorithm to convert MIDI files into usable text.
 
-For the first 3 weeks of the project, we divided ourselves into two teams. 
+For the first 3 weeks of the project, we divided ourselves into two teams.
 
 The first team, "Translators", will define how music will be represented by text: what notes are mapped to which characters, how time/ticks are defined through text... They will also write an algorithm who takes as input MIDI files and outputs a text file with relevant elements in defined format.
 
@@ -17,6 +17,8 @@ Hello, I'm Raymond!! I'm going to work on translating the MIDI files into unders
 We can also use the midifile library on c++ which is made for this purpose ( You can find a lot of information and tutorials about that on github!
 
 Hi I'm Kayo and I'm going to work on the neural network :)
+
+Testing GitHub with atom
 
 COMMIT FROM michael
 
