@@ -1,3 +1,5 @@
+Equivalences from CMake tutorial to implementation on RNN
+
 Tutorial -> RNN
 MathFunctions -> TestFunctions
 mysqrt -> myrnn
