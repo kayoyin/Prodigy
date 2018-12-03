@@ -88,7 +88,8 @@ std::tuple<std::set<std::string>,std::vector<std::string>>  getData()
 
             else if (dataList.at(y).at(5) != " 0"){
                 while (dataList.at(y).at(1) == prev){
-                    memo.insert(dataList.at(y).at(4));
+                    if(dataList.at(y).at(5) != " 0") memo.insert(dataList.at(y).at(4));
+                    else memo.erase(dataList.at(y).at(4));
                     y++;
                 }
 
@@ -150,7 +151,7 @@ int main()
     std::map<std::string, int> trans = bijection(pitches);
     std::vector<int> translated = translation(notes, trans);
 
-     for (std::vector<int>::iterator it = translated.begin() ; it != translated.end(); ++it){
+    for (std::vector<int>::iterator it = translated.begin() ; it != translated.end(); ++it){
         std::cout << *it << "   ";
     }
 
@@ -160,8 +161,8 @@ int main()
     */
    /*for (std::set<std::string>::iterator it = pitches.begin() ; it != pitches.end(); ++it){
         std::cout << *it << "   " << trans[*it] <<std::endl;
-    }
-    */
+    }*/
+    
     
 
     return 0;
