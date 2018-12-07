@@ -143,13 +143,6 @@ void buildModelTwoLayers(RNN<NegativeLogLikelihood<>, RandomInitialization>& mod
     // The number of neurons in the second layer.
     constexpr int H2 = 100;
     
-    Add<> add(2);
-    Linear<> lookup(1, 2);
-    SigmoidLayer<> sigmoidLayer;
-    Linear<> linear(2, 2);
-    Recurrent<>* recurrent = new Recurrent<>(
-                                             add, lookup, linear, sigmoidLayer, rho);
-    
     // This is intermediate layer that is needed for connection between input
     // data and sigmoid layer. Parameters specify the number of input features
     // and number of neurons in the next layer.
@@ -186,13 +179,13 @@ void trainModel(RNN<NegativeLogLikelihood<>, RandomInitialization>& model,
     constexpr int ITERATIONS_PER_CYCLE = 10000;
     
     // Number of cycles.
-    constexpr int CYCLES = 20;
+    constexpr int CYCLES = floor (inputlen/100);
     
     // Step size of an optimizer.
     constexpr double STEP_SIZE = 5e-4;
     
     // Number of data points in each iteration of SGD
-    constexpr int BATCH_SIZE = 50;
+    constexpr int BATCH_SIZE = 90;
     
     // Setting parameters Stochastic Gradient Descent (SGD) optimizer.
     SGD<AdamUpdate> optimizer(
@@ -208,7 +201,7 @@ void trainModel(RNN<NegativeLogLikelihood<>, RandomInitialization>& model,
                               1e-8,
                               // Shuffle. If optimizer should take random data points from the dataset at
                               // each iteration.
-                              true,
+                              false,
                               // Adam update policy.
                               AdamUpdate(1e-8, 0.9, 0.999));
     
