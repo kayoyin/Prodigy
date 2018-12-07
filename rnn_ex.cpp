@@ -174,7 +174,7 @@ void buildModelTwoLayers(RNN<NegativeLogLikelihood<>, RandomInitialization>& mod
 /**
  *
  */
-void trainModel(FFN<NegativeLogLikelihood<>, RandomInitialization>& model,
+void trainModel(RNN<NegativeLogLikelihood<>, RandomInitialization>& model,
                 const mat& trainX, const mat& trainY,
                 const mat& validX, const mat& validY)
 {
@@ -243,7 +243,7 @@ void trainModel(FFN<NegativeLogLikelihood<>, RandomInitialization>& model,
  * Run the neural network model and predict the class for a
  * set of testing example
  */
-void predictClass(FFN<NegativeLogLikelihood<>, RandomInitialization>& model,
+void predictClass(RNN<NegativeLogLikelihood<>, RandomInitialization>& model,
                   const std::string datasetName)
 {
     
