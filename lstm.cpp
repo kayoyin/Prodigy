@@ -212,25 +212,28 @@ void predictClass(RNN<MeanSquaredError<>, RandomInitialization>& model,
                   const std::string datasetName)
 {
     
-    cube tempDataset;
+    mat tempDataset;
     data::Load(datasetName, tempDataset, true);
     
-    // Get rid of the header
-    cube noHeaders = tempDataset.subcube(0, 1, 0,
-                                       tempDataset.n_rows - 1, tempDataset.n_cols - 1, 0);
-    
-    const cube testX = noHeaders.subcube(1, 0, 0, noHeaders.n_rows - 1, noHeaders.n_cols - 1, 0);
-    const cube testY = noHeaders.row(0) + 1;
+    const cube test = cube(1,tempDataset.n_cols,tempDataset.n_cols);
+    for (int i = 0; i < tempDataset.n_cols; i++)
+    {
+	vec ind;
+	ind << 0 << i;
+	double value = tempDataset.elem(ind);
+	test.tube(0,i).fill(value);
+    }
+
     
     cube testPredOut;
     // Getting predictions on test data points .
-    model.Predict(testX, testPredOut);
+    model.Predict(test, testPredOut);
     // Generating labels for the test dataset.
     Row<size_t> testPred = getLabels(testPredOut);
     cout << "Saving predicted labels to \"results.csv\" ..." << endl;
     
     // Saving results into Kaggle compatibe CSV file.
-    save("results.csv", "label,x,y", testPred, testX, testY);
+    save("results.csv", "label,x,y", testPred, test);
     cout << "Results were saved to \"results.csv\"" << endl;
 }
 
@@ -252,7 +255,7 @@ int main () {
     // y     2 6
     
     // Initialize loaded data where row = dimension = 1, column = note values, slice = timestep
-    cube dataset = cube(1,tempDataset.n_cols, tempDataset.n_cols);
+    cube dataset = cube(1,tempDataset.n_cols-1, tempDataset.n_cols);
     dataset.insert_cols(0,tempDataset);
     
     // Splitting the dataset on training and validation parts.
