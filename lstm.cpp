@@ -54,7 +54,7 @@ arma::Row<size_t> getLabels(const arma::cube& predOut)
  * CSV file that contain many other double values).
  * @return percentage of correct answers.
  */
-double accuracy(arma::Row<size_t> predLabels, const arma::cube& realY)
+double accuracy(arma::cube predLabels, const arma::cube& realY)
 {
     // Calculating how many predicted classes are coincide with real labels.
     size_t success = 0;
@@ -79,9 +79,8 @@ double accuracy(arma::Row<size_t> predLabels, const arma::cube& realY)
  * are expected to start from 1. At the same time classes of data points in
  * the file are going to start from 0 (as Kaggle usually expects)
  */
-void save(const std::string filename,
-          const std::string header,
-          const arma::Row<size_t>& predLabels,
+/* void save(const std::string filename,
+        const arma::Row<size_t>& predLabels,
           const arma::cube& inputData,
           const arma::cube& inputLabel)
 {
@@ -102,7 +101,7 @@ void save(const std::string filename,
     }
     out.close();
 }
-
+*/
 
 
 void buildLSTMModel(RNN<MeanSquaredError<>, RandomInitialization>& model,
@@ -139,8 +138,8 @@ void buildLSTMModel(RNN<MeanSquaredError<>, RandomInitialization>& model,
  *
  */
 void trainModel(RNN<MeanSquaredError<>, RandomInitialization>& model,
-                const cube& trainX, const cube& trainY,
-                const cube& validX, const cube& validY)
+                const cube& train,
+                const cube& valid)
 {
     // The solution is done in several approaches (CYCLES), so each approach
     // uses previous results as starting point and have a different optimizer
@@ -182,23 +181,26 @@ void trainModel(RNN<MeanSquaredError<>, RandomInitialization>& model,
     {
         // Train neural network. If this is the first iteration, weights are
         // random, using current values as starting point otherwise.
-        model.Train(trainX, trainY, optimizer);
+        
+	model.Train(train, train, optimizer);
         
         // Don't reset optimizer's parameters between cycles.
         optimizer.ResetPolicy() = false;
         
         cube predOut;
         // Getting predictions on training data points.
-        model.Predict(trainX, predOut);
+        model.Predict(train, predOut);
         // Calculating accuracy on training data points.
-        Row<size_t> predLabels = getLabels(predOut);
-        double trainAccuracy = accuracy(predLabels, trainY);
-        // Getting predictions on validating data points.
-        model.Predict(validX, predOut);
+        //Row<size_t> predLabels = getLabels(predOut);
+        //double trainAccuracy = accuracy(predLabels, trainY);
+        double trainAccuracy = accuracy(predOut, train);
+	// Getting predictions on validating data points.
+        model.Predict(valid, predOut);
         // Calculating accuracy on validating data points.
-        predLabels = getLabels(predOut);
-        double validAccuracy = accuracy(predLabels, validY);
-        
+        //predLabels = getLabels(predOut);
+        //double validAccuracy = accuracy(predLabels, validY);
+        double validAccuracy = accuracy(predOut,valid);        
+
         cout << i << " - accuracy: train = "<< trainAccuracy << "%," <<
         " valid = "<< validAccuracy << "%" <<  endl;
     }
@@ -215,13 +217,10 @@ void predictClass(RNN<MeanSquaredError<>, RandomInitialization>& model,
     mat tempDataset;
     data::Load(datasetName, tempDataset, true);
     
-    const cube test = cube(1,tempDataset.n_cols,tempDataset.n_cols);
-    for (int i = 0; i < tempDataset.n_cols; i++)
+    cube test = cube(1,tempDataset.n_cols,tempDataset.n_cols);
+    for (unsigned int i = 0; i < tempDataset.n_cols; i++)
     {
-	vec ind;
-	ind << 0 << i;
-	double value = tempDataset.elem(ind);
-	test.tube(0,i).fill(value);
+	test(0,i,0) = tempDataset.at(0,i);
     }
 
     
@@ -233,14 +232,14 @@ void predictClass(RNN<MeanSquaredError<>, RandomInitialization>& model,
     cout << "Saving predicted labels to \"results.csv\" ..." << endl;
     
     // Saving results into Kaggle compatibe CSV file.
-    save("results.csv", "label,x,y", testPred, test);
+    data::Save("results.csv", testPred); // testPred or test??
     cout << "Results were saved to \"results.csv\"" << endl;
 }
 
 int main () {
     // Dataset is randomly split into validation
     // and training parts with following ratio.
-    constexpr double RATIO = 0.1;
+    // constexpr double RATIO = 0.1;
     
     cout << "Reading data ..." << endl; // used in training and validation
     
@@ -255,35 +254,42 @@ int main () {
     // y     2 6
     
     // Initialize loaded data where row = dimension = 1, column = note values, slice = timestep
-    cube dataset = cube(1,tempDataset.n_cols-1, tempDataset.n_cols);
-    dataset.insert_cols(0,tempDataset);
-    
+    cube dataset = cube(1,1, tempDataset.n_cols);
+    for (unsigned int i = 0; i < tempDataset.n_cols; i++)
+â   {
+   	 dataset.at(0,0,i) = tempDataset.at(0,i);
+    }
+
     // Splitting the dataset on training and validation parts.
     cube train, valid;
-    data::Split(dataset, train, valid, RATIO);
+
+    const int ind = (int) 9*tempDataset.n_cols / 10;
+    train = dataset.subcube(0,0,0,0,0,ind);
+    valid = dataset.subcube(0,0,ind,0,0,tempDataset.n_cols);
+    //data::Split(dataset, train, valid, RATIO);
     
     // Getting training and validating dataset with features only.
-    const cube trainX = train.subcube(1, 0, 0, train.n_rows - 1, train.n_cols - 1, 0);
-    const cube validX = valid.subcube(1, 0, 0, valid.n_rows - 1, valid.n_cols - 1, 0);
+    //const cube trainX = train.subcube(1, 0, 0, train.n_rows - 1, train.n_cols - 1, 0);
+    //const cube validX = valid.subcube(1, 0, 0, valid.n_rows - 1, valid.n_cols - 1, 0);
     
     // According to NegativeLogLikelihood output layer of NN, labels should
     // specify class of a data point and be in the interval from 1 to
     // number of classes (in this case from 1 to 10).
     
     // Creating labels for training and validating dataset.
-    const cube trainY = train.row(0) + 1;
-    const cube validY = valid.row(0) + 1;
+    //const cube trainY = train.row(0) + 1;
+    //const cube validY = valid.row(0) + 1;
     
     // Specifying the NN model. NegativeLogLikelihood is the output layer that
     // is used for classification problem. RandomInitialization means that
     // initial weights in neurons are generated randomly in the interval
     // from -1 to 1.
-    RNN<>, RandomInitialization> model;
+    RNN<MeanSquaredError<>, RandomInitialization> model(5);
     //buildModelOneLayer(model, trainX.n_rows, 2);
-    buildLSTMModel(model, trainX.n_rows, 2);
+    buildLSTMModel(model, train.n_cols, 2);
     cout << "Prodigy team's code" << endl;
     cout << "Training ..." << endl;
-    trainModel(model, trainX, trainY, validX, validY);
+    trainModel(model, train, valid);
     
     cout << "Predicting ..." << endl;
     std::string datasetName = "../utils/test.csv";
