@@ -256,7 +256,7 @@ int main () {
     // Initialize loaded data where row = dimension = 1, column = note values, slice = timestep
     cube dataset = cube(1,1, tempDataset.n_cols);
     for (unsigned int i = 0; i < tempDataset.n_cols; i++)
-â   {
+    {
    	 dataset.at(0,0,i) = tempDataset.at(0,i);
     }
 
