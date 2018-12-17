@@ -109,17 +109,18 @@ void buildLSTMModel(RNN<NegativeLogLikelihood<>, RandomInitialization>& model,
                          const int totalClasses)
 {
     // The number of neurons in the hidden layers.
-    constexpr int H1 = 5;
+    constexpr int H1 = 7; // no rows = rho?  
+    constexpr int H2 = 7;
     
     // This is intermediate layer that is needed for connection between input
     // data and sigmoid layer. Parameters specify the number of input features
     // and number of neurons in the next layer.
     model.Add<Linear<> >(sizeInputLayer, H1);
     // 4 LSTM Layers
-    model.Add<LSTM<> >(H1,H1);
-    model.Add<LSTM<> >(H1,H1);
-    model.Add<LSTM<> >(H1,H1);
-    model.Add<LSTM<> >(H1,H1);
+    model.Add<LSTM<> >(H1,H2);
+    model.Add<LSTM<> >(H2,H2);
+    model.Add<LSTM<> >(H2,H2);
+    model.Add<LSTM<> >(H2,H2);
 
     // sigmoid layer.
     model.Add<SigmoidLayer<> >();
@@ -127,10 +128,11 @@ void buildLSTMModel(RNN<NegativeLogLikelihood<>, RandomInitialization>& model,
     // setting a specific value to 0.
     // model.Add<Dropout<> >(0.3, true);
     // Intermediate layer.
-    model.Add<Linear<> >(H1, totalClasses);
+    model.Add<Linear<> >(H2, totalClasses);
     // LogSoftMax layer is used together with NegativeLogLikelihood for mapping
     // output values to log of probabilities of being a specific class.
     model.Add<LogSoftMax<> >();
+    cout << "Building done" << endl;
 }
 
 
@@ -155,7 +157,7 @@ void trainModel(RNN<NegativeLogLikelihood<>, RandomInitialization>& model,
     constexpr double STEP_SIZE = 5e-4;
     
     // Number of data points in each iteration of SGD
-    constexpr int BATCH_SIZE = 90;
+    constexpr int BATCH_SIZE = 3;
     
     // Setting parameters Stochastic Gradient Descent (SGD) optimizer.
     StandardSGD optimizer(
@@ -247,7 +249,7 @@ int main () {
     // Labeled dataset that contains data for training is loaded from CSV file,
     // rows represent features, columns represent data points.
     mat tempDataset;
-    const int rho = 5;
+    const int rho = 7; //no rows for train
 
     data::Load("../utils/training.csv", tempDataset, true); // read data from this csv file, creates arma matrix with loaded data in tempDataset
     // warning: armadillo transposes matrix?
@@ -256,7 +258,7 @@ int main () {
     // y     2 6
     //cout << "training data" << tempDataset << tempDataset.size() << endl;    
     // Initialize loaded data where row = dimension = 1, column = note values, slice = timestep
-    cube dataset = cube(1,1, tempDataset.n_rows);
+    cube dataset = cube(1,1,tempDataset.n_rows);
     cout << tempDataset << endl;
     for (unsigned int i = 0; i < tempDataset.n_rows; i++)
     {
@@ -270,14 +272,15 @@ int main () {
 
    
     const int ind = (int) 9*tempDataset.n_rows / 10;
-    cube train = cube(1, ind, rho);
-    cube valid = cube(1, tempDataset.n_rows - ind, rho);
+    cube train = cube(2, ind,rho);
+    cube valid = cube(1, tempDataset.n_rows - ind,rho);
 
 
     //cout << ind << tempDataset.n_cols << endl;
     for (int i = 0; i < ind; i++)
     {
 	train.at(0,i,0) = tempDataset.at(i,0);
+	train.at(1,i,0) = tempDataset.at(i,0);
     }
 
     for (unsigned int i = ind; i < tempDataset.n_rows; i++)
@@ -310,7 +313,7 @@ int main () {
     //const int rho = 5;
     RNN<NegativeLogLikelihood<>, RandomInitialization> model(rho);
     //buildModelOneLayer(model, trainX.n_rows, 2);
-    buildLSTMModel(model, train.n_slices, 2);
+    buildLSTMModel(model, train.n_rows, 1);
     cout << "Prodigy team's code" << endl;
     cout << "Training ..." << endl;
     trainModel(model, train, valid);
