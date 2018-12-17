@@ -109,7 +109,7 @@ void buildLSTMModel(RNN<NegativeLogLikelihood<>, RandomInitialization>& model,
                          const int totalClasses)
 {
     // The number of neurons in the hidden layers.
-    constexpr int H1 = 100;
+    constexpr int H1 = 5;
     
     // This is intermediate layer that is needed for connection between input
     // data and sigmoid layer. Parameters specify the number of input features
