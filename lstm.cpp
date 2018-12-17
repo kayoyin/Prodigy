@@ -104,7 +104,7 @@ double accuracy(arma::cube predLabels, const arma::cube& realY)
 */
 
 
-void buildLSTMModel(RNN<MeanSquaredError<>, RandomInitialization>& model,
+void buildLSTMModel(RNN<NegativeLogLikelihood<>, RandomInitialization>& model,
                          const int sizeInputLayer,
                          const int totalClasses)
 {
@@ -137,7 +137,7 @@ void buildLSTMModel(RNN<MeanSquaredError<>, RandomInitialization>& model,
 /**
  *
  */
-void trainModel(RNN<MeanSquaredError<>, RandomInitialization>& model,
+void trainModel(RNN<NegativeLogLikelihood<>, RandomInitialization>& model,
                 const cube& train,
                 const cube& valid)
 {
@@ -175,21 +175,22 @@ void trainModel(RNN<MeanSquaredError<>, RandomInitialization>& model,
                               // Adam update policy.
                               //AdamUpdate(1e-8, 0.9, 0.999));
     			      
-
+    cout << "Line 178" << endl;
     // Cycles for monitoring the process of a solution.
     for (int i = 0; i <= CYCLES; i++)
     {
         // Train neural network. If this is the first iteration, weights are
         // random, using current values as starting point otherwise.
-        
-	model.Train(train, train, optimizer);
-        
+        cout << "Line 184" << endl;
+       	model.Train(train, train, optimizer);
+        cout << "Line 185" << endl;
         // Don't reset optimizer's parameters between cycles.
         optimizer.ResetPolicy() = false;
         
         cube predOut;
         // Getting predictions on training data points.
         model.Predict(train, predOut);
+        cout << "Line 193" << endl;
         // Calculating accuracy on training data points.
         //Row<size_t> predLabels = getLabels(predOut);
         //double trainAccuracy = accuracy(predLabels, trainY);
@@ -210,7 +211,7 @@ void trainModel(RNN<MeanSquaredError<>, RandomInitialization>& model,
  * Run the neural network model and predict the class for a
  * set of testing example
  */
-void predictClass(RNN<MeanSquaredError<>, RandomInitialization>& model,
+void predictClass(RNN<NegativeLogLikelihood<>, RandomInitialization>& model,
                   const std::string datasetName)
 {
     
@@ -242,30 +243,52 @@ int main () {
     // constexpr double RATIO = 0.1;
     
     cout << "Reading data ..." << endl; // used in training and validation
-    
+       
     // Labeled dataset that contains data for training is loaded from CSV file,
     // rows represent features, columns represent data points.
     mat tempDataset;
-    
+    const int rho = 5;
+
     data::Load("../utils/training.csv", tempDataset, true); // read data from this csv file, creates arma matrix with loaded data in tempDataset
     // warning: armadillo transposes matrix?
     // label 0 1
     // x     3 5
     // y     2 6
-    
+    //cout << "training data" << tempDataset << tempDataset.size() << endl;    
     // Initialize loaded data where row = dimension = 1, column = note values, slice = timestep
-    cube dataset = cube(1,1, tempDataset.n_cols);
-    for (unsigned int i = 0; i < tempDataset.n_cols; i++)
+    cube dataset = cube(1,1, tempDataset.n_rows);
+    cout << tempDataset << endl;
+    for (unsigned int i = 0; i < tempDataset.n_rows; i++)
     {
-   	 dataset.at(0,0,i) = tempDataset.at(0,i);
+   	 dataset.at(0,0,i) = tempDataset.at(i,0);
+	 //dataset.at(1,0,i) = tempDataset.at(1,i);
     }
 
+    cout << dataset << endl;
     // Splitting the dataset on training and validation parts.
-    cube train, valid;
 
-    const int ind = (int) 9*tempDataset.n_cols / 10;
-    train = dataset.subcube(0,0,0,0,0,ind);
-    valid = dataset.subcube(0,0,ind,0,0,tempDataset.n_cols);
+
+   
+    const int ind = (int) 9*tempDataset.n_rows / 10;
+    cube train = cube(1, ind, rho);
+    cube valid = cube(1, tempDataset.n_rows - ind, rho);
+
+
+    //cout << ind << tempDataset.n_cols << endl;
+    for (int i = 0; i < ind; i++)
+    {
+	train.at(0,i,0) = tempDataset.at(i,0);
+    }
+
+    for (unsigned int i = ind; i < tempDataset.n_rows; i++)
+    {
+	valid.at(0,i-ind,0) = tempDataset.at(i,0);
+    }
+
+    cout << train << valid << endl;
+
+    //train = dataset.subcube(0,0,0,0,ind-1,0);
+    //valid = dataset.subcube(0,ind,0,0,tempDataset.n_rows-1,0);
     //data::Split(dataset, train, valid, RATIO);
     
     // Getting training and validating dataset with features only.
@@ -284,9 +307,10 @@ int main () {
     // is used for classification problem. RandomInitialization means that
     // initial weights in neurons are generated randomly in the interval
     // from -1 to 1.
-    RNN<MeanSquaredError<>, RandomInitialization> model(5);
+    //const int rho = 5;
+    RNN<NegativeLogLikelihood<>, RandomInitialization> model(rho);
     //buildModelOneLayer(model, trainX.n_rows, 2);
-    buildLSTMModel(model, train.n_cols, 2);
+    buildLSTMModel(model, train.n_slices, 2);
     cout << "Prodigy team's code" << endl;
     cout << "Training ..." << endl;
     trainModel(model, train, valid);
