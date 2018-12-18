@@ -7,14 +7,13 @@
 #include <mlpack/core.hpp>
 #include <mlpack/core/data/split_data.hpp>
 
-#include <mlpack/core/optimizers/sgd/sgd.hpp> // standard optimization library
+#include <mlpack/core/optimizers/sgd/sgd.hpp>
 #include <mlpack/core/optimizers/adam/adam_update.hpp>
 
 #include <mlpack/methods/ann/layer/layer.hpp>
-#include <mlpack/methods/ann/rnn.hpp> // replace with rnn
+#include <mlpack/methods/ann/rnn.hpp>
 #include <mlpack/methods/ann/layer/lstm.hpp>
 #include <mlpack/prereqs.hpp>
-#include <mlpack/methods/ann/loss_functions/mean_squared_error.hpp>
 
 using namespace mlpack;
 using namespace mlpack::ann;
@@ -50,22 +49,22 @@ arma::Row<size_t> getLabels(const arma::cube& predOut)
 /**
  * Returns the accuracy (percentage of correct answers).
  * @param predLabels predicted labels of data points.
- * @param realY real labels (they are double because we usually read them from
+ * @param real actual notes (they are double because we usually read them from
  * CSV file that contain many other double values).
  * @return percentage of correct answers.
  */
-double accuracy(arma::cube predLabels, const arma::cube& realY)
+double accuracy(arma::cube predLabels, const arma::cube& real)
 {
     // Calculating how many predicted classes are coincide with real labels.
     size_t success = 0;
-    for (size_t j = 0; j < realY.n_cols; j++) {
-        if (predLabels(j) == std::round(realY(j))) {
+    for (size_t j = 0; j < real.n_cols; j++) {
+        if (predLabels(j) == std::round(real(j))) {
             ++success;
         }
     }
     
     // Calculating percentage of correctly classified data points.
-    return (double) success / (double)realY.n_cols * 100.0;
+    return (double) success / (double)real.n_cols * 100.0;
 }
 
 
@@ -75,11 +74,11 @@ double accuracy(arma::cube predLabels, const arma::cube& realY)
  * @param filename the name of a file.
  * @param header the header in a CSV file.
  *
- * @param predLabels predicted labels of data points. Classes of data points
+ * @param predLabels predicted notes. Classes of data points
  * are expected to start from 1. At the same time classes of data points in
- * the file are going to start from 0 (as Kaggle usually expects)
+ * the file are going to start from 0
  */
-/* void save(const std::string filename,
+void save(const std::string filename,
         const arma::Row<size_t>& predLabels,
           const arma::cube& inputData,
           const arma::cube& inputLabel)
@@ -101,7 +100,6 @@ double accuracy(arma::cube predLabels, const arma::cube& realY)
     }
     out.close();
 }
-*/
 
 
 void buildLSTMModel(RNN<>& model,
@@ -109,12 +107,9 @@ void buildLSTMModel(RNN<>& model,
                          const int totalClasses)
 {
     // The number of neurons in the hidden layers.
-    constexpr int H1 = 1; // no rows = rho?  
+    constexpr int H1 = 1;
     constexpr int H2 = 1;
     
-    // This is intermediate layer that is needed for connection between input
-    // data and sigmoid layer. Parameters specify the number of input features
-    // and number of neurons in the next layer.
     model.Add<Linear<> >(sizeInputLayer, H1);
     // 4 LSTM Layers
     model.Add<LSTM<> >(H1,H2);
@@ -124,9 +119,7 @@ void buildLSTMModel(RNN<>& model,
 
     // sigmoid layer.
     model.Add<SigmoidLayer<> >();
-    // Dropout layer for regularization. First parameter is the probability of
-    // setting a specific value to 0.
-    // model.Add<Dropout<> >(0.3, true);
+
     // Intermediate layer.
     model.Add<Linear<> >(H2, totalClasses);
     // LogSoftMax layer is used together with NegativeLogLikelihood for mapping
@@ -136,11 +129,8 @@ void buildLSTMModel(RNN<>& model,
 }
 
 
-/**
- *
- */
 void trainModel(RNN<NegativeLogLikelihood<>, RandomInitialization>& model,
-                const cube& train, const cube& trainY,
+                const cube& train,
                 const cube& valid)
 {
     // The solution is done in several approaches (CYCLES), so each approach
@@ -171,11 +161,6 @@ void trainModel(RNN<NegativeLogLikelihood<>, RandomInitialization>& model,
                               // means we never stop by this condition and continue to optimize
                               // up to reaching maximum of iterations.
                               1e-8);
-                              // Shuffle. If optimizer should take random data points from the dataset at
-                              // each iteration.
-                              //false,
-                              // Adam update policy.
-                              //AdamUpdate(1e-8, 0.9, 0.999));
     			      
     cout << "Line 178" << endl;
     // Cycles for monitoring the process of a solution.
@@ -184,7 +169,7 @@ void trainModel(RNN<NegativeLogLikelihood<>, RandomInitialization>& model,
         // Train neural network. If this is the first iteration, weights are
         // random, using current values as starting point otherwise.
         cout << "Line 184" << endl;
-       	model.Train(trainY, trainY, optimizer);
+       	model.Train(train, train, optimizer);
         cout << "Line 185" << endl;
         // Don't reset optimizer's parameters between cycles.
         optimizer.ResetPolicy() = false;
@@ -194,14 +179,10 @@ void trainModel(RNN<NegativeLogLikelihood<>, RandomInitialization>& model,
         model.Predict(train, predOut);
         cout << "Line 193" << endl;
         // Calculating accuracy on training data points.
-        //Row<size_t> predLabels = getLabels(predOut);
-        //double trainAccuracy = accuracy(predLabels, trainY);
         double trainAccuracy = accuracy(predOut, train);
 	// Getting predictions on validating data points.
         model.Predict(valid, predOut);
         // Calculating accuracy on validating data points.
-        //predLabels = getLabels(predOut);
-        //double validAccuracy = accuracy(predLabels, validY);
         double validAccuracy = accuracy(predOut,valid);        
 
         cout << i << " - accuracy: train = "<< trainAccuracy << "%," <<
@@ -249,13 +230,9 @@ int main () {
     // Labeled dataset that contains data for training is loaded from CSV file,
     // rows represent features, columns represent data points.
     mat tempDataset;
-    const int rho = 1; //no rows for train
+    const int rho = 1;
 
     data::Load("../utils/training.csv", tempDataset, true); // read data from this csv file, creates arma matrix with loaded data in tempDataset
-    // warning: armadillo transposes matrix?
-    // label 0 1
-    // x     3 5
-    // y     2 6
     //cout << "training data" << tempDataset << tempDataset.size() << endl;    
     // Initialize loaded data where row = dimension = 1, column = note values, slice = timestep
     cube dataset = cube(1,1,tempDataset.n_rows);
@@ -263,26 +240,18 @@ int main () {
     for (unsigned int i = 0; i < tempDataset.n_rows; i++)
     {
    	 dataset.at(0,0,i) = tempDataset.at(i,0);
-	 //dataset.at(1,0,i) = tempDataset.at(1,i);
     }
 
     cout << dataset << endl;
+	
     // Splitting the dataset on training and validation parts.
-
-
-   
     const int ind = (int) 9*tempDataset.n_rows / 10;
-    cube train = cube(2, ind,rho);
-    cube trainY = cube(1,ind,rho);
+    cube train = cube(1, ind,rho);
     cube valid = cube(1, tempDataset.n_rows - ind,rho);
 
-
-    //cout << ind << tempDataset.n_cols << endl;
     for (int i = 0; i < ind; i++)
     {
 	train.at(0,i,0) = tempDataset.at(i,0);
-	train.at(1,i,0) = tempDataset.at(i,0);
-        trainY.at(0,i,0) = tempDataset.at(i,0);
     }
 
     for (unsigned int i = ind; i < tempDataset.n_rows; i++)
@@ -292,46 +261,26 @@ int main () {
 
     cout << train << valid << endl;
 
-    //train = dataset.subcube(0,0,0,0,ind-1,0);
-    //valid = dataset.subcube(0,ind,0,0,tempDataset.n_rows-1,0);
-    //data::Split(dataset, train, valid, RATIO);
-    
-    // Getting training and validating dataset with features only.
-    //const cube trainX = train.subcube(1, 0, 0, train.n_rows - 1, train.n_cols - 1, 0);
-    //const cube validX = valid.subcube(1, 0, 0, valid.n_rows - 1, valid.n_cols - 1, 0);
-    
     // According to NegativeLogLikelihood output layer of NN, labels should
     // specify class of a data point and be in the interval from 1 to
     // number of classes (in this case from 1 to 10).
-    
-    // Creating labels for training and validating dataset.
-    //const cube trainY = train.row(0) + 1;
-    //const cube validY = valid.row(0) + 1;
     
     // Specifying the NN model. NegativeLogLikelihood is the output layer that
     // is used for classification problem. RandomInitialization means that
     // initial weights in neurons are generated randomly in the interval
     // from -1 to 1.
-    //const int rho = 5;
-    //constexpr int H = 1;
-
-    
-
+	
     //RNN<> model(rho);
     //model.Add<IdentityLayer<> > ();
     //model.Add<LSTM <> > (trainY.n_rows, 4, rho);
     //model.Add<Linear <> > (4, 10);
     //model.Add<LogSoftMax<> > ();
-    
-    //cout << model << endl;
-    //buildModelOneLayer(model, trainX.n_rows, 2);
+    	
     RNN<NegativeLogLikelihood<>, RandomInitialization> model(rho);
 
-    buildLSTMModel(model, trainY.n_rows, 1);
-    //cout << model << endl;
-    cout << "Prodigy team's code" << endl;
+    buildLSTMModel(model, train.n_rows, 1);
     cout << "Training ..." << endl;
-    trainModel(model, trainY, trainY, valid);
+    trainModel(model, train, valid);
     
     cout << "Predicting ..." << endl;
     std::string datasetName = "../utils/test.csv";
