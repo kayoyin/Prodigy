@@ -77,7 +77,7 @@ double accuracy(arma::cube predLabels, const arma::cube& real)
  * @param predLabels predicted notes. Classes of data points
  * are expected to start from 1. At the same time classes of data points in
  * the file are going to start from 0
- */
+
 void save(const std::string filename,
         const arma::Row<size_t>& predLabels,
           const arma::cube& inputData,
@@ -100,7 +100,7 @@ void save(const std::string filename,
     }
     out.close();
 }
-
+*/
 
 void buildLSTMModel(RNN<>& model,
                          const int sizeInputLayer,
