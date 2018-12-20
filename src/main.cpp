@@ -166,22 +166,18 @@ void trainModel(RNN<NegativeLogLikelihood<>, RandomInitialization>& model,
                               // up to reaching maximum of iterations.
                               1e-8);
     			      
-    cout << "Line 178" << endl;
     // Cycles for monitoring the process of a solution.
     for (int i = 0; i <= CYCLES; i++)
     {
         // Train neural network. If this is the first iteration, weights are
         // random, using current values as starting point otherwise.
-        cout << "Line 184" << endl;
        	model.Train(trainX, trainY, optimizer);
-        cout << "Line 185" << endl;
         // Don't reset optimizer's parameters between cycles.
         optimizer.ResetPolicy() = false;
         
         cube predOut;
         // Getting predictions on training data points.
         model.Predict(trainX, predOut);
-        cout << "Line 193" << endl;
         // Calculating accuracy on training data points.
 	// Row<size_t> predLabels = getLabels(predOut);
         double trainAccuracy = accuracy(predOut, trainY);
