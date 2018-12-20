@@ -10,23 +10,3 @@ The first team, "Translators", will define how music will be represented by text
 
 The second team, "Builders", will construct the AI used for training. They will grasp the theory and functioning of neural networks, determine which library to use, understand how to use it for music generation, and from the third week start training using translated MIDI files of Mozart's music.
 
-Testing commits from each member:
-
-Hello, I'm Raymond!! I'm going to work on translating the MIDI files into understandable text with the notes + the number of ticks corresponding to the time each note is played. I will also work on doing this process backward (translate the output of the algorithm again into a MIDI file)!
-
-We can also use the midifile library on c++ which is made for this purpose ( You can find a lot of information and tutorials about that on github!
-
-Hi I'm Kayo and I'm going to work on the neural network :)
-
-Testing commit from Atom ide
-
-COMMIT FROM michael
-
-
-
-test Ana
-
-Hi from Elzette!
-
-
-NICHOLAS T : AI
