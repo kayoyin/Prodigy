@@ -13,6 +13,9 @@
 #include <mlpack/methods/ann/layer/layer.hpp>
 #include <mlpack/methods/ann/rnn.hpp>
 #include <mlpack/methods/ann/layer/lstm.hpp>
+#include <mlpack/methods/ann/loss_functions/kl_divergence.hpp>
+#include <mlpack/methods/ann/loss_functions/mean_squared_error.hpp>
+#include <mlpack/methods/ann/loss_functions/cross_entropy_error.hpp>
 #include <mlpack/prereqs.hpp>
 
 using namespace mlpack;
@@ -128,12 +131,12 @@ void buildLSTMModel(RNN<>& model,
     model.Add<Linear<> >(H2, totalClasses);
     // LogSoftMax layer is used together with NegativeLogLikelihood for mapping
     // output values to log of probabilities of being a specific class.
-    model.Add<LogSoftMax<> >();
+    //model.Add<LogSoftMax<> >();
     cout << "Building done" << endl;
 }
 
 
-void trainModel(RNN<NegativeLogLikelihood<>, RandomInitialization>& model,
+void trainModel(RNN<CrossEntropyError<>>& model,
                 const cube& trainX, const cube& trainY, const cube& validX,
                 const cube& validY)
 {
@@ -148,10 +151,10 @@ void trainModel(RNN<NegativeLogLikelihood<>, RandomInitialization>& model,
     constexpr int CYCLES = 10;
     
     // Step size of an optimizer.
-    constexpr double STEP_SIZE = 5e-4;
+    constexpr double STEP_SIZE = 5e-20;
     
     // Number of data points in each iteration of SGD
-    constexpr int BATCH_SIZE = 5;
+    constexpr int BATCH_SIZE = 3;
     
     // Setting parameters Stochastic Gradient Descent (SGD) optimizer.
     StandardSGD optimizer(
@@ -166,22 +169,21 @@ void trainModel(RNN<NegativeLogLikelihood<>, RandomInitialization>& model,
                               // up to reaching maximum of iterations.
                               1e-8);
     			      
-    cout << "Line 178" << endl;
+   
     // Cycles for monitoring the process of a solution.
     for (int i = 0; i <= CYCLES; i++)
     {
         // Train neural network. If this is the first iteration, weights are
         // random, using current values as starting point otherwise.
-        cout << "Line 184" << endl;
+       
        	model.Train(trainX, trainY, optimizer);
-        cout << "Line 185" << endl;
+       
         // Don't reset optimizer's parameters between cycles.
         optimizer.ResetPolicy() = false;
         
         cube predOut;
         // Getting predictions on training data points.
         model.Predict(trainX, predOut);
-        cout << "Line 193" << endl;
         // Calculating accuracy on training data points.
 	// Row<size_t> predLabels = getLabels(predOut);
         double trainAccuracy = accuracy(predOut, trainY);
@@ -199,14 +201,14 @@ void trainModel(RNN<NegativeLogLikelihood<>, RandomInitialization>& model,
  * Run the neural network model and predict the class for a
  * set of testing example
  */
-void predictClass(RNN<NegativeLogLikelihood<>, RandomInitialization>& model,
-                  const std::string datasetName)
+void predictClass(RNN<CrossEntropyError<>>& model,
+                  const std::string datasetName, const int rho)
 {
     
     mat tempDataset;
     data::Load(datasetName, tempDataset, true);
     
-    cube test = cube(1,tempDataset.n_cols,tempDataset.n_cols);
+    cube test = cube(1,tempDataset.n_cols,rho);
     for (unsigned int i = 0; i < tempDataset.n_cols; i++)
     {
 	test(0,i,0) = tempDataset.at(0,i);
@@ -272,21 +274,25 @@ int main () {
     // initial weights in neurons are generated randomly in the interval
     // from -1 to 1.
 	
-    //RNN<> model(rho);
-    //model.Add<IdentityLayer<> > ();
-    //model.Add<LSTM <> > (trainY.n_rows, 4, rho);
-    //model.Add<Linear <> > (4, 10);
+    RNN<CrossEntropyError<> > model(rho);
+    model.Add<Linear <> > (trainX.n_rows, rho);
+    model.Add<LSTM <> > (rho,4);
+    model.Add<LSTM <> > (4,4);
+    model.Add<LSTM <> > (4,4);
+    model.Add<LSTM <> > (4,4);
+    model.Add<SigmoidLayer <> >();
+    model.Add<Linear <> > (4, 1);
     //model.Add<LogSoftMax<> > ();
     	
-    RNN<NegativeLogLikelihood<>, RandomInitialization> model(rho);
+    //RNN<CrossEntropyError<>> model(rho);
 
-    buildLSTMModel(model, trainX.n_rows, 1);
+    //buildLSTMModel(model, trainX.n_rows, 1);
     cout << "Training ..." << endl;
     trainModel(model, trainX, trainY, validX, validY);
     
     cout << "Predicting ..." << endl;
     std::string datasetName = "../utils/test.csv";
-    predictClass(model, datasetName);
+    predictClass(model, datasetName,rho);
     cout << "Finished" << endl;
     
     return 0;
