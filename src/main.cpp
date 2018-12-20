@@ -13,6 +13,9 @@
 #include <mlpack/methods/ann/layer/layer.hpp>
 #include <mlpack/methods/ann/rnn.hpp>
 #include <mlpack/methods/ann/layer/lstm.hpp>
+#include <mlpack/methods/ann/loss_functions/kl_divergence.hpp>
+#include <mlpack/methods/ann/loss_functions/mean_squared_error.hpp>
+#include <mlpack/methods/ann/loss_functions/cross_entropy_error.hpp>
 #include <mlpack/prereqs.hpp>
 
 using namespace mlpack;
@@ -55,15 +58,17 @@ arma::Row<size_t> getLabels(const arma::cube& predOut)
  */
 double accuracy(arma::cube predLabels, const arma::cube& real)
 {
-    // Calculating how many predicted classes are coincide with real labels.
+    cout << "predicted" << predLabels << endl;
+    cout << "real" << real << endl;
+    // Calculating how many predicted notes coincide with actual notes.
     size_t success = 0;
     for (size_t j = 0; j < real.n_cols; j++) {
-        if (predLabels(j) == std::round(real(j))) {
+        if (predLabels(0,j,predLabels.n_slices-1) == std::round(real.at(0,j,0))) {
             ++success;
         }
     }
     
-    // Calculating percentage of correctly classified data points.
+    // Calculating percentage of correctly predicted notes.
     return (double) success / (double)real.n_cols * 100.0;
 }
 
@@ -128,12 +133,12 @@ void buildLSTMModel(RNN<>& model,
     model.Add<Linear<> >(H2, totalClasses);
     // LogSoftMax layer is used together with NegativeLogLikelihood for mapping
     // output values to log of probabilities of being a specific class.
-    model.Add<LogSoftMax<> >();
+    //model.Add<LogSoftMax<> >();
     cout << "Building done" << endl;
 }
 
 
-void trainModel(RNN<NegativeLogLikelihood<>, RandomInitialization>& model,
+void trainModel(RNN<MeanSquaredError<>>& model,
                 const cube& trainX, const cube& trainY, const cube& validX,
                 const cube& validY)
 {
@@ -145,13 +150,13 @@ void trainModel(RNN<NegativeLogLikelihood<>, RandomInitialization>& model,
     constexpr int ITERATIONS_PER_CYCLE = 10000;
     
     // Number of cycles.
-    constexpr int CYCLES = 10;
+    constexpr int CYCLES = 50;
     
     // Step size of an optimizer.
-    constexpr double STEP_SIZE = 5e-4;
+    constexpr double STEP_SIZE = 5e-20;
     
     // Number of data points in each iteration of SGD
-    constexpr int BATCH_SIZE = 5;
+    constexpr int BATCH_SIZE = 3;
     
     // Setting parameters Stochastic Gradient Descent (SGD) optimizer.
     StandardSGD optimizer(
@@ -166,12 +171,15 @@ void trainModel(RNN<NegativeLogLikelihood<>, RandomInitialization>& model,
                               // up to reaching maximum of iterations.
                               1e-8);
     			      
+   
     // Cycles for monitoring the process of a solution.
     for (int i = 0; i <= CYCLES; i++)
     {
         // Train neural network. If this is the first iteration, weights are
         // random, using current values as starting point otherwise.
+       
        	model.Train(trainX, trainY, optimizer);
+       
         // Don't reset optimizer's parameters between cycles.
         optimizer.ResetPolicy() = false;
         
@@ -195,14 +203,14 @@ void trainModel(RNN<NegativeLogLikelihood<>, RandomInitialization>& model,
  * Run the neural network model and predict the class for a
  * set of testing example
  */
-void predictClass(RNN<NegativeLogLikelihood<>, RandomInitialization>& model,
-                  const std::string datasetName)
+void predictClass(RNN<MeanSquaredError<>>& model,
+                  const std::string datasetName, const int rho)
 {
     
     mat tempDataset;
     data::Load(datasetName, tempDataset, true);
     
-    cube test = cube(1,tempDataset.n_cols,tempDataset.n_cols);
+    cube test = cube(1,tempDataset.n_cols,rho);
     for (unsigned int i = 0; i < tempDataset.n_cols; i++)
     {
 	test(0,i,0) = tempDataset.at(0,i);
@@ -213,9 +221,13 @@ void predictClass(RNN<NegativeLogLikelihood<>, RandomInitialization>& model,
     // Getting predictions on test data points .
     model.Predict(test, testPredOut);
     // Generating labels for the test dataset.
-    Row<size_t> testPred = getLabels(testPredOut);
+    //Row<size_t> testPred = getLabels(testPredOut);
     cout << "Saving predicted labels to \"results.csv\" ..." << endl;
-    
+    mat testPred(1,testPredOut.n_cols);
+    for (unsigned int i = 0; i < testPredOut.n_cols; i++)
+    {
+	testPred(0,i) = testPredOut.at(0,i,testPredOut.n_slices-1);
+    }
     // Saving results into Kaggle compatibe CSV file.
     data::Save("results.csv", testPred); // testPred or test??
     cout << "Results were saved to \"results.csv\"" << endl;
@@ -268,21 +280,25 @@ int main () {
     // initial weights in neurons are generated randomly in the interval
     // from -1 to 1.
 	
-    //RNN<> model(rho);
-    //model.Add<IdentityLayer<> > ();
-    //model.Add<LSTM <> > (trainY.n_rows, 4, rho);
-    //model.Add<Linear <> > (4, 10);
+    RNN<MeanSquaredError<> > model(rho);
+    model.Add<Linear <> > (trainX.n_rows, rho);
+    model.Add<LSTM <> > (rho,4);
+    model.Add<LSTM <> > (4,4);
+    model.Add<LSTM <> > (4,4);
+    model.Add<LSTM <> > (4,4);
+    model.Add<SigmoidLayer <> >();
+    model.Add<Linear <> > (4, 1);
     //model.Add<LogSoftMax<> > ();
     	
-    RNN<NegativeLogLikelihood<>, RandomInitialization> model(rho);
+    //RNN<CrossEntropyError<>> model(rho);
 
-    buildLSTMModel(model, trainX.n_rows, 1);
+    //buildLSTMModel(model, trainX.n_rows, 1);
     cout << "Training ..." << endl;
     trainModel(model, trainX, trainY, validX, validY);
     
     cout << "Predicting ..." << endl;
     std::string datasetName = "../utils/test.csv";
-    predictClass(model, datasetName);
+    predictClass(model, datasetName,rho);
     cout << "Finished" << endl;
     
     return 0;
