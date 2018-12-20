@@ -156,7 +156,7 @@ void trainModel(RNN<MeanSquaredError<>>& model,
     constexpr double STEP_SIZE = 5e-20;
     
     // Number of data points in each iteration of SGD
-    constexpr int BATCH_SIZE = 3;
+    constexpr int BATCH_SIZE = 5;
     
     // Setting parameters Stochastic Gradient Descent (SGD) optimizer.
     StandardSGD optimizer(
