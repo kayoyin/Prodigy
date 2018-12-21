@@ -156,7 +156,7 @@ void trainModel(RNN<MeanSquaredError<>>& model,
     constexpr double STEP_SIZE = 5e-20;
     
     // Number of data points in each iteration of SGD
-    constexpr int BATCH_SIZE = 3;
+    constexpr int BATCH_SIZE = 5;
     
     // Setting parameters Stochastic Gradient Descent (SGD) optimizer.
     StandardSGD optimizer(
@@ -282,12 +282,9 @@ int main () {
 	
     RNN<MeanSquaredError<> > model(rho);
     model.Add<Linear <> > (trainX.n_rows, rho);
-    model.Add<LSTM <> > (rho,4);
-    model.Add<LSTM <> > (4,4);
-    model.Add<LSTM <> > (4,4);
-    model.Add<LSTM <> > (4,4);
+    model.Add<LSTM <> > (rho,50);    
+    model.Add<Linear <> > (50, 1);
     model.Add<SigmoidLayer <> >();
-    model.Add<Linear <> > (4, 1);
     //model.Add<LogSoftMax<> > ();
     	
     //RNN<CrossEntropyError<>> model(rho);
