@@ -32,8 +32,7 @@ if(CMAKE_COMPILER_IS_GNUCC OR "${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
   set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra")
 endif()
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ggdb -g -O0")
-
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ggdb -g -O0") 
 set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
 
 
@@ -72,3 +71,4 @@ add_executable(nnsample ${PROJECT_SOURCE_DIR}/src/main.cpp)
 target_link_libraries(nnsample
   ${MLPACK_LIBRARIES}
   ${ARMADILLO_LIBRARIES})
+
