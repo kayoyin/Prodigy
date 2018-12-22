@@ -194,8 +194,8 @@ int main () {
 	
     cube trainX = getTrainX(tempDataset, sequence_length);
     cube trainYP = getTrainY(tempDataset, sequence_length);
-    cout << trainX << trainY << endl;
-    trainY = getProba(trainY, sequence_length);	
+    cout << trainX << trainYP << endl;
+    trainY = getProba(trainYP, sequence_length);	
 
     // According to NegativeLogLikelihood output layer of NN, labels should
     // specify class of a data point and be in the interval from 1 to
