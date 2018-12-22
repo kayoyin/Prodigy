@@ -35,7 +35,7 @@ arma::cube getTrainX(const mat& tempDataset, const int& sequence_length)
     {
 	for (unsigned int j = 0; j < sequence_length; j++)
 	{
-		trainX.at(1,i,j) = tempDataset.at(i+j,0);
+		trainX(0,i,j) = tempDataset(i+j,0);
 	}
     }
     return trainX;
