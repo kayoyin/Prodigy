@@ -41,16 +41,26 @@ arma::cube getTrainX(const mat& tempDataset, const int& sequence_length)
     return trainX;
  }
 
-// Generate array with 1 in the indice of the note present at a time step
-arma::cube getCategory(const mat& tempDataset, const int& size_notes, const int& sequence_length)
+arma::cube getTrainY(const mat& tempDataset, const int& sequence_length)
 {
-    cube trainY = cube(size_notes, tempDataset.n_rows - sequence_length, 1, fill::zeros);
+    cube trainY = cube(1, tempDataset.n_rows - sequence_length, sequence_length);
+    for (unsigned int i = sequence_length; i < tempDataset.n_rows; i++)
+    {
+	 trainY(0,i-sequence_length,0) = tempDataset(i,0);
+    }
+    return trainY;
+}	
+
+// Generate array with 1 in the indice of the note present at a time step
+arma::mat getProba(const mat& tempDataset, const int& size_notes, const int& sequence_length)
+{
+    mat proba = mat(size_notes, tempDataset.n_rows - sequence_length, fill::zeros);
     for (unsigned int i = sequence_length; i < tempDataset.n_rows; i++)
     {
 	int note = tempDataset.at(i,0);
-	trainY.at(note,i-sequence_length,0) = 1;
+	proba.at(note,i-sequence_length) = 1;
     }
-    return trainY;
+    return proba;
 }
 
  /**
@@ -183,7 +193,7 @@ int main () {
     const int sequence_length = 3;
 	
     cube trainX = getTrainX(tempDataset, sequence_length);
-    cube trainY = getCategory(tempDataset, size_notes, sequence_length);
+    cube trainY = getTrainY(tempDataset, sequence_length);
     cout << trainX << trainY << endl;
 
     // According to NegativeLogLikelihood output layer of NN, labels should
