@@ -49,7 +49,35 @@ arma::Row<size_t> getLabels(const arma::cube& predOut)
     return pred;
 }
 
-/**
+// Prepare input of sequence of notes for LSTM
+arma::cube getTrainX(const mat& tempDataset, const int& sequence_length)
+{
+    const int num_notes = tempDataset.n_rows;	
+    const int num_sequences = (num_notes / sequence_length) + 1;
+    cube trainX = cube(1, num_sequences, sequence_length);	
+    for (int i = 0; i < num_sequences; i++)
+    {
+	for (int j = 0; j < sequence_length; j++)
+	{
+		trainX.at(1,i,j) = tempDataset.at(i+j,0);
+	}
+    }
+    return trainX;
+ }
+
+// Generate array with 1 in the indice of the note present at a time step
+mat getCategory(const mat& tempDataset, const int& size_notes, const int& sequence_length)
+{
+    mat trainY = mat(tempDataset.n_rows - sequence_length, size_notes, fill::zeros);
+    for (int i = sequence_length; i < tempDataset.n_rows; i++)
+    {
+	int note = tempDataset.at(i,0);
+	trainY.at(i-sequence_length, note) = 1;
+    }
+    return trainY;
+}
+
+ /**
  * Returns the accuracy (percentage of correct answers).
  * @param predLabels predicted labels of data points.
  * @param real actual notes (they are double because we usually read them from
@@ -72,75 +100,8 @@ double accuracy(arma::cube predLabels, const arma::cube& real)
     return (double) success / (double)real.n_cols * 100.0;
 }
 
-
-/**
- * Saves prediction into specifically formated CSV file.
- *
- * @param filename the name of a file.
- * @param header the header in a CSV file.
- *
- * @param predLabels predicted notes. Classes of data points
- * are expected to start from 1. At the same time classes of data points in
- * the file are going to start from 0
-<<<<<<< HEAD
- 
-=======
-
->>>>>>> e75873b8ad26334b9f8afd227b066e88f019299b
-void save(const std::string filename,
-        const arma::Row<size_t>& predLabels,
-          const arma::cube& inputData,
-          const arma::cube& inputLabel)
-{
-    std::ofstream out(filename);
-    out << header << std::endl;
-    for (size_t j = 0; j < predLabels.n_cols; ++j)
-    {
-        out << std::round(predLabels(j)) - 1 << "," <<
-        arma::as_scalar(inputData.slice(j).row(0)) <<  "," <<
-        arma::as_scalar(inputData.slice(j).row(1)) << "," <<
-        arma::as_scalar(inputLabel.slice(j).row(0) - 1);
-        
-        // to avoid an empty line in the end of the file
-        if (j < predLabels.n_cols - 1)
-        {
-            out << std::endl;
-        }
-    }
-    out.close();
-}
-*/
-
-void buildLSTMModel(RNN<>& model,
-                         const int sizeInputLayer,
-                         const int totalClasses)
-{
-    // The number of neurons in the hidden layers.
-    constexpr int H1 = 8;
-    constexpr int H2 = 30;
-    
-    model.Add<Linear<> >(sizeInputLayer, H1);
-    // 4 LSTM Layers
-    model.Add<LSTM<> >(H1,H2);
-    model.Add<LSTM<> >(H2,H2);
-    model.Add<LSTM<> >(H2,H2);
-    model.Add<LSTM<> >(H2,H2);
-
-    // sigmoid layer.
-    model.Add<SigmoidLayer<> >();
-
-    // Intermediate layer.
-    model.Add<Linear<> >(H2, totalClasses);
-    // LogSoftMax layer is used together with NegativeLogLikelihood for mapping
-    // output values to log of probabilities of being a specific class.
-    //model.Add<LogSoftMax<> >();
-    cout << "Building done" << endl;
-}
-
-
 void trainModel(RNN<MeanSquaredError<>>& model,
-                const cube& trainX, const cube& trainY, const cube& validX,
-                const cube& validY)
+                const cube& trainX, const mat& trainY)
 {
     // The solution is done in several approaches (CYCLES), so each approach
     // uses previous results as starting point and have a different optimizer
@@ -159,7 +120,7 @@ void trainModel(RNN<MeanSquaredError<>>& model,
     constexpr int BATCH_SIZE = 5;
     
     // Setting parameters Stochastic Gradient Descent (SGD) optimizer.
-    StandardSGD optimizer(
+    SGD<AdamUpdate> optimizer(
                               // Step size of the optimizer.
                               STEP_SIZE,
                               // Batch size. Number of data points that are used in each iteration.
@@ -169,7 +130,10 @@ void trainModel(RNN<MeanSquaredError<>>& model,
                               // Tolerance, used as a stopping condition. This small number
                               // means we never stop by this condition and continue to optimize
                               // up to reaching maximum of iterations.
-                              1e-8);
+                              1e-8,
+    			      false,
+    			      // Adam update policy.
+    			      AdamUpdate(1e-8, 0.9, 0.999)));
     			      
    
     // Cycles for monitoring the process of a solution.
@@ -187,15 +151,10 @@ void trainModel(RNN<MeanSquaredError<>>& model,
         // Getting predictions on training data points.
         model.Predict(trainX, predOut);
         // Calculating accuracy on training data points.
-	// Row<size_t> predLabels = getLabels(predOut);
-        double trainAccuracy = accuracy(predOut, trainY);
-	// Getting predictions on validating data points.
-        model.Predict(validX, predOut);
-        // Calculating accuracy on validating data points.
-        double validAccuracy = accuracy(predOut,validY);        
+        double trainAccuracy = accuracy(predOut, trainY);       
 
-        cout << i << " - accuracy: train = "<< trainAccuracy << "%," <<
-        " valid = "<< validAccuracy << "%" <<  endl;
+        cout << i << " - accuracy: train = "<< trainAccuracy << "%," << endl;
+        
     }
 }
 
@@ -234,42 +193,20 @@ void predictClass(RNN<MeanSquaredError<>>& model,
 }
 
 int main () {
-    // Dataset is randomly split into validation
-    // and training parts with following ratio.
-    // constexpr double RATIO = 0.1;
     
-    cout << "Reading data ..." << endl; // used in training and validation
-       
-    // Labeled dataset that contains data for training is loaded from CSV file,
-    // rows represent features, columns represent data points.
+    cout << "Reading data ..." << endl; 
+	
     mat tempDataset;
     const int rho = 8;
 
     data::Load("../utils/training.csv", tempDataset, true); // read data from this csv file, creates arma matrix with loaded data in tempDataset
-    //cout << "training data" << tempDataset << tempDataset.size() << endl;    
-    // Initialize loaded data where row = dimension = 1, column = note values, slice = timestep
+    	
+    const int size_notes = max(tempDataset);
+    const int num_notes = tempDataset.n_rows; 
+    const int sequence_length = 20;
 	
-    // Splitting the dataset on training and validation parts.
-    const int ind = (int) 9*tempDataset.n_rows / 10;
-    cube trainX = cube(1, ind,rho);
-    cube trainY = cube(1,ind,rho);
-
-    cube validX = cube(1, tempDataset.n_rows - ind,rho);
-    cube validY = cube(1, tempDataset.n_rows - ind,rho);
-
-    for (int i = 0; i < ind; i++)
-    {
-	trainX.at(0,i,0) = tempDataset.at(i,0);
-	trainY.at(0,i,0) = tempDataset.at(i,1);
-    }
-
-    for (unsigned int i = ind; i < tempDataset.n_rows; i++)
-    {
-	validX.at(0,i-ind,0) = tempDataset.at(i,0);
-	validY.at(0,i-ind,0) = tempDataset.at(i,1);
-    }
-
-    cout << trainX << trainY << validX << validY << endl;
+    cube trainX = getTrainX(tempDataset, sequence_length);
+    mat trainY = getCategory(tempDataset, size_notes, sequence_length);
 
     // According to NegativeLogLikelihood output layer of NN, labels should
     // specify class of a data point and be in the interval from 1 to
@@ -282,16 +219,15 @@ int main () {
 	
     RNN<MeanSquaredError<> > model(rho);
     model.Add<Linear <> > (trainX.n_rows, rho);
-    model.Add<LSTM <> > (rho,50);    
-    model.Add<Linear <> > (50, 1);
-    model.Add<SigmoidLayer <> >();
-    //model.Add<LogSoftMax<> > ();
+    model.Add<LSTM <> > (rho,512);
+    model.Add<Linear <> > (512, 256);
+    model.Add<Dropout <> > (0.3);
+    model.Add<Linear <> > (256, size_notes);
+    //model.Add<SigmoidLayer <> >();
+    model.Add<LogSoftMax<> > ();
     	
-    //RNN<CrossEntropyError<>> model(rho);
-
-    //buildLSTMModel(model, trainX.n_rows, 1);
     cout << "Training ..." << endl;
-    trainModel(model, trainX, trainY, validX, validY);
+    trainModel(model, trainX, trainY);
     
     cout << "Predicting ..." << endl;
     std::string datasetName = "../utils/test.csv";
