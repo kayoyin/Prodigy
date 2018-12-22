@@ -69,7 +69,7 @@ arma::mat getNotes(const mat& proba)
     mat notes = mat(1, num_notes);
     for (unsigned int i = 0; i < num_notes; i++)
     {
-        mat(0,i) = arma::as_scalar(arma::find(arma::max_ind(proba.col(i)));
+        mat(0,i) = arma::as_scalar(arma::find(arma::max(proba.col(i)));
     }
     return notes;
 }				   
