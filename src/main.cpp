@@ -86,14 +86,14 @@ double accuracy(arma::mat& predicted, const arma::mat& real)
 {
     // Calculating how many predicted notes coincide with actual notes.
     size_t success = 0;
-    for (size_t j = 0; j < real.n_cols; j++) {
+    for (size_t j = 0; j < predicted.n_cols; j++) {
         if (predicted(0,j) == std::round(real(0,j))) {
             ++success;
         }
     }
     
     // Calculating percentage of correctly predicted notes.
-    return (double) success / (double)real.n_cols * 100.0;
+    return (double) success / (double)predicted.n_cols * 100.0;
 }
 
 void trainModel(RNN<MeanSquaredError<>>& model,
@@ -147,7 +147,6 @@ void trainModel(RNN<MeanSquaredError<>>& model,
         // Getting predictions on training data points.
         model.Predict(trainX, predOut);
 	cout << predOut << endl;   
-	cout << predOut.n_rows << predOut.n_cols << endl;    
 
         // Calculating accuracy on training data points.
         mat pred = getNotes(predOut.slice(predOut.n_slices - 1));
