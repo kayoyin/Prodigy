@@ -25,30 +25,6 @@ using namespace mlpack::optimization;
 using namespace arma;
 using namespace std;
 
-/**
- * Returns labels bases on predicted probability (or log of probability)
- * of classes.
- * @param predOut matrix contains probabilities (or log of probability) of
- * classes. Each row corresponds to a certain class, each column corresponds
- * to a data point.
- * @return a row vector of data point's classes. The classes starts from 1 to
- * the number of rows in input matrix.
- */
-arma::Row<size_t> getLabels(const arma::cube& predOut)
-{
-    arma::Row<size_t> pred(predOut.n_cols);
-    
-    // Class of a j-th data point is chosen to be the one with maximum value
-    // in j-th column plus 1 (since column's elements are numbered from 0).
-    for (size_t j = 0; j < predOut.n_cols; ++j)
-    {
-        pred(j) = arma::as_scalar(arma::find(
-                                             arma::max(predOut.col(j)) == predOut.col(j), 1)) + 1;
-    }
-    
-    return pred;
-}
-
 // Prepare input of sequence of notes for LSTM
 arma::cube getTrainX(const mat& tempDataset, const int& sequence_length)
 {
@@ -68,11 +44,11 @@ arma::cube getTrainX(const mat& tempDataset, const int& sequence_length)
 // Generate array with 1 in the indice of the note present at a time step
 mat getCategory(const mat& tempDataset, const int& size_notes, const int& sequence_length)
 {
-    mat trainY = mat(tempDataset.n_rows - sequence_length, size_notes, fill::zeros);
+    mat trainY = mat(size_notes, tempDataset.n_rows - sequence_length, fill::zeros);
     for (unsigned int i = sequence_length; i < tempDataset.n_rows; i++)
     {
 	int note = tempDataset.at(i,0);
-	trainY.at(i-sequence_length, note) = 1;
+	trainY.at(note,i-sequence_length) = 1;
     }
     return trainY;
 }
@@ -84,14 +60,13 @@ mat getCategory(const mat& tempDataset, const int& size_notes, const int& sequen
  * CSV file that contain many other double values).
  * @return percentage of correct answers.
  */
-double accuracy(arma::mat& predLabels, const arma::cube& real)
+double accuracy(arma::mat& predLabels, const arma::mat& real)
 {
-    cout << "predicted" << predLabels << endl;
-    cout << "real" << real << endl;
     // Calculating how many predicted notes coincide with actual notes.
+    rowvec pred = index_max(predLabels, 0);
     size_t success = 0;
     for (size_t j = 0; j < real.n_cols; j++) {
-        if (predLabels(0,j,predLabels.n_slices-1) == std::round(real.at(0,j,0))) {
+        if (pred(j) == std::round(real(0,j))) {
             ++success;
         }
     }
