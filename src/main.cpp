@@ -28,8 +28,8 @@ using namespace std;
 // Prepare input of sequence of notes for LSTM
 arma::cube getTrainX(const mat& tempDataset, const int& sequence_length)
 {
-    const int num_notes = tempDataset.n_rows;	
-    const int num_sequences = (num_notes / sequence_length) + 1;
+    const unsigned int num_notes = tempDataset.n_rows;	
+    const unsigned int num_sequences = (num_notes / sequence_length) + 1;
     cube trainX = cube(1, num_sequences, sequence_length);	
     for (unsigned int i = 0; i < num_sequences; i++)
     {
@@ -42,13 +42,13 @@ arma::cube getTrainX(const mat& tempDataset, const int& sequence_length)
  }
 
 // Generate array with 1 in the indice of the note present at a time step
-mat getCategory(const mat& tempDataset, const int& size_notes, const int& sequence_length)
+arma::cube getCategory(const mat& tempDataset, const int& size_notes, const int& sequence_length)
 {
-    mat trainY = mat(size_notes, tempDataset.n_rows - sequence_length, fill::zeros);
+    cube trainY = cube(size_notes, tempDataset.n_rows - sequence_length, 1, fill::zeros);
     for (unsigned int i = sequence_length; i < tempDataset.n_rows; i++)
     {
 	int note = tempDataset.at(i,0);
-	trainY.at(note,i-sequence_length) = 1;
+	trainY.at(note,i-sequence_length,0) = 1;
     }
     return trainY;
 }
@@ -63,10 +63,10 @@ mat getCategory(const mat& tempDataset, const int& size_notes, const int& sequen
 double accuracy(arma::mat& predLabels, const arma::mat& real)
 {
     // Calculating how many predicted notes coincide with actual notes.
-    rowvec pred = index_max(predLabels, 0);
+    mat pred = index_max(predLabels, 0);
     size_t success = 0;
     for (size_t j = 0; j < real.n_cols; j++) {
-        if (pred(j) == std::round(real(0,j))) {
+        if (pred(0,j) == std::round(real(0,j))) {
             ++success;
         }
     }
@@ -76,7 +76,7 @@ double accuracy(arma::mat& predLabels, const arma::mat& real)
 }
 
 void trainModel(RNN<MeanSquaredError<>>& model,
-                const cube& trainX, const mat& trainY)
+                const cube& trainX, const cube& trainY)
 {
     // The solution is done in several approaches (CYCLES), so each approach
     // uses previous results as starting point and have a different optimizer
@@ -181,7 +181,7 @@ int main () {
     const int sequence_length = 3;
 	
     cube trainX = getTrainX(tempDataset, sequence_length);
-    mat trainY = getCategory(tempDataset, size_notes, sequence_length);
+    cube trainY = getCategory(tempDataset, size_notes, sequence_length);
     cout << trainX << trainY << endl;
 
     // According to NegativeLogLikelihood output layer of NN, labels should
