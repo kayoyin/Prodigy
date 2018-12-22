@@ -103,13 +103,13 @@ void trainModel(RNN<MeanSquaredError<>>& model,
     constexpr int ITERATIONS_PER_CYCLE = 500;
     
     // Number of cycles.
-    constexpr int CYCLES = 50;
+    constexpr int CYCLES = 100;
     
     // Step size of an optimizer.
     constexpr double STEP_SIZE = 5e-10;
     
     // Number of data points in each iteration of SGD
-    constexpr int BATCH_SIZE = 5;
+    constexpr int BATCH_SIZE = 8;
     
     // Setting parameters Stochastic Gradient Descent (SGD) optimizer.
     SGD<AdamUpdate> optimizer(
