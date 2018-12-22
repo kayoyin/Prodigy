@@ -63,6 +63,17 @@ arma::cube getTrainY(const mat& tempDataset, const int& size_notes, const int& s
     return proba;
 }
 
+arma::mat getNotes(const mat& proba)
+{
+    unsigned int num_notes = proba.n_cols;
+    mat notes = mat(1, num_notes);
+    for (unsigned int i = 0; i < num_notes; i++)
+    {
+        mat(0,i) = arma::as_scalar(arma::find(arma::max_ind(proba.col(i)));
+    }
+    return notes;
+}				   
+
  /**
  * Returns the accuracy (percentage of correct answers).
  * @param predLabels predicted labels of data points.
@@ -138,7 +149,7 @@ void trainModel(RNN<MeanSquaredError<>>& model,
 	cout << predOut << endl;    
 
         // Calculating accuracy on training data points.
-        mat pred = index_max(predOut.slice(predOut.n_slices-1),0); // extracting note with highest probability predicted	    
+        mat pred = getNotes(predOut.slice(predOut.n_slices - 1));	    
         double trainAccuracy = accuracy(pred, real);       
 
         cout << i << " - accuracy: train = "<< trainAccuracy << "%," << endl;
@@ -150,7 +161,7 @@ void trainModel(RNN<MeanSquaredError<>>& model,
  * Run the neural network model and predict the class for a
  * set of testing example
  */
-void predictClass(RNN<MeanSquaredError<>>& model,
+void predictNotes(RNN<MeanSquaredError<>>& model,
                   const std::string datasetName, const int rho)
 {
     
@@ -198,16 +209,6 @@ int main () {
     cube trainY = getTrainY(tempDataset, size_notes, sequence_length);
     mat real = getReal(tempDataset, sequence_length);	
     cout << trainX << trainY << endl;
-    //mat trainY = getProba(trainYP, sequence_length);	
-
-    // According to NegativeLogLikelihood output layer of NN, labels should
-    // specify class of a data point and be in the interval from 1 to
-    // number of classes (in this case from 1 to 10).
-    
-    // Specifying the NN model. NegativeLogLikelihood is the output layer that
-    // is used for classification problem. RandomInitialization means that
-    // initial weights in neurons are generated randomly in the interval
-    // from -1 to 1.
 	
     RNN<MeanSquaredError<> > model(rho);
     model.Add<Linear <> > (trainX.n_rows, rho);
@@ -221,9 +222,9 @@ int main () {
     cout << "Training ..." << endl;
     trainModel(model, trainX, trainY, real);
     
-    cout << "Predicting ..." << endl;
+    cout << "Composing ..." << endl;
     std::string datasetName = "../utils/test.csv";
-    predictClass(model, datasetName,rho);
+    predictNotes(model, datasetName,rho);
     cout << "Finished" << endl;
     
     return 0;
