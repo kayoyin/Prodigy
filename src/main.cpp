@@ -55,9 +55,9 @@ arma::cube getTrainX(const mat& tempDataset, const int& sequence_length)
     const int num_notes = tempDataset.n_rows;	
     const int num_sequences = (num_notes / sequence_length) + 1;
     cube trainX = cube(1, num_sequences, sequence_length);	
-    for (int i = 0; i < num_sequences; i++)
+    for (unsigned int i = 0; i < num_sequences; i++)
     {
-	for (int j = 0; j < sequence_length; j++)
+	for (unsigned int j = 0; j < sequence_length; j++)
 	{
 		trainX.at(1,i,j) = tempDataset.at(i+j,0);
 	}
@@ -69,7 +69,7 @@ arma::cube getTrainX(const mat& tempDataset, const int& sequence_length)
 mat getCategory(const mat& tempDataset, const int& size_notes, const int& sequence_length)
 {
     mat trainY = mat(tempDataset.n_rows - sequence_length, size_notes, fill::zeros);
-    for (int i = sequence_length; i < tempDataset.n_rows; i++)
+    for (unsigned int i = sequence_length; i < tempDataset.n_rows; i++)
     {
 	int note = tempDataset.at(i,0);
 	trainY.at(i-sequence_length, note) = 1;
@@ -84,7 +84,7 @@ mat getCategory(const mat& tempDataset, const int& size_notes, const int& sequen
  * CSV file that contain many other double values).
  * @return percentage of correct answers.
  */
-double accuracy(arma::cube predLabels, const arma::cube& real)
+double accuracy(arma::mat& predLabels, const arma::cube& real)
 {
     cout << "predicted" << predLabels << endl;
     cout << "real" << real << endl;
@@ -133,7 +133,7 @@ void trainModel(RNN<MeanSquaredError<>>& model,
                               1e-8,
     			      false,
     			      // Adam update policy.
-    			      AdamUpdate(1e-8, 0.9, 0.999)));
+    			      AdamUpdate(1e-8, 0.9, 0.999));
     			      
    
     // Cycles for monitoring the process of a solution.
@@ -202,8 +202,7 @@ int main () {
     data::Load("../utils/training.csv", tempDataset, true); // read data from this csv file, creates arma matrix with loaded data in tempDataset
     
    
-    const int size_notes = max(tempDataset);
-    const int num_notes = tempDataset.n_rows; 
+    const int size_notes = max(tempDataset.row(0));
     const int sequence_length = 3;
 	
     cube trainX = getTrainX(tempDataset, sequence_length);
