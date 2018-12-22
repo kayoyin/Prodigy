@@ -76,10 +76,6 @@ arma::mat getNotes(const mat& proba)
 
  /**
  * Returns the accuracy (percentage of correct answers).
- * @param predLabels predicted labels of data points.
- * @param real actual notes (they are double because we usually read them from
- * CSV file that contain many other double values).
- * @return percentage of correct answers.
  */
 
 double accuracy(arma::mat& predicted, const arma::mat& real)
