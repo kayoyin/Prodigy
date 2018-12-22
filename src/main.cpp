@@ -52,13 +52,13 @@ arma::cube getTrainY(const mat& tempDataset, const int& sequence_length)
 }	
 
 // Generate array with 1 in the indice of the note present at a time step
-arma::mat getProba(const mat& tempDataset, const int& size_notes, const int& sequence_length)
+arma::cube getProba(const mat& tempDataset, const int& size_notes, const int& sequence_length)
 {
-    mat proba = mat(size_notes, tempDataset.n_rows - sequence_length, fill::zeros);
+    cube proba = cube(size_notes, tempDataset.n_rows - sequence_length, sequence_length, fill::zeros);
     for (unsigned int i = sequence_length; i < tempDataset.n_rows; i++)
     {
 	int note = tempDataset.at(i,0);
-	proba.at(note,i-sequence_length) = 1;
+	proba.tube(note,i-sequence_length).fill(1);
     }
     return proba;
 }
@@ -193,7 +193,8 @@ int main () {
     const int sequence_length = 3;
 	
     cube trainX = getTrainX(tempDataset, sequence_length);
-    cube trainY = getTrainY(tempDataset, sequence_length);
+    //cube trainY = getTrainY(tempDataset, sequence_length);
+    cube trainY = getProba(tempDataset, size_notes, sequence_length);	
     cout << trainX << trainY << endl;
     //mat trainY = getProba(trainYP, sequence_length);	
 
