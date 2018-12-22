@@ -87,7 +87,7 @@ double accuracy(arma::mat& predLabels, const arma::mat& real)
 }
 */
 
-void trainModel(RNN<MeanSquareError<>>& model,
+void trainModel(RNN<MeanSquaredError<>>& model,
                 const cube& trainX, const cube& trainY)
 {
     // The solution is done in several approaches (CYCLES), so each approach
@@ -149,7 +149,7 @@ void trainModel(RNN<MeanSquareError<>>& model,
  * Run the neural network model and predict the class for a
  * set of testing example
  */
-void predictClass(RNN<MeanSquareError<>>& model,
+void predictClass(RNN<MeanSquaredError<>>& model,
                   const std::string datasetName, const int rho)
 {
     
@@ -207,7 +207,7 @@ int main () {
     // initial weights in neurons are generated randomly in the interval
     // from -1 to 1.
 	
-    RNN<MeanSquareError<> > model(rho);
+    RNN<MeanSquaredError<> > model(rho);
     model.Add<Linear <> > (trainX.n_rows, rho);
     model.Add<LSTM <> > (rho,512);
     model.Add<Linear <> > (512, 256);
