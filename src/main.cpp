@@ -26,7 +26,7 @@ using namespace arma;
 using namespace std;
 
 // Prepare input of sequence of notes for LSTM
-arma::cube getTrainX(const mat& tempDataset, const int& sequence_length)
+arma::cube getTrainX(const mat& tempDataset, const unsigned int& sequence_length)
 {
     const unsigned int num_notes = tempDataset.n_rows;	
     const unsigned int num_sequences = (num_notes / sequence_length) + 1;
@@ -43,10 +43,10 @@ arma::cube getTrainX(const mat& tempDataset, const int& sequence_length)
 
 arma::cube getTrainY(const cube& tempDataset, const int& sequence_length)
 {
-    cube trainY = cube(tempDataset.n_rows - sequence_length,1, 1);
+    cube trainY = cube(1,tempDataset.n_rows - sequence_length, sequence_length);
     for (unsigned int i = sequence_length; i < tempDataset.n_rows; i++)
     {
-	 trainY(i-sequence_length,0,0) = tempDataset(i,0,0);
+	 trainY.tube(0,i).fill(tempDataset(i,0,0));
     }
     return trainY;
 }	
@@ -195,7 +195,7 @@ int main () {
     cube trainX = getTrainX(tempDataset, sequence_length);
     cube trainYP = getTrainY(tempDataset, sequence_length);
     cout << trainX << trainYP << endl;
-    trainY = getProba(trainYP, sequence_length);	
+    mat trainY = getProba(trainYP, sequence_length);	
 
     // According to NegativeLogLikelihood output layer of NN, labels should
     // specify class of a data point and be in the interval from 1 to
