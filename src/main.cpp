@@ -146,7 +146,8 @@ void trainModel(RNN<MeanSquaredError<>>& model,
         cube predOut;
         // Getting predictions on training data points.
         model.Predict(trainX, predOut);
-	cout << predOut << endl;    
+	cout << predOut << endl;   
+	cout << predOut.n_rows << predOut.n_cols << endl;    
 
         // Calculating accuracy on training data points.
         mat pred = getNotes(predOut.slice(predOut.n_slices - 1));
