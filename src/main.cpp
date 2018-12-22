@@ -153,7 +153,7 @@ void trainModel(RNN<MeanSquaredError<>>& model,
 	cout << pred << real << endl;    
         double trainAccuracy = accuracy(pred, real);       
 
-        cout << i << " - accuracy: train = "<< trainAccuracy << "%," << endl;
+        cout << i << " - accuracy = "<< trainAccuracy << "%," << endl;
         
     }
 }
