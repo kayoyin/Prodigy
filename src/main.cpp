@@ -69,8 +69,7 @@ arma::mat getNotes(const mat& proba)
     mat notes = mat(1, num_notes);
     for (unsigned int i = 0; i < num_notes; i++)
     {
-        mat(0,i) = arma::as_scalar(arma::find(
-        arma::max(proba.col(i)) == proba.col(i), 1));
+        mat(0,i) = index_max(proba.col(i));
     }
     return notes;
 }				   
@@ -203,7 +202,7 @@ int main () {
     data::Load("../utils/training.csv", tempDataset, true); // read data from this csv file, creates arma matrix with loaded data in tempDataset
     
    
-    const int size_notes = max(tempDataset.row(0));
+    const int size_notes = max(tempDataset.row(0)) + 1;
     const int sequence_length = rho;
 	
     cube trainX = getTrainX(tempDataset, sequence_length);
