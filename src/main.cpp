@@ -135,9 +135,10 @@ void trainModel(RNN<MeanSquaredError<>>& model,
         optimizer.ResetPolicy() = false;
         
         cube predOut;
-	cout << predOut << endl;    
         // Getting predictions on training data points.
         model.Predict(trainX, predOut);
+	cout << predOut << endl;    
+
         // Calculating accuracy on training data points.
         // double trainAccuracy = accuracy(predOut, trainY);       
 
