@@ -138,7 +138,7 @@ void trainModel(RNN<MeanSquaredError<>>& model,
 	cout << predOut << endl;    
 
         // Calculating accuracy on training data points.
-        mat pred = index_max(predOut, 0);	    
+        mat pred = index_max(predOut.slice(predOut.num_slices-1),0); // extracting note with highest probability predicted	    
         double trainAccuracy = accuracy(pred, real);       
 
         cout << i << " - accuracy: train = "<< trainAccuracy << "%," << endl;
