@@ -60,6 +60,7 @@ arma::cube getCategory(const mat& tempDataset, const int& size_notes, const int&
  * CSV file that contain many other double values).
  * @return percentage of correct answers.
  */
+/**
 double accuracy(arma::mat& predLabels, const arma::mat& real)
 {
     // Calculating how many predicted notes coincide with actual notes.
@@ -74,6 +75,7 @@ double accuracy(arma::mat& predLabels, const arma::mat& real)
     // Calculating percentage of correctly predicted notes.
     return (double) success / (double)real.n_cols * 100.0;
 }
+*/
 
 void trainModel(RNN<MeanSquaredError<>>& model,
                 const cube& trainX, const cube& trainY)
@@ -126,9 +128,9 @@ void trainModel(RNN<MeanSquaredError<>>& model,
         // Getting predictions on training data points.
         model.Predict(trainX, predOut);
         // Calculating accuracy on training data points.
-        double trainAccuracy = accuracy(predOut, trainY);       
+        // double trainAccuracy = accuracy(predOut, trainY);       
 
-        cout << i << " - accuracy: train = "<< trainAccuracy << "%," << endl;
+        // cout << i << " - accuracy: train = "<< trainAccuracy << "%," << endl;
         
     }
 }
