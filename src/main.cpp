@@ -200,13 +200,15 @@ int main () {
     const int rho = 8;
 
     data::Load("../utils/training.csv", tempDataset, true); // read data from this csv file, creates arma matrix with loaded data in tempDataset
-    	
+    
+   
     const int size_notes = max(tempDataset);
     const int num_notes = tempDataset.n_rows; 
-    const int sequence_length = 20;
+    const int sequence_length = 3;
 	
     cube trainX = getTrainX(tempDataset, sequence_length);
     mat trainY = getCategory(tempDataset, size_notes, sequence_length);
+    cout << trainX << trainY << endl;
 
     // According to NegativeLogLikelihood output layer of NN, labels should
     // specify class of a data point and be in the interval from 1 to
