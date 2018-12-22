@@ -41,7 +41,7 @@ arma::cube getTrainX(const mat& tempDataset, const unsigned int& sequence_length
     return trainX;
  }
 
-arma::cube getTrainY(const cube& tempDataset, const int& sequence_length)
+arma::cube getTrainY(const mat& tempDataset, const int& sequence_length)
 {
     cube trainY = cube(1,tempDataset.n_rows - sequence_length, sequence_length);
     for (unsigned int i = sequence_length; i < tempDataset.n_rows; i++)
@@ -193,9 +193,9 @@ int main () {
     const int sequence_length = 3;
 	
     cube trainX = getTrainX(tempDataset, sequence_length);
-    cube trainYP = getTrainY(tempDataset, sequence_length);
-    cout << trainX << trainYP << endl;
-    mat trainY = getProba(trainYP, sequence_length);	
+    cube trainY = getTrainY(tempDataset, sequence_length);
+    cout << trainX << trainY << endl;
+    //mat trainY = getProba(trainYP, sequence_length);	
 
     // According to NegativeLogLikelihood output layer of NN, labels should
     // specify class of a data point and be in the interval from 1 to
