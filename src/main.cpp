@@ -41,18 +41,18 @@ arma::cube getTrainX(const mat& tempDataset, const unsigned int& sequence_length
     return trainX;
  }
 
-arma::cube getTrainY(const mat& tempDataset, const int& sequence_length)
+arma::mat getReal(const mat& tempDataset, const int& sequence_length)
 {
-    cube trainY = cube(1,tempDataset.n_rows - sequence_length, sequence_length);
+    mat real = mat(1,tempDataset.n_rows - sequence_length);
     for (unsigned int i = sequence_length; i < tempDataset.n_rows; i++)
     {
-	 trainY.tube(0,i-sequence_length).fill(tempDataset(i,0));
+	 real(0,i-sequence_length) = tempDataset(i,0);
     }
-    return trainY;
+    return real;
 }	
 
 // Generate array with 1 in the indice of the note present at a time step
-arma::cube getProba(const mat& tempDataset, const int& size_notes, const int& sequence_length)
+arma::cube getTrainY(const mat& tempDataset, const int& size_notes, const int& sequence_length)
 {
     cube proba = cube(size_notes, tempDataset.n_rows - sequence_length, sequence_length, fill::zeros);
     for (unsigned int i = sequence_length; i < tempDataset.n_rows; i++)
@@ -70,11 +70,10 @@ arma::cube getProba(const mat& tempDataset, const int& size_notes, const int& se
  * CSV file that contain many other double values).
  * @return percentage of correct answers.
  */
-/**
-double accuracy(arma::mat& predLabels, const arma::mat& real)
+
+double accuracy(arma::mat& predicted, const arma::mat& real)
 {
     // Calculating how many predicted notes coincide with actual notes.
-    mat pred = index_max(predLabels, 0);
     size_t success = 0;
     for (size_t j = 0; j < real.n_cols; j++) {
         if (pred(0,j) == std::round(real(0,j))) {
@@ -85,10 +84,9 @@ double accuracy(arma::mat& predLabels, const arma::mat& real)
     // Calculating percentage of correctly predicted notes.
     return (double) success / (double)real.n_cols * 100.0;
 }
-*/
 
 void trainModel(RNN<MeanSquaredError<>>& model,
-                const cube& trainX, const cube& trainY)
+                const cube& trainX, const cube& trainY, const mat& real)
 {
     // The solution is done in several approaches (CYCLES), so each approach
     // uses previous results as starting point and have a different optimizer
@@ -140,9 +138,10 @@ void trainModel(RNN<MeanSquaredError<>>& model,
 	cout << predOut << endl;    
 
         // Calculating accuracy on training data points.
-        // double trainAccuracy = accuracy(predOut, trainY);       
+        mat pred = index_max(predLabels, 0);	    
+        double trainAccuracy = accuracy(pred, real);       
 
-        // cout << i << " - accuracy: train = "<< trainAccuracy << "%," << endl;
+        cout << i << " - accuracy: train = "<< trainAccuracy << "%," << endl;
         
     }
 }
@@ -196,7 +195,8 @@ int main () {
 	
     cube trainX = getTrainX(tempDataset, sequence_length);
     //cube trainY = getTrainY(tempDataset, sequence_length);
-    cube trainY = getProba(tempDataset, size_notes, sequence_length);	
+    cube trainY = getTrainY(tempDataset, size_notes, sequence_length);
+    mat real = getReal(tempDataset, sequence_length);	
     cout << trainX << trainY << endl;
     //mat trainY = getProba(trainYP, sequence_length);	
 
@@ -219,7 +219,7 @@ int main () {
     model.Add<LogSoftMax<> > ();
     	
     cout << "Training ..." << endl;
-    trainModel(model, trainX, trainY);
+    trainModel(model, trainX, trainY, real);
     
     cout << "Predicting ..." << endl;
     std::string datasetName = "../utils/test.csv";
