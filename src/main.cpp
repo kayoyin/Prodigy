@@ -104,7 +104,7 @@ void trainModel(RNN<CrossEntropyError<>>& model,
     constexpr double STEP_SIZE = 5e-20;
     
     // Number of data points in each iteration of SGD
-    constexpr int BATCH_SIZE = 5;
+    constexpr int BATCH_SIZE = 3;
     
     // Setting parameters Stochastic Gradient Descent (SGD) optimizer.
     SGD<AdamUpdate> optimizer(
