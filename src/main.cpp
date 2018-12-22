@@ -69,8 +69,7 @@ arma::mat getNotes(const mat& proba)
     mat notes = mat(1, num_notes);
     for (unsigned int i = 0; i < num_notes; i++)
     {
-	cout << "max indice" << index_max(proba.col(i)) << endl;    
-        mat(0,i) = index_max(proba.col(i));
+        notes(0,i) = index_max(proba.col(i));
     }
     return notes;
 }				   
