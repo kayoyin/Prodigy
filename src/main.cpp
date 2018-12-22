@@ -184,13 +184,13 @@ int main () {
     cout << "Reading data ..." << endl; 
 	
     mat tempDataset;
-    const int rho = 8;
+    const int rho = 3;
 
     data::Load("../utils/training.csv", tempDataset, true); // read data from this csv file, creates arma matrix with loaded data in tempDataset
     
    
     const int size_notes = max(tempDataset.row(0));
-    const int sequence_length = 3;
+    const int sequence_length = rho;
 	
     cube trainX = getTrainX(tempDataset, sequence_length);
     //cube trainY = getTrainY(tempDataset, sequence_length);
