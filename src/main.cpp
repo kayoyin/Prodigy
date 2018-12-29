@@ -88,7 +88,7 @@ double accuracy(arma::mat& predicted, const arma::mat& real)
             ++success;
         }
     }
-    
+    cout << predicted << endl;
     // Calculating percentage of correctly predicted notes.
     return (double) success / (double)predicted.n_cols * 100.0;
 }
