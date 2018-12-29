@@ -173,7 +173,7 @@ void predictNotes(RNN<MeanSquaredError<>>& model,
 	
     mat music = mat(size_music,1, fill::zeros);	
     cube compose;
-    for (unsigned int i = 0; i < size_music, i = i + sequence_length)	
+    for (unsigned int i = 0; i < size_music; i = i + sequence_length)	
     {	    
     	// Getting predictions after starting notes .
     	model.Predict(start, compose);
