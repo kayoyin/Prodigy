@@ -104,7 +104,7 @@ void trainModel(RNN<MeanSquaredError<>>& model,
     constexpr int ITERATIONS_PER_CYCLE = 20;
     
     // Number of cycles.
-    constexpr int CYCLES = 10;
+    constexpr int CYCLES = 20;
     
     // Step size of an optimizer.
     constexpr double STEP_SIZE = 5e-10;
