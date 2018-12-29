@@ -161,7 +161,7 @@ void trainModel(RNN<MeanSquaredError<>>& model,
  * set of testing example
  */
 void predictNotes(RNN<MeanSquaredError<>>& model,
-                  const unsigned int sequence_length, const int size_notes)
+                  const unsigned int sequence_length, const int size_notes, const int size_music)
 {
     
     cube start = cube(1, 1, sequence_length); // we initialize generation with a sequence of random notes
@@ -169,15 +169,28 @@ void predictNotes(RNN<MeanSquaredError<>>& model,
     {
 	start(0,0,i) = rand() % size_notes + 1; // random integer between 1 and size_notes
     }
+    cout << start << endl;
+	
+    mat music = mat(size_music,1, fill::zeros);	
     cube compose;
-    // Getting predictions after starting notes .
-    model.Predict(start, compose);
-    // Fetching the notes from probability vector generated.
-    mat notes = getNotes(compose);
+    for (unsigned int i = 0; i < size_music, i = i + sequence_length)	
+    {	    
+    	// Getting predictions after starting notes .
+    	model.Predict(start, compose);
+    	// Fetching the notes from probability vector generated.
+    	start = getNotes(compose);
+	    
+    	for (unsigned int j = 0; j < sequence_length; j++)
+	{
+		music(i+j,0) = notes(0,j);
+	}
+	
+    }
+	
     cout << "Saving predicted notes to \"composition.csv\" ..." << endl;
 
     // Saving results into Kaggle compatibe CSV file.
-    data::Save("composition.csv", notes); // testPred or test??
+    data::Save("composition.csv", music); 
     cout << "Music saved to \"composition.csv\"" << endl;
 }
 
@@ -193,6 +206,7 @@ int main () {
    
     const int size_notes = max(tempDataset.row(0)) + 1;
     const int sequence_length = rho;
+    const int size_music = 21;
 	
     cube trainX = getTrainX(tempDataset, sequence_length);
     //cube trainY = getTrainY(tempDataset, sequence_length);
@@ -215,7 +229,7 @@ int main () {
     trainModel(model, trainX, trainY, real);
     
     cout << "Composing ..." << endl;
-    predictNotes(model, sequence_length,size_notes);
+    predictNotes(model, sequence_length,size_notes, size_music);
     cout << "Finished :)" << endl;
     
     return 0;
