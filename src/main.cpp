@@ -54,13 +54,15 @@ arma::mat getReal(const mat& tempDataset, const int& sequence_length)
 // Generate array with 1 in the indice of the note present at a time step
 arma::cube getTrainY(const mat& tempDataset, const int& size_notes, const int& sequence_length)
 {
-    cube proba = cube(1, tempDataset.n_rows - sequence_length, 1);
+    cube proba = cube(size_notes, tempDataset.n_rows - sequence_length, sequence_length, fill::zeros);
     for (unsigned int i = sequence_length; i < tempDataset.n_rows; i++)
     {
-	proba(0,i-sequence_length,0) = tempDataset(i,0);
+	int note = tempDataset.at(i,0);
+	proba.tube(note,i-sequence_length).fill(1);
     }
     return proba;
 }
+
 
 arma::mat getNotes(const mat& proba)
 {
