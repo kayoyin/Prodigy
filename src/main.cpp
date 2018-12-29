@@ -57,7 +57,7 @@ arma::cube getTrainY(const mat& tempDataset, const int& size_notes, const int& s
     cube proba = cube(1, tempDataset.n_rows - sequence_length, 1);
     for (unsigned int i = sequence_length; i < tempDataset.n_rows; i++)
     {
-	proba(0,i,0) = tempDataset(i,0);
+	proba(0,i-sequence_length,0) = tempDataset(i,0);
     }
     return proba;
 }
