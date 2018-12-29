@@ -183,9 +183,10 @@ void predictNotes(RNN<MeanSquaredError<>>& model,
 		music(i+j,0) = notes(0,j);
 		start(0,0,j) = notes(0,j); // update start to continue generation
 	}
+	cout << "stuff" << compose << notes << start << endl;	
+
 	
     }
-    cout << compose << notes << start << endl;	
     cout << "Saving predicted notes to \"composition.csv\" ..." << endl;
 
     // Saving results into Kaggle compatibe CSV file.
