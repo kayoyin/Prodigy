@@ -66,7 +66,6 @@ arma::cube getTrainY(const mat& tempDataset, const int& size_notes, const int& s
 
 arma::mat getNotes(const mat& proba)
 {
-    cout << proba << endl;
     unsigned int num_notes = proba.n_cols;
     mat notes = mat(1, num_notes);
     for (unsigned int i = 0; i < num_notes; i++)
@@ -169,7 +168,6 @@ void predictNotes(RNN<MeanSquaredError<>>& model,
     {
 	start(0,0,i) = rand() % size_notes + 1; // random integer between 1 and size_notes
     }
-    cout << start << endl;
 	
     mat music = mat(size_music,1, fill::zeros);	
     cube compose;
@@ -187,7 +185,7 @@ void predictNotes(RNN<MeanSquaredError<>>& model,
 	}
 	
     }
-	
+    cout << compose << notes << start << endl;	
     cout << "Saving predicted notes to \"composition.csv\" ..." << endl;
 
     // Saving results into Kaggle compatibe CSV file.
