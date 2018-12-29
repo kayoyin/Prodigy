@@ -174,11 +174,11 @@ void predictNotes(RNN<MeanSquaredError<>>& model,
     model.Predict(start, compose);
     // Fetching the notes from probability vector generated.
     mat notes = getNotes(compose);
-    cout << "Saving predicted labels to \"results.csv\" ..." << endl;
+    cout << "Saving predicted notes to \"composition.csv\" ..." << endl;
 
     // Saving results into Kaggle compatibe CSV file.
     data::Save("composition.csv", notes); // testPred or test??
-    cout << "Results were saved to \"composition.csv\"" << endl;
+    cout << "Music saved to \"composition.csv\"" << endl;
 }
 
 int main () {
