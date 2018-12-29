@@ -190,7 +190,7 @@ void predictNotes(RNN<MeanSquaredError<>>& model,
     cout << "Saving predicted notes to \"composition.csv\" ..." << endl;
 
     // Saving results into Kaggle compatibe CSV file.
-    data::Save("composition.csv", music); 
+    data::Save("sonata.csv", music); 
     cout << "Music saved to \"composition.csv\"" << endl;
 }
 
