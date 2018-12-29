@@ -167,7 +167,7 @@ void predictNotes(RNN<MeanSquaredError<>>& model,
     cube start = cube(1, 1, sequence_length); // we initialize generation with a sequence of random notes
     for (unsigned int i = 0; i < sequence_length; i++)
     {
-	start(0,0,i) = rand() % size_notes + 1 // random integer between 1 and size_notes
+	start(0,0,i) = rand() % size_notes + 1; // random integer between 1 and size_notes
     }
     cube compose;
     // Getting predictions after starting notes .
@@ -215,9 +215,8 @@ int main () {
     trainModel(model, trainX, trainY, real);
     
     cout << "Composing ..." << endl;
-    std::string datasetName = "../utils/test.csv";
-    predictNotes(model, datasetName,size_notes);
-    cout << "Finished" << endl;
+    predictNotes(model, sequence_length,size_notes);
+    cout << "Finished :)" << endl;
     
     return 0;
 }
