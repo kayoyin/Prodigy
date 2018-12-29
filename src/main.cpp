@@ -178,11 +178,12 @@ void predictNotes(RNN<MeanSquaredError<>>& model,
     	// Getting predictions after starting notes .
     	model.Predict(start, compose);
     	// Fetching the notes from probability vector generated.
-    	start = getNotes(compose);
+    	mat notes = getNotes(compose);
 	    
     	for (unsigned int j = 0; j < sequence_length; j++)
 	{
-		music(i+j,0) = start(0,j);
+		music(i+j,0) = notes(0,j);
+		start(0,0,j) = notes(0,j); \\update start to continue generation
 	}
 	
     }
