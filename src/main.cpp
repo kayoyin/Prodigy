@@ -182,7 +182,7 @@ void predictNotes(RNN<MeanSquaredError<>>& model,
 	    
     	for (unsigned int j = 0; j < sequence_length; j++)
 	{
-		music(i+j,0) = notes(0,j);
+		music(i+j,0) = start(0,j);
 	}
 	
     }
