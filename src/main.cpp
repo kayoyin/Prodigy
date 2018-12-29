@@ -102,16 +102,16 @@ void trainModel(RNN<MeanSquaredError<>>& model,
     // options (here the step size is different).
     
     // Number of iteration per cycle.
-    constexpr int ITERATIONS_PER_CYCLE = 500;
+    constexpr int ITERATIONS_PER_CYCLE = 20;
     
     // Number of cycles.
-    constexpr int CYCLES = 100;
+    constexpr int CYCLES = 10;
     
     // Step size of an optimizer.
     constexpr double STEP_SIZE = 5e-10;
     
     // Number of data points in each iteration of SGD
-    constexpr int BATCH_SIZE = 8;
+    constexpr int BATCH_SIZE = 5;
     
     // Setting parameters Stochastic Gradient Descent (SGD) optimizer.
     SGD<AdamUpdate> optimizer(
@@ -161,33 +161,24 @@ void trainModel(RNN<MeanSquaredError<>>& model,
  * set of testing example
  */
 void predictNotes(RNN<MeanSquaredError<>>& model,
-                  const std::string datasetName, const int rho)
+                  const int sequence_length, const int size_notes)
 {
     
-    mat tempDataset;
-    data::Load(datasetName, tempDataset, true);
-    
-    cube test = cube(1,tempDataset.n_cols,rho);
-    for (unsigned int i = 0; i < tempDataset.n_cols; i++)
+    cube start = cube(1, 1, sequence_length); // we initialize generation with a sequence of random notes
+    for (unsigned int i = 0; i < sequence_length; i++)
     {
-	test(0,i,0) = tempDataset.at(0,i);
+	start(0,0,i) = rand() % size_notes + 1 // random integer between 1 and size_notes
     }
-
-    
-    cube testPredOut;
-    // Getting predictions on test data points .
-    model.Predict(test, testPredOut);
-    // Generating labels for the test dataset.
-    //Row<size_t> testPred = getLabels(testPredOut);
+    cube compose;
+    // Getting predictions after starting notes .
+    model.Predict(start, compose);
+    // Fetching the notes from probability vector generated.
+    mat notes = getNotes(compose);
     cout << "Saving predicted labels to \"results.csv\" ..." << endl;
-    mat testPred(1,testPredOut.n_cols);
-    for (unsigned int i = 0; i < testPredOut.n_cols; i++)
-    {
-	testPred(0,i) = testPredOut.at(0,i,testPredOut.n_slices-1);
-    }
+
     // Saving results into Kaggle compatibe CSV file.
-    data::Save("results.csv", testPred); // testPred or test??
-    cout << "Results were saved to \"results.csv\"" << endl;
+    data::Save("composition.csv", notes); // testPred or test??
+    cout << "Results were saved to \"composition.csv\"" << endl;
 }
 
 int main () {
@@ -225,7 +216,7 @@ int main () {
     
     cout << "Composing ..." << endl;
     std::string datasetName = "../utils/test.csv";
-    predictNotes(model, datasetName,rho);
+    predictNotes(model, datasetName,size_notes);
     cout << "Finished" << endl;
     
     return 0;
