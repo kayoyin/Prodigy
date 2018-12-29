@@ -161,7 +161,7 @@ void trainModel(RNN<MeanSquaredError<>>& model,
  * set of testing example
  */
 void predictNotes(RNN<MeanSquaredError<>>& model,
-                  const unsigned int sequence_length, const int size_notes, const int size_music)
+                  const unsigned int sequence_length, const unsigned int size_notes, const unsigned int size_music)
 {
     
     cube start = cube(1, 1, sequence_length); // we initialize generation with a sequence of random notes
