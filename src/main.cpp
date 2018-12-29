@@ -66,6 +66,7 @@ arma::cube getTrainY(const mat& tempDataset, const int& size_notes, const int& s
 
 arma::mat getNotes(const mat& proba)
 {
+    cout << proba << endl;
     unsigned int num_notes = proba.n_cols;
     mat notes = mat(1, num_notes);
     for (unsigned int i = 0; i < num_notes; i++)
@@ -88,8 +89,8 @@ double accuracy(arma::mat& predicted, const arma::mat& real)
             ++success;
         }
     }
-    cout << predicted << endl;
-    // Calculating percentage of correctly predicted notes.
+
+	// Calculating percentage of correctly predicted notes.
     return (double) success / (double)predicted.n_cols * 100.0;
 }
 
