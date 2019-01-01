@@ -99,7 +99,7 @@ void trainModel(RNN<MeanSquaredError<>>& model,
     // uses previous results as starting point and have a different optimizer
     // options (here the step size is different).
     
-    StandardSGD opt(0.1, 1, 500 * input.n_cols, -100);
+    StandardSGD opt(0.1, 1, 500 * trainX.n_cols, -100);
     			      
    
     // Cycles for monitoring the process of a solution.
