@@ -212,7 +212,7 @@ int main () {
 	
     cube trainX = getTrainX(tempDataset, sequence_length);
     //cube trainY = getTrainY(tempDataset, sequence_length);
-    cube trainY = getTrainY(tempDataset, size_notes, sequence_length);
+    cube trainY = getTrainY(tempDataset, sequence_length);
     mat real = getReal(tempDataset, sequence_length);	
     cout << trainX << trainY << endl;
 	
