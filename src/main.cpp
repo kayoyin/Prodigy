@@ -71,6 +71,7 @@ arma::mat getNotes(const mat& proba)
     for (unsigned int i = 0; i < num_notes; i++)
     {
         notes(0,i) = index_max(proba.col(i));
+	notes(0,i) = arma::as_scalar(arma::find(arma::max(proba.col(i)) == proba.col(i), 1) + 1);
     }
     return notes;
 }				   
@@ -177,7 +178,7 @@ void predictNotes(RNN<MeanSquaredError<>>& model,
     	model.Predict(start, compose);
 	cout << compose << endl;    
     	// Fetching the notes from probability vector generated.
-    	mat notes = getNotes(compose);
+    	mat notes = getNotes(compose.slice(compose.n_slices - 1));
 	    
     	for (unsigned int j = 0; j < sequence_length; j++)
 	{
