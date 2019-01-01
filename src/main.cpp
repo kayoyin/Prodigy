@@ -101,7 +101,7 @@ void trainModel(RNN<MeanSquaredError<>>& model,
     // options (here the step size is different).
     
     // Number of iteration per cycle.
-    constexpr int ITERATIONS_PER_CYCLE = 20;
+    constexpr int ITERATIONS_PER_CYCLE = 5;
     
     // Number of cycles.
     constexpr int CYCLES = 20;
@@ -175,6 +175,7 @@ void predictNotes(RNN<MeanSquaredError<>>& model,
     {	    
     	// Getting predictions after starting notes .
     	model.Predict(start, compose);
+	cout << compose << endl;    
     	// Fetching the notes from probability vector generated.
     	mat notes = getNotes(compose);
 	    
@@ -187,11 +188,11 @@ void predictNotes(RNN<MeanSquaredError<>>& model,
 
 	
     }
-    cout << "Saving predicted notes to \"composition.csv\" ..." << endl;
+    cout << "Saving predicted notes to \"sonata.csv\" ..." << endl;
 
     // Saving results into Kaggle compatibe CSV file.
     data::Save("sonata.csv", music); 
-    cout << "Music saved to \"composition.csv\"" << endl;
+    cout << "Music saved to \"sonata.csv\"" << endl;
 }
 
 int main () {
@@ -220,7 +221,7 @@ int main () {
     model.Add<Linear <> > (512, 512);
     model.Add<LSTM <> > (512, 512);
     model.Add<Linear <> > (512, 256);
-    model.Add<Dropout <> > (0.3);
+    // model.Add<Dropout <> > (0.3); // prevent overfitting
     model.Add<Linear <> > (256, size_notes);
     //model.Add<SigmoidLayer <> >();
     model.Add<LogSoftMax<> > ();
