@@ -106,7 +106,7 @@ double accuracy(arma::mat& predicted, const arma::mat& real)
     return (double) success / (double)predicted.n_cols * 100.0;
 }
 
-void trainModel(RNN<MeanSquaredError<>>& model,
+void trainModel(RNN<>& model,
                 const cube& trainX, const cube& trainY, const mat& real)
 {
     // The solution is done in several approaches (CYCLES), so each approach
@@ -172,7 +172,7 @@ void trainModel(RNN<MeanSquaredError<>>& model,
  * Run the neural network model and predict the class for a
  * set of testing example
  */
-void predictNotes(RNN<MeanSquaredError<>>& model,
+void predictNotes(RNN<>& model,
                   const unsigned int sequence_length, const unsigned int size_notes, const unsigned int size_music)
 {
     
@@ -228,7 +228,7 @@ int main () {
     mat real = getReal(tempDataset, sequence_length);	
     cout << trainX << trainY << endl;
 	
-    RNN<MeanSquaredError<> > model(rho);
+    RNN<> model(rho);
     model.Add<Linear <> > (trainX.n_rows, rho);
     model.Add<LSTM <> > (rho,512);
     model.Add<Linear <> > (512, 512);
