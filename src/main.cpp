@@ -58,7 +58,7 @@ arma::cube getTrainY1(const mat& tempDataset, const int& size_notes, const int& 
     for (unsigned int i = sequence_length; i < tempDataset.n_rows; i++)
     {
 	int note = tempDataset.at(i,0);
-	proba.tube(note,i-sequence_length).fill(1);
+	proba.tube(note,i-sequence_length).fill(3);
     }
     return proba;
 }
