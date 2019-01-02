@@ -30,12 +30,12 @@ arma::cube getTrainX(const mat& tempDataset, const unsigned int& sequence_length
 {
     const unsigned int num_notes = tempDataset.n_rows;	
     const unsigned int num_sequences = num_notes - sequence_length;
-    cube trainX = cube(1, sequence_length, num_sequences);	
+    cube trainX = cube(1, num_sequences, sequence_length);	
     for (unsigned int i = 0; i < num_sequences; i++)
     {
 	for (unsigned int j = 0; j < sequence_length; j++)
 	{
-		trainX(0,j,i) = tempDataset(i+j,0);
+		trainX(0,i, j) = tempDataset(i+j,0);
 	}
     }
     return trainX;
@@ -67,11 +67,11 @@ arma::cube getTrainY(const mat& tempDataset, const int& sequence_length)
 {
     //const unsigned int num_notes = tempDataset.n_rows;	
     //const unsigned int num_sequences = (num_notes / sequence_length) + 1;
-    cube trainY = cube(1, 1, tempDataset.n_rows - sequence_length); //n slice = sequence_length?
+    cube trainY = cube(1, tempDataset.n_rows - sequence_length, sequence_length); //n slice = sequence_length?
     for (unsigned int i = sequence_length; i < tempDataset.n_rows; i++)
     {
 	int note = tempDataset.at(i,0);
-	trainY(0,0,i-sequence_length) = note+1;
+	trainY.tube(0,i-sequence_length).fill(note+1);
     }
     return trainY;
 }
@@ -117,7 +117,7 @@ void trainModel(RNN<>& model,
     constexpr int ITERATIONS_PER_CYCLE = 30;
 
     // Number of cycles.
-    constexpr int CYCLES = 20;
+    constexpr int CYCLES = 1000;
 
     // Step size of an optimizer.
     constexpr double STEP_SIZE = 5e-10;
