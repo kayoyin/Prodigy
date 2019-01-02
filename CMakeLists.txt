@@ -53,6 +53,8 @@ find_package(Boost
     REQUIRED
 )
 
+find_package(OpenMP)
+
 # Include the headers of the libraries
 set(MODELS_INCLUDE_DIRS ${MLPACK_INCLUDE_DIR}
                         ${ARMADILLO_INCLUDE_DIR}
@@ -64,6 +66,8 @@ include_directories(${MODELS_INCLUDE_DIRS})
 
 message("Found ${MODELS_INCLUDE_DIRS}")
 
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
 
 # add the executable
 add_executable(nnsample ${PROJECT_SOURCE_DIR}/src/main.cpp)
