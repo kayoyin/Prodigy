@@ -67,7 +67,7 @@ arma::cube getTrainY(const mat& tempDataset, const int& sequence_length)
 {
     //const unsigned int num_notes = tempDataset.n_rows;	
     //const unsigned int num_sequences = (num_notes / sequence_length) + 1;
-    cube trainY = cube(1, tempDataset.n_rows - sequence_length, 1); //n slice = sequence_length?
+    cube trainY = cube(1, tempDataset.n_rows - sequence_length, sequence_length); //n slice = sequence_length?
     for (unsigned int i = sequence_length; i < tempDataset.n_rows; i++)
     {
 	int note = tempDataset.at(i,0);
