@@ -1,4 +1,5 @@
 #include <iostream>
+#include <armadillo>
 
 void GenerateNoisySines(arma::cube& data,
                         arma::mat& labels,
