@@ -64,6 +64,8 @@ set(MODELS_LIBRARIES ${MLPACK_LIBRARY}
                      ${Boost_LIBRARIES})
 include_directories(${MODELS_INCLUDE_DIRS})
 
+add_definitions(-DBOOST_TEST_DYN_LINK)
+
 message("Found ${MODELS_INCLUDE_DIRS}")
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
