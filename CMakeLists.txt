@@ -50,6 +50,7 @@ find_package(Boost
       program_options
       unit_test_framework
       serialization
+      archive
     REQUIRED
 )
 
