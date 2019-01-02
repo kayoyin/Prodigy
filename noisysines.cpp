@@ -48,7 +48,7 @@ int main()
       labels.tube(0, i).fill(value);
     }
   
-  std::cout << input << labelsTemp << labels << std::endl;
+  std::cout << "input" << input << "labelsTemp" << labelsTemp << "labels" << labels << std::endl;
   
   0;
 }
