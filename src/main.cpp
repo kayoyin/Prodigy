@@ -29,7 +29,7 @@ using namespace std;
 arma::cube getTrainX(const mat& tempDataset, const unsigned int& sequence_length)
 {
     const unsigned int num_notes = tempDataset.n_rows;	
-    const unsigned int num_sequences = (num_notes / sequence_length) + 1;
+    const unsigned int num_sequences = num_notes - sequence_length;
     cube trainX = cube(1, num_sequences, sequence_length);	
     for (unsigned int i = 0; i < num_sequences; i++)
     {
@@ -65,9 +65,9 @@ arma::cube getTrainY1(const mat& tempDataset, const int& size_notes, const int& 
 
 arma::cube getTrainY(const mat& tempDataset, const int& sequence_length)
 {
-    const unsigned int num_notes = tempDataset.n_rows;	
-    const unsigned int num_sequences = (num_notes / sequence_length) + 1;
-    cube trainY = cube(1, num_sequences, sequence_length);
+    //const unsigned int num_notes = tempDataset.n_rows;	
+    //const unsigned int num_sequences = (num_notes / sequence_length) + 1;
+    cube trainY = cube(1, tempDataset.n_rows - sequence_length, sequence_length);
     for (unsigned int i = sequence_length; i < tempDataset.n_rows; i++)
     {
 	int note = tempDataset.at(i,0);
