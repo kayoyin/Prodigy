@@ -98,17 +98,43 @@ void trainModel(RNN<MeanSquaredError<>>& model,
     // The solution is done in several approaches (CYCLES), so each approach
     // uses previous results as starting point and have a different optimizer
     // options (here the step size is different).
-    
-    StandardSGD opt(0.1, 1, 500 * trainX.n_cols, -100);
-    			      
-   
+        			      
+     // Number of iteration per cycle.
+    constexpr int ITERATIONS_PER_CYCLE = 5;
+
+    // Number of cycles.
+    constexpr int CYCLES = 20;
+
+    // Step size of an optimizer.
+    constexpr double STEP_SIZE = 5e-10;
+
+    // Number of data points in each iteration of SGD
+    constexpr int BATCH_SIZE = 5;
+
+    // Setting parameters Stochastic Gradient Descent (SGD) optimizer.
+    SGD<AdamUpdate> optimizer(
+                              // Step size of the optimizer.
+                              STEP_SIZE,
+                              // Batch size. Number of data points that are used in each iteration.
+                              BATCH_SIZE,
+                              // Max number of iterations
+                              ITERATIONS_PER_CYCLE,
+                              // Tolerance, used as a stopping condition. This small number
+                              // means we never stop by this condition and continue to optimize
+                              // up to reaching maximum of iterations.
+                              1e-8,
+    			      false,
+    			      // Adam update policy.
+    			      AdamUpdate(1e-8, 0.9, 0.999));
+	
+	
     // Cycles for monitoring the process of a solution.
     for (int i = 0; i <= CYCLES; i++)
     {
         // Train neural network. If this is the first iteration, weights are
         // random, using current values as starting point otherwise.
        
-       	model.Train(trainX, trainY, opt);
+       	model.Train(trainX, trainY, optimizer);
        
         // Don't reset optimizer's parameters between cycles.
         optimizer.ResetPolicy() = false;
