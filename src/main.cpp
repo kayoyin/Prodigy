@@ -18,8 +18,7 @@
 #include <mlpack/methods/ann/loss_functions/cross_entropy_error.hpp>
 #include <mlpack/prereqs.hpp>
 
-#include <boost/test/unit_test.hpp>
-#include "serialization.hpp"
+#include <boost/serialization.hpp>
 
 using namespace mlpack;
 using namespace mlpack::ann;
