@@ -1,18 +1,6 @@
 #include <iostream>
 #include <armadillo>
 
-#include <mlpack/core.hpp>
-
-#include <mlpack/methods/ann/layer/layer.hpp>
-#include <mlpack/methods/ann/loss_functions/mean_squared_error.hpp>
-#include <mlpack/methods/ann/rnn.hpp>
-#include <mlpack/core/data/binarize.hpp>
-#include <mlpack/core/math/random.hpp>
-
-using namespace mlpack;
-using namespace mlpack::ann;
-using namespace mlpack::math;
-
 void GenerateNoisySines(arma::cube& data,
                         arma::mat& labels,
                         const size_t points,
@@ -60,25 +48,7 @@ int main()
       labels.tube(0, i).fill(value);
     }
   
-  Add<> add(4);
-  Linear<> lookup(1, 4);
-  SigmoidLayer<> sigmoidLayer;
-  Linear<> linear(4, 4);
-  Recurrent<>* recurrent = new Recurrent<>(add, lookup, linear, sigmoidLayer, rho);
-
-  RNN<> model(rho);
-  model.Add<IdentityLayer<> >();
-  model.Add(recurrent);
-  model.Add<Linear<> >(4, 10);
-  model.Add<LogSoftMax<> >();
-
-  StandardSGD opt(0.1, 1, 500 * input.n_cols, -100);
-  model.Train(input, labels, opt);
-
-  arma::cube prediction;
-  model.Predict(input, prediction);
-  
-  std::cout << "input" << input << "labelsTemp" << labelsTemp << "labels" << labels << "prediction" << prediction << std::endl;
+  std::cout << "input" << input << "labelsTemp" << labelsTemp << "labels" << labels << std::endl;
   
   0;
 }
