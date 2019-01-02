@@ -78,7 +78,7 @@ int main()
   arma::cube prediction;
   model.Predict(input, prediction);
   
-  std::cout << "input" << input << "labelsTemp" << labelsTemp << "labels" << labels << std::endl;
+  std::cout << "input" << input << "labelsTemp" << labelsTemp << "labels" << labels << "prediction" << prediction << std::endl;
   
   0;
 }
