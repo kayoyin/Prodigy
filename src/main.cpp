@@ -5,7 +5,6 @@
 #include <iostream>
 
 #include <mlpack/core.hpp>
-#include <mlpack/core/data/split_data.hpp>
 #include <mlpack/core/data/load_arff.hpp>
 #include <mlpack/core/data/map_policies/missing_policy.hpp>
 
@@ -21,6 +20,7 @@
 #include <mlpack/prereqs.hpp>
 
 #include <boost/serialization/serialization.hpp>
+#include <boost/archive/archive_exception.hpp>
 
 using namespace mlpack;
 using namespace mlpack::ann;
@@ -28,6 +28,7 @@ using namespace mlpack::optimization;
 
 using namespace arma;
 using namespace std;
+using namespace mlpack::data;
 
 // Prepare input of sequence of notes for LSTM
 arma::cube getTrainX(const mat& tempDataset, const unsigned int& sequence_length)
