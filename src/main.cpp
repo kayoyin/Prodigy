@@ -158,7 +158,7 @@ void trainModel(RNN<MeanSquaredError<>>& model,
  * Run the neural network model and predict the class for a
  * set of testing example
  */
-void predictNotes(RNN<>& model,
+void predictNotes(RNN<MeanSquaredError<>>& model,
                   const unsigned int sequence_length, const unsigned int size_notes, const unsigned int size_music)
 {
     
