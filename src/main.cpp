@@ -114,7 +114,7 @@ void trainModel(RNN<>& model,
     // options (here the step size is different).
         			      
      // Number of iteration per cycle.
-    constexpr int ITERATIONS_PER_CYCLE = 5;
+    constexpr int ITERATIONS_PER_CYCLE = 200;
 
     // Number of cycles.
     constexpr int CYCLES = 20;
