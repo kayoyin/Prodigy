@@ -6,6 +6,8 @@
 
 #include <mlpack/core.hpp>
 #include <mlpack/core/data/split_data.hpp>
+#include <mlpack/core/data/load_arff.hpp>
+#include <mlpack/core/data/map_policies/missing_policy.hpp>
 
 #include <mlpack/core/optimizers/sgd/sgd.hpp>
 #include <mlpack/core/optimizers/adam/adam_update.hpp>
