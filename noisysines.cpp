@@ -11,6 +11,7 @@ void GenerateNoisySines(arma::cube& data,
       points * 20.0;
   arma::colvec y1 = arma::sin(x + arma::as_scalar(arma::randu(1)) * 3.0);
   arma::colvec y2 = arma::sin(x / 2.0 + arma::as_scalar(arma::randu(1)) * 3.0);
+  std::cout << "x" << x << "y1" << y1 << "y2" << y2 << std::endl;
 
   data = arma::zeros(1 /* single dimension */, sequences * 2, points);
   labels = arma::zeros(2 /* 2 classes */, sequences * 2);
