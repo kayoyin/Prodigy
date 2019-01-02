@@ -36,18 +36,21 @@ void GenerateNoisySines(arma::cube& data,
 int main()
 {
   const size_t rho = 10;
-  arma::cube input;
-  arma::mat labelsTemp;
-  GenerateNoisySines(input, labelsTemp, rho, 6);
   
-  arma::cube labels = arma::zeros<arma::cube>(1, labelsTemp.n_cols, rho);
-    for (size_t i = 0; i < labelsTemp.n_cols; ++i)
-    {
-      const int value = arma::as_scalar(arma::find(
-          arma::max(labelsTemp.col(i)) == labelsTemp.col(i), 1)) + 1;
-      labels.tube(0, i).fill(value);
-    }
+  for (int j = 0; j < 6; j++)
+  {
+    arma::cube input;
+    arma::mat labelsTemp;
+    GenerateNoisySines(input, labelsTemp, rho, 6);
   
+    arma::cube labels = arma::zeros<arma::cube>(1, labelsTemp.n_cols, rho);
+      for (size_t i = 0; i < labelsTemp.n_cols; ++i)
+      {
+        const int value = arma::as_scalar(arma::find(
+            arma::max(labelsTemp.col(i)) == labelsTemp.col(i), 1)) + 1;
+        labels.tube(0, i).fill(value);
+      }
+  }
   std::cout << "input" << input << "labelsTemp" << labelsTemp << "labels" << labels << std::endl;
   
   0;
