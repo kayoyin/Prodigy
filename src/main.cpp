@@ -52,7 +52,7 @@ arma::mat getReal(const mat& tempDataset, const int& sequence_length)
 }	
 
 // Generate array with 1 in the indice of the note present at a time step
-arma::cube getTrainY(const mat& tempDataset, const int& size_notes, const int& sequence_length)
+arma::cube getTrainY1(const mat& tempDataset, const int& size_notes, const int& sequence_length)
 {
     cube proba = cube(size_notes, tempDataset.n_rows - sequence_length, sequence_length, fill::zeros);
     for (unsigned int i = sequence_length; i < tempDataset.n_rows; i++)
@@ -63,13 +63,25 @@ arma::cube getTrainY(const mat& tempDataset, const int& size_notes, const int& s
     return proba;
 }
 
+arma::cube getTrainY(const mat& tempDataset, const int& sequence_length)
+{
+    cube trainY = cube(1, num_sequences, sequence_length);
+    for (unsigned int i = sequence_length; i < tempDataset.n_rows; i++)
+    {
+	int note = tempDataset.at(i,0);
+	trainY.tube(0,i-sequence_length).fill(note);
+    }
+    return trainY;
+}
+
 arma::mat getNotes(const mat& proba)
 {
     unsigned int num_notes = proba.n_cols;
     mat notes = mat(1, num_notes);
     for (unsigned int i = 0; i < num_notes; i++)
     {
-        notes(0,i) = index_max(proba.col(i));
+        notes(0,i) = arma::as_scalar(arma::find(
+          arma::max(proba.col(i)) == proba.col(i), 1)) + 1;
     }
     return notes;
 }				   
@@ -209,8 +221,8 @@ int main () {
     const int size_music = 21;
 	
     cube trainX = getTrainX(tempDataset, sequence_length);
-    //cube trainY = getTrainY(tempDataset, sequence_length);
-    cube trainY = getTrainY(tempDataset, size_notes, sequence_length);
+    cube trainY = getTrainY(tempDataset, sequence_length);
+    //cube trainY = getTrainY(tempDataset, size_notes, sequence_length);
     mat real = getReal(tempDataset, sequence_length);	
     cout << trainX << trainY << endl;
 	
