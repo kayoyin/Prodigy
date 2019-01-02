@@ -120,7 +120,7 @@ void trainModel(RNN<>& model,
     constexpr int CYCLES = 1000;
 
     // Step size of an optimizer.
-    constexpr double STEP_SIZE = 5e-10;
+    constexpr double STEP_SIZE = 5e-14;
 
     // Number of data points in each iteration of SGD
     constexpr int BATCH_SIZE = 50;
