@@ -73,7 +73,7 @@ arma::cube getTrainY(const mat& tempDataset, const int& sequence_length)
 	int note = tempDataset.at(i,0);
 	trainY.tube(0,i-sequence_length).fill(21);
     }
-    trainY.tube(0,tempDataset.n_rows - sequence_length-1).fill(0);
+    trainY.tube(0,tempDataset.n_rows - sequence_length-1).fill(1);
     return trainY;
 }
 
