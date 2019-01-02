@@ -98,17 +98,43 @@ void trainModel(RNN<MeanSquaredError<>>& model,
     // The solution is done in several approaches (CYCLES), so each approach
     // uses previous results as starting point and have a different optimizer
     // options (here the step size is different).
-    
-    StandardSGD opt(0.1, 1, 500 * trainX.n_cols, -100);
-    			      
-   
+        			      
+     // Number of iteration per cycle.
+    constexpr int ITERATIONS_PER_CYCLE = 5;
+
+    // Number of cycles.
+    constexpr int CYCLES = 20;
+
+    // Step size of an optimizer.
+    constexpr double STEP_SIZE = 5e-10;
+
+    // Number of data points in each iteration of SGD
+    constexpr int BATCH_SIZE = 5;
+
+    // Setting parameters Stochastic Gradient Descent (SGD) optimizer.
+    SGD<AdamUpdate> optimizer(
+                              // Step size of the optimizer.
+                              STEP_SIZE,
+                              // Batch size. Number of data points that are used in each iteration.
+                              BATCH_SIZE,
+                              // Max number of iterations
+                              ITERATIONS_PER_CYCLE,
+                              // Tolerance, used as a stopping condition. This small number
+                              // means we never stop by this condition and continue to optimize
+                              // up to reaching maximum of iterations.
+                              1e-8,
+    			      false,
+    			      // Adam update policy.
+    			      AdamUpdate(1e-8, 0.9, 0.999));
+	
+	
     // Cycles for monitoring the process of a solution.
     for (int i = 0; i <= CYCLES; i++)
     {
         // Train neural network. If this is the first iteration, weights are
         // random, using current values as starting point otherwise.
        
-       	model.Train(trainX, trainY, opt);
+       	model.Train(trainX, trainY, optimizer);
        
         // Don't reset optimizer's parameters between cycles.
         optimizer.ResetPolicy() = false;
@@ -133,33 +159,39 @@ void trainModel(RNN<MeanSquaredError<>>& model,
  * set of testing example
  */
 void predictNotes(RNN<MeanSquaredError<>>& model,
-                  const std::string datasetName, const int rho)
+                  const unsigned int sequence_length, const unsigned int size_notes, const unsigned int size_music)
 {
     
-    mat tempDataset;
-    data::Load(datasetName, tempDataset, true);
-    
-    cube test = cube(1,tempDataset.n_cols,rho);
-    for (unsigned int i = 0; i < tempDataset.n_cols; i++)
+    cube start = cube(1, 1, sequence_length); // we initialize generation with a sequence of random notes
+    for (unsigned int i = 0; i < sequence_length; i++)
     {
-	test(0,i,0) = tempDataset.at(0,i);
+	start(0,0,i) = rand() % size_notes + 1; // random integer between 1 and size_notes
     }
+	
+    mat music = mat(size_music,1, fill::zeros);	
+    cube compose;
+    for (unsigned int i = 0; i < size_music; i = i + sequence_length)	
+    {	    
+    	// Getting predictions after starting notes .
+    	model.Predict(start, compose);
+	cout << compose << endl;    
+    	// Fetching the notes from probability vector generated.
+    	mat notes = getNotes(compose.slice(compose.n_slices - 1));
+	    
+    	for (unsigned int j = 0; j < sequence_length; j++)
+	{
+		int note = notes(0,j);
+		music(i+j,0) = note;
+		start(0,0,j) = note; // update start to continue generation
+	}
 
-    
-    cube testPredOut;
-    // Getting predictions on test data points .
-    model.Predict(test, testPredOut);
-    // Generating labels for the test dataset.
-    //Row<size_t> testPred = getLabels(testPredOut);
-    cout << "Saving predicted labels to \"results.csv\" ..." << endl;
-    mat testPred(1,testPredOut.n_cols);
-    for (unsigned int i = 0; i < testPredOut.n_cols; i++)
-    {
-	testPred(0,i) = testPredOut.at(0,i,testPredOut.n_slices-1);
+	
     }
+    cout << "Saving predicted notes to \"sonata.csv\" ..." << endl;
+
     // Saving results into Kaggle compatibe CSV file.
-    data::Save("results.csv", testPred); // testPred or test??
-    cout << "Results were saved to \"results.csv\"" << endl;
+    data::Save("sonata.csv", music); 
+    cout << "Music saved to \"sonata.csv\"" << endl;
 }
 
 int main () {
@@ -174,6 +206,7 @@ int main () {
    
     const int size_notes = max(tempDataset.row(0)) + 1;
     const int sequence_length = rho;
+    const int size_music = 21;
 	
     cube trainX = getTrainX(tempDataset, sequence_length);
     //cube trainY = getTrainY(tempDataset, sequence_length);
@@ -196,9 +229,10 @@ int main () {
     trainModel(model, trainX, trainY, real);
     
     cout << "Composing ..." << endl;
-    std::string datasetName = "../utils/test.csv";
-    predictNotes(model, datasetName,rho);
-    cout << "Finished" << endl;
-    
+    predictNotes(model, sequence_length,size_notes, size_music);
+    cout << "Finished :)" << endl;
+    cout << "Saving model ..." << endl;
+    // data::Save("mozart.xml", "mozart", model, false);
+    cout << "Saved!" << endl;
     return 0;
 }
