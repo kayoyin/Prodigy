@@ -52,17 +52,16 @@ arma::mat getReal(const mat& tempDataset, const int& sequence_length)
 }	
 
 // Generate array with 1 in the indice of the note present at a time step
-arma::cube getTrainY(const mat& tempDataset, const int& sequence_length)
+arma::cube getTrainY(const mat& tempDataset, const int& size_notes, const int& sequence_length)
 {
-    cube proba = cube(1, tempDataset.n_rows - sequence_length, sequence_length, fill::zeros);
+    cube proba = cube(size_notes, tempDataset.n_rows - sequence_length, sequence_length, fill::zeros);
     for (unsigned int i = sequence_length; i < tempDataset.n_rows; i++)
     {
 	int note = tempDataset.at(i,0);
-	proba.tube(0,i-sequence_length).fill(note);
+	proba.tube(note,i-sequence_length).fill(1);
     }
     return proba;
 }
-
 
 arma::mat getNotes(const mat& proba)
 {
@@ -70,8 +69,7 @@ arma::mat getNotes(const mat& proba)
     mat notes = mat(1, num_notes);
     for (unsigned int i = 0; i < num_notes; i++)
     {
-        // notes(0,i) = index_max(proba.col(i));
-	notes(0,i) = arma::as_scalar(arma::find(arma::max(proba.col(i)) == proba.col(i), 1) + 1);
+        notes(0,i) = index_max(proba.col(i));
     }
     return notes;
 }				   
@@ -89,45 +87,19 @@ double accuracy(arma::mat& predicted, const arma::mat& real)
             ++success;
         }
     }
-
-	// Calculating percentage of correctly predicted notes.
+    
+    // Calculating percentage of correctly predicted notes.
     return (double) success / (double)predicted.n_cols * 100.0;
 }
 
-void trainModel(RNN<>& model,
+void trainModel(RNN<MeanSquaredError<>>& model,
                 const cube& trainX, const cube& trainY, const mat& real)
 {
     // The solution is done in several approaches (CYCLES), so each approach
     // uses previous results as starting point and have a different optimizer
     // options (here the step size is different).
     
-    // Number of iteration per cycle.
-    constexpr int ITERATIONS_PER_CYCLE = 5;
-    
-    // Number of cycles.
-    constexpr int CYCLES = 20;
-    
-    // Step size of an optimizer.
-    constexpr double STEP_SIZE = 5e-10;
-    
-    // Number of data points in each iteration of SGD
-    constexpr int BATCH_SIZE = 5;
-    
-    // Setting parameters Stochastic Gradient Descent (SGD) optimizer.
-    SGD<AdamUpdate> optimizer(
-                              // Step size of the optimizer.
-                              STEP_SIZE,
-                              // Batch size. Number of data points that are used in each iteration.
-                              BATCH_SIZE,
-                              // Max number of iterations
-                              ITERATIONS_PER_CYCLE,
-                              // Tolerance, used as a stopping condition. This small number
-                              // means we never stop by this condition and continue to optimize
-                              // up to reaching maximum of iterations.
-                              1e-8,
-    			      false,
-    			      // Adam update policy.
-    			      AdamUpdate(1e-8, 0.9, 0.999));
+    StandardSGD opt(0.1, 1, 500 * trainX.n_cols, -100);
     			      
    
     // Cycles for monitoring the process of a solution.
@@ -136,7 +108,7 @@ void trainModel(RNN<>& model,
         // Train neural network. If this is the first iteration, weights are
         // random, using current values as starting point otherwise.
        
-       	model.Train(trainX, trainY, optimizer);
+       	model.Train(trainX, trainY, opt);
        
         // Don't reset optimizer's parameters between cycles.
         optimizer.ResetPolicy() = false;
@@ -212,17 +184,17 @@ int main () {
 	
     cube trainX = getTrainX(tempDataset, sequence_length);
     //cube trainY = getTrainY(tempDataset, sequence_length);
-    cube trainY = getTrainY(tempDataset, sequence_length);
+    cube trainY = getTrainY(tempDataset, size_notes, sequence_length);
     mat real = getReal(tempDataset, sequence_length);	
     cout << trainX << trainY << endl;
 	
-    RNN<> model(rho);
+    RNN<MeanSquaredError<> > model(rho);
     model.Add<Linear <> > (trainX.n_rows, rho);
     model.Add<LSTM <> > (rho,512);
     model.Add<Linear <> > (512, 512);
     model.Add<LSTM <> > (512, 512);
     model.Add<Linear <> > (512, 256);
-    // model.Add<Dropout <> > (0.3); // prevent overfitting
+    model.Add<Dropout <> > (0.3);
     model.Add<Linear <> > (256, size_notes);
     //model.Add<SigmoidLayer <> >();
     model.Add<LogSoftMax<> > ();
