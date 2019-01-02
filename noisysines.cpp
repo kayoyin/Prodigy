@@ -50,8 +50,9 @@ int main()
             arma::max(labelsTemp.col(i)) == labelsTemp.col(i), 1)) + 1;
         labels.tube(0, i).fill(value);
       }
+    std::cout << "input" << input << "labelsTemp" << labelsTemp << "labels" << labels << std::endl;
   }
-  std::cout << "input" << input << "labelsTemp" << labelsTemp << "labels" << labels << std::endl;
+  
   
   0;
 }
