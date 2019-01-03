@@ -23,7 +23,9 @@ if (NOT FORCE_CXX11)
   enable_cxx11()
 endif ()
 
-set (CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 11) # C++11...
+set(CMAKE_CXX_STANDARD_REQUIRED ON) #...is required...
+set(CMAKE_CXX_EXTENSIONS OFF) #...without compiler extensions like gnu++11
 
 # Set the CFLAGS and CXXFLAGS.
 # Set the CFLAGS and CXXFLAGS depending on the options the user specified.
