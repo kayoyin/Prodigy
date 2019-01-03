@@ -449,37 +449,10 @@ else ()
   set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib/)
 endif ()
 
-# Determine whether or not this is a git repository, so that we can set the
-# version number if necessary.
-find_package(Git)
-set (USING_GIT "NO")
-if (GIT_FOUND)
-  # Run 'git rev-parse HEAD' to find out if this is a working copy. If the
-  # return code is not 0, then it isn't.
-  execute_process(COMMAND ${GIT_EXECUTABLE} rev-parse HEAD
-      WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-      OUTPUT_VARIABLE MLPACK_TMP_REV_INFO
-      ERROR_VARIABLE MLPACK_TMP_REV_INFO_ERROR
-      RESULT_VARIABLE MLPACK_TMP_REV_INFO_RESULT
-      OUTPUT_STRIP_TRAILING_WHITESPACE)
-  if (${MLPACK_TMP_REV_INFO_RESULT} EQUAL 0)
-    set (USING_GIT "YES")
-    add_definitions(-DMLPACK_GIT_VERSION)
-    include(CMake/CreateGitVersionHeader.cmake)
-
-    add_custom_target(mlpack_gitversion ALL
-        COMMAND ${CMAKE_COMMAND} -P CMake/CreateGitVersionHeader.cmake
-        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-        COMMENT "Updating gitversion.hpp (if necessary)")
-  # Add gitversion.hpp to the list of sources.
-  set(MLPACK_SRCS ${MLPACK_SRCS}
-      "${CMAKE_CURRENT_SOURCE_DIR}/src/mlpack/core/util/gitversion.hpp")
-  endif ()
-endif ()
 
 # Create a target to generate arma_config.hpp, which is used to warn the user
 # when they are doing something stupid when linking something against mlpack.
-include(CMake/CreateArmaConfigInfo.cmake)
+# include(CMake/CreateArmaConfigInfo.cmake)
 
 add_custom_target(mlpack_arma_config ALL
     COMMAND ${CMAKE_COMMAND}
@@ -531,45 +504,6 @@ endif ()
 # before that).
 #add_dependencies(mlpack_headers mlpack_arma_config)
 
-# Make a target to generate the documentation.  If Doxygen isn't installed, then
-# I guess this option will just be unavailable.
-find_package(Doxygen)
-if (DOXYGEN_FOUND)
-  if (MATHJAX)
-    find_package(MathJax)
-    if (NOT MATHJAX_FOUND)
-      message(STATUS "Using MathJax at the MathJax Content Delivery Network. "
-          "Be careful, formulas will not be shown without the internet.")
-    endif ()
-  endif ()
-  # Preprocess the Doxyfile.  This is done before 'make doc'.
-  add_custom_command(OUTPUT ${CMAKE_BINARY_DIR}/Doxyfile
-      PRE_BUILD
-      COMMAND ${CMAKE_COMMAND}
-          -D DESTDIR=${CMAKE_BINARY_DIR}
-          -D MATHJAX="${MATHJAX}"
-          -D MATHJAX_FOUND="${MATHJAX_FOUND}"
-          -D MATHJAX_PATH="${MATHJAX_PATH}"
-          -P "${CMAKE_CURRENT_SOURCE_DIR}/CMake/GenerateDoxyfile.cmake"
-      WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
-      DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile"
-      COMMENT "Creating Doxyfile to generate Doxygen documentation"
-  )
-
-  # Generate documentation.
-  add_custom_target(doc
-      COMMAND "${DOXYGEN_EXECUTABLE}" "${CMAKE_BINARY_DIR}/Doxyfile"
-      DEPENDS "${CMAKE_BINARY_DIR}/Doxyfile"
-      WORKING_DIRECTORY "${CMAKE_BINARY_DIR}"
-      COMMENT "Generating API documentation with Doxygen"
-  )
-
-  install(DIRECTORY ${CMAKE_BINARY_DIR}/doc/html
-      DESTINATION ${CMAKE_INSTALL_DOCDIR}
-      COMPONENT doc
-      OPTIONAL
-  )
-endif ()
 
 # Create the pkg-config file, if we have pkg-config.
 find_package(PkgConfig)
