@@ -10,22 +10,12 @@ set (NNSAMPLE_VERSION_MINOR 0)
 option(FORCE_CXX11
     "Don't check that the compiler supports C++11, just assume it.  Make sure to specify any necessary flag to enable C++11 as part of CXXFLAGS."
     ON)
+option(USE_OPENMP "If available, use OpenMP for parallelization." ON)
+enable_testing()
 
-# If we are not forcing C++11 support, check that the compiler supports C++11
-# and enable it.
-if (NOT FORCE_CXX11)
-  include(cmake/CXX11.cmake)
-  check_for_cxx11_compiler(HAS_CXX11)
-
-  if(NOT HAS_CXX11)
-    message(FATAL_ERROR "No C++11 compiler available!")
-  endif()
-  enable_cxx11()
-endif ()
-
-set(CMAKE_CXX_STANDARD 11) # C++11...
-set(CMAKE_CXX_STANDARD_REQUIRED ON) #...is required...
-set(CMAKE_CXX_EXTENSIONS OFF) #...without compiler extensions like gnu++11
+# Set required standard to C++11.
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # Set the CFLAGS and CXXFLAGS.
 # Set the CFLAGS and CXXFLAGS depending on the options the user specified.
