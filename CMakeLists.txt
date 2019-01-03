@@ -9,7 +9,7 @@ set (NNSAMPLE_VERSION_MINOR 0)
 
 option(FORCE_CXX11
     "Don't check that the compiler supports C++11, just assume it.  Make sure to specify any necessary flag to enable C++11 as part of CXXFLAGS."
-    ON)
+    OFF)
 
 # If we are not forcing C++11 support, check that the compiler supports C++11
 # and enable it.
@@ -34,6 +34,7 @@ endif()
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ggdb -g -O0") 
 set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
+set(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -std=c++11")
 
 
 #############################################################################
