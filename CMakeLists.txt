@@ -9,7 +9,7 @@ set (NNSAMPLE_VERSION_MINOR 0)
 
 option(FORCE_CXX11
     "Don't check that the compiler supports C++11, just assume it.  Make sure to specify any necessary flag to enable C++11 as part of CXXFLAGS."
-    OFF)
+    ON)
 
 # If we are not forcing C++11 support, check that the compiler supports C++11
 # and enable it.
