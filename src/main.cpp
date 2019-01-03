@@ -192,11 +192,12 @@ void predictNotes(RNN<>& model,
     	model.Predict(start, compose);
 	cout << compose << endl;    
     	// Fetching the notes from probability vector generated.
-    	mat notes = getNotes(compose.slice(compose.n_slices - 1));
+    	//mat notes = getNotes(compose.slice(compose.n_slices - 1));
 	    
     	for (unsigned int j = 0; j < sequence_length; j++)
 	{
-		int note = notes(0,j);
+		int note = arma::as_scalar(arma::find(
+          arma::max(compose.slice(j).col(0)) == compose.slice(j).col(0), 1)) + 1;
 		music(i+j,0) = note;
 		start(0,0,j) = note; // update start to continue generation
 	}
