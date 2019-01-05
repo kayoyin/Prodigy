@@ -225,7 +225,7 @@ int main () {
    
     const int size_notes = max(tempDataset.row(0)) + 1;
     const int sequence_length = rho;
-    const int size_music = 21;
+    const int size_music = 101;
 	
     cube trainX = getTrainX(tempDataset, sequence_length);
     cube trainY = getTrainY(tempDataset, sequence_length);
