@@ -116,10 +116,10 @@ void trainModel(RNN<>& model,
     // options (here the step size is different).
         			      
      // Number of iteration per cycle.
-    constexpr int ITERATIONS_PER_CYCLE = 1000;
+    constexpr int ITERATIONS_PER_CYCLE = 20;
 
     // Number of cycles.
-    constexpr int CYCLES = 100;
+    constexpr int CYCLES = 10;
 
     // Step size of an optimizer.
     constexpr double STEP_SIZE = 5e-10;
@@ -225,7 +225,7 @@ int main () {
    
     const int size_notes = max(tempDataset.row(0)) + 1;
     const int sequence_length = rho;
-    const int size_music = 101;
+    const int size_music = 300;
 	
     cube trainX = getTrainX(tempDataset, sequence_length);
     cube trainY = getTrainY(tempDataset, sequence_length);
