@@ -116,13 +116,13 @@ void trainModel(RNN<>& model,
     // options (here the step size is different).
         			      
      // Number of iteration per cycle.
-    constexpr int ITERATIONS_PER_CYCLE = 20;
+    constexpr int ITERATIONS_PER_CYCLE = 1000;
 
     // Number of cycles.
-    constexpr int CYCLES = 10;
+    constexpr int CYCLES = 100;
 
     // Step size of an optimizer.
-    constexpr double STEP_SIZE = 5e-14;
+    constexpr double STEP_SIZE = 5e-10;
 
     // Number of data points in each iteration of SGD
     constexpr int BATCH_SIZE = 50;
@@ -166,6 +166,8 @@ void trainModel(RNN<>& model,
         double trainAccuracy = accuracy(pred, real);       
 
         cout << i << " - accuracy = "<< trainAccuracy << "%," << endl;
+	    
+	data::Save("checkpoint.csv", pred);
         
     }
 }
