@@ -116,10 +116,10 @@ void trainModel(RNN<>& model,
     // options (here the step size is different).
         			      
      // Number of iteration per cycle.
-    constexpr int ITERATIONS_PER_CYCLE = 20;
+    constexpr int ITERATIONS_PER_CYCLE = 10000;
 
     // Number of cycles.
-    constexpr int CYCLES = 10;
+    constexpr int CYCLES = 20;
 
     // Step size of an optimizer.
     constexpr double STEP_SIZE = 5e-10;
@@ -192,7 +192,6 @@ void predictNotes(RNN<>& model,
     {	    
     	// Getting predictions after starting notes .
     	model.Predict(start, compose);
-	cout << compose << endl;    
     	// Fetching the notes from probability vector generated.
     	//mat notes = getNotes(compose.slice(compose.n_slices - 1));
 	    
@@ -218,14 +217,14 @@ int main () {
     cout << "Reading data ..." << endl; 
 	
     mat tempDataset;
-    const int rho = 3;
+    const int rho = 5;
 
     data::Load("../utils/training.csv", tempDataset, true); // read data from this csv file, creates arma matrix with loaded data in tempDataset
     
    
     const int size_notes = max(tempDataset.row(0)) + 1;
     const int sequence_length = rho;
-    const int size_music = 300;
+    const int size_music = 300; //must be multiple of sequence_length
 	
     cube trainX = getTrainX(tempDataset, sequence_length);
     cube trainY = getTrainY(tempDataset, sequence_length);
