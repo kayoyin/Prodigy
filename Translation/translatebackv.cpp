@@ -127,7 +127,7 @@ void writeData()
 int main()
 {
     // Creating an object of CSVWriter
-    CSVReader reader("bach.csv");
+    CSVReader reader("test.csv");
 
     // Get the data from CSV File
 
@@ -136,8 +136,8 @@ int main()
     std::vector<std::string> notes = std::get<1>(other);
     std::map<std::string, int> trans = bijection(pitches);
     std::vector<int> translated = translation(notes, trans);
-    std::tuple<std::map<std::string, int>,std::vector<int>> tup = std::make_tuple(trans,translated);
-
+    std::vector<int> partition{26,38,26,18,26,26,26,34,34,18,26,21,18,8,18,26,30,18,18,2,26,8,18,18,18,26,30,18,8,18,26,8,18,18,8,26,30,18,8,8,26,8,18,18,15,26,30,18,8,18,26,8,18,18,8,26,30,18,8,8,26,8,18,18,15,26,30,18,8,18,26,8,18,18,8,26,30,18,8,8,26,8,18,18,15,26,30,18,8,18,26,8,18,18,8,26,30,18,8,8,26,8,18,18,15,26,30,18,8,18,26,8,18,18,8,26,30,18,8,8,26,8,18,18,15,26,30,18,8,18,26,8,18,18,8,26,30,18,8,8,26,8,18,18,15,26,30,18,8,18,26,8,18,18,8,26,30,18,8,8,26,8,18,18,15,26,30,18,8,18,26,8,18,18,8,26,30,18,8,8,26,8,18,18,15,26,30,18,8,18,26,8,18,18,8,26,30,18,8,8,26,8,18,18,15,26,30,18,8,18,26,8,18,18,8,26,30,18,8,8,26,8,18,18,15,26,30,18,8,18,26,8,18,18,8,26,30,18,8,8,26,8,18,18,15,26,30,18,8,18,26,8,18,18,8,26,30,18,8,8,26,8,18,18,15,26,30,18,8,18,26,8,18,18,8,26,30,18,8,8,26,8,18,18,15,26,30,18,8,18,26,8,18,18,8,26,30,18,8,8};
+    std::tuple<std::map<std::string, int>,std::vector<int>> tup = std::make_tuple(trans,partition);
     // Creating an object of CSVWriter
     CSVWriter writer(tup);
     // outputting the csv file named, "translated.csv"

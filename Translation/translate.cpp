@@ -139,10 +139,24 @@ std::vector<int> translation (std::vector<std::string> &notes , std::map<std::st
     return translated;
 }
 
+void write_output(std::vector<int> translated){
+    std::ofstream newfile("partition.csv");
+    int count = 0;
+    for (std::vector<int>::iterator it = translated.begin() ; it != translated.end(); ++it){
+        count+= 1;
+        if (count == 100){
+            newfile << " " << std::endl;
+            newfile << " "<< std::endl;
+            count = 0;
+        }
+        newfile << *it << "," ;
+    }
+}
+
 int main()
 {
     // Creating an object of CSVWriter
-    CSVReader reader("text1.csv");
+    CSVReader reader("test.csv");
     
     // Get the data from CSV File
     std::tuple<std::set<std::string>,std::vector<std::string>> other = reader.getData();
@@ -151,9 +165,11 @@ int main()
     std::map<std::string, int> trans = bijection(pitches);
     std::vector<int> translated = translation(notes, trans);
 
-    for (std::vector<int>::iterator it = translated.begin() ; it != translated.end(); ++it){
+    write_output(translated);
+
+    /*for (std::vector<int>::iterator it = translated.begin() ; it != translated.end(); ++it){
         std::cout << *it << "   ";
-    }
+    }*/
 
     /*for (std::vector<std::string>::iterator it = notes.begin() ; it != notes.end(); ++it){
         std::cout << *it << "   ";

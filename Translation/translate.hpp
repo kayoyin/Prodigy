@@ -116,6 +116,9 @@ std::tuple<std::set<std::string>,std::vector<std::string>>  getData()
     return std::make_tuple(pitches,notes);
 }
 
+/*std::vector<int> get_partition(){
+
+}*/
 };
 
 std::map<std::string, int> bijection (std::set<std::string> &myset) { // Returns the associated translation map
