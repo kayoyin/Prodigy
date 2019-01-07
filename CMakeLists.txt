@@ -65,12 +65,11 @@ message("Found ${MODELS_INCLUDE_DIRS}")
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
 
-set(CMAKE_CXX_FLAGS "-lboost_serialization")
-
 # add the executable
 add_executable(nnsample ${PROJECT_SOURCE_DIR}/src/main.cpp)
 # Set the libraries to link against
 target_link_libraries(nnsample
   ${MLPACK_LIBRARIES}
-  ${ARMADILLO_LIBRARIES})
+  ${ARMADILLO_LIBRARIES}
+  ${Boost_LIBRARIES})
 
