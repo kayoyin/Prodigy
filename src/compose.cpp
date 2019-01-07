@@ -70,7 +70,7 @@ int main () {
     
   cout << "Loading trained model ..." << endl;
   RNN<> model(rho);
-  model.Add<Linear <> > (trainX.n_rows, rho);
+  model.Add<Linear <> > (1, rho);
   model.Add<LSTM <> > (rho,512);
   model.Add<Linear <> > (512, 512);
   model.Add<LSTM <> > (512, 512);
