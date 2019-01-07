@@ -70,5 +70,6 @@ add_executable(nnsample ${PROJECT_SOURCE_DIR}/src/main.cpp)
 # Set the libraries to link against
 target_link_libraries(nnsample
   ${MLPACK_LIBRARIES}
-  ${ARMADILLO_LIBRARIES})
+  ${ARMADILLO_LIBRARIES}
+  ${Boost_LIBRARIES})
 
