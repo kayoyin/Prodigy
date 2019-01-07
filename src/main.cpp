@@ -231,7 +231,7 @@ int main () {
     //cube trainY = getTrainY(tempDataset, size_notes, sequence_length);
     mat real = getReal(tempDataset, sequence_length);	
     cout << trainX << trainY << endl;
-	
+    /**
     RNN<> model(rho);
     model.Add<Linear <> > (trainX.n_rows, rho);
     model.Add<LSTM <> > (rho,512);
@@ -245,12 +245,14 @@ int main () {
     	
     cout << "Training ..." << endl;
     trainModel(model, trainX, trainY, real);
-    
+    **/
+    cout << "Testing saving and loading model" << endl;
+    data::Load("model.xml", "model", model);	
     cout << "Composing ..." << endl;
     predictNotes(model, sequence_length,size_notes, size_music);
     cout << "Finished :)" << endl;
     cout << "Saving model ..." << endl;
-    // data::Save("model.xml", "model", model, false);
+    data::Save("model.xml", "model", model, false);
     cout << "Saved!" << endl;
     return 0;
 }
