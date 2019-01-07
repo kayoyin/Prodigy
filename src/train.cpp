@@ -116,13 +116,13 @@ void trainModel(RNN<>& model,
     // options (here the step size is different).
         			      
      // Number of iteration per cycle.
-    constexpr int ITERATIONS_PER_CYCLE = 1;
+    constexpr int ITERATIONS_PER_CYCLE = 10000;
 
     // Number of cycles.
-    constexpr int CYCLES = 1;
+    constexpr int CYCLES = 500;
 
     // Step size of an optimizer.
-    constexpr double STEP_SIZE = 5e-10;
+    constexpr double STEP_SIZE = 5e-6;
 
     // Number of data points in each iteration of SGD
     const int BATCH_SIZE = trainX.n_rows;
@@ -166,8 +166,14 @@ void trainModel(RNN<>& model,
         double trainAccuracy = accuracy(pred, real);       
 
         cout << i << " - accuracy = "<< trainAccuracy << "%," << endl;
-	    
-	data::Save("checkpoint.csv", pred);
+	
+	// Save the model every 20 cycles
+	if (i % 20 == 0)
+	{
+		cout << "saving model at cycle" << i << endl;
+   		data::Save("model.xml", "model", model, false);
+	}
+
         
     }
 }
@@ -201,7 +207,9 @@ int main () {
     model.Add<Linear <> > (256, size_notes);
     //model.Add<SigmoidLayer <> >();
     model.Add<LogSoftMax<> > ();
-    	
+    
+    // Load preexisting model to continue training
+    data::Load("model.xml", "model", model);
 
     cout << "Training ..." << endl;
     trainModel(model, trainX, trainY, real);
