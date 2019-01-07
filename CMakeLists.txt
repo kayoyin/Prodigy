@@ -1,11 +1,11 @@
 # Partially taken from https://github.com/mlpack/models
 #
-project(NNSAMPLE)
+project(PRODIGY)
 cmake_minimum_required(VERSION 3.0)
 
 # The version number.
-set (NNSAMPLE_VERSION_MAJOR 1)
-set (NNSAMPLE_VERSION_MINOR 0)
+set (PRODIGY_VERSION_MAJOR 1)
+set (PRODIGY_VERSION_MINOR 0)
 
 option(FORCE_CXX11
     "Don't check that the compiler supports C++11, just assume it.  Make sure to specify any necessary flag to enable C++11 as part of CXXFLAGS."
@@ -66,7 +66,8 @@ set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
 
 # add the executable
-add_executable(nnsample ${PROJECT_SOURCE_DIR}/src/main.cpp)
+add_executable(train ${PROJECT_SOURCE_DIR}/src/train.cpp)
+add_executable(compose ${PROJECT_SOURCE_DIR}/src/compose.cpp)
 # Set the libraries to link against
 target_link_libraries(nnsample
   ${MLPACK_LIBRARIES}
