@@ -1,5 +1,0 @@
-// the configured options and settings for RNN
-#define RNN_VERSION_MAJOR @RNN_VERSION_MAJOR@
-#define RNN_VERSION_MINOR @RNN_VERSION_MINOR@
-
-#cmakedefine USE_MYTEST
