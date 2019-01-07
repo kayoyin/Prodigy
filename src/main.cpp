@@ -109,7 +109,7 @@ double accuracy(arma::mat& predicted, const arma::mat& real)
 }
 
 void trainModel(RNN<>& model,
-                const cube& trainX, const cube& trainY, const mat& real, const int& data_size)
+                const cube& trainX, const cube& trainY, const mat& real)
 {
     // The solution is done in several approaches (CYCLES), so each approach
     // uses previous results as starting point and have a different optimizer
@@ -125,7 +125,7 @@ void trainModel(RNN<>& model,
     constexpr double STEP_SIZE = 5e-10;
 
     // Number of data points in each iteration of SGD
-    constexpr int BATCH_SIZE = data_size;
+    const int BATCH_SIZE = trainX.n_rows;
 
     // Setting parameters Stochastic Gradient Descent (SGD) optimizer.
     SGD<AdamUpdate> optimizer(
@@ -223,7 +223,6 @@ int main () {
     
    
     const int size_notes = max(tempDataset.row(0)) + 1;
-    const int data_size = tempDataset.n_rows;
     const int sequence_length = rho;
     const int size_music = 300; //must be multiple of sequence_length
 	
@@ -245,7 +244,7 @@ int main () {
     model.Add<LogSoftMax<> > ();
     	
     cout << "Training ..." << endl;
-    trainModel(model, trainX, trainY, real, data_size);
+    trainModel(model, trainX, trainY, real);
     
     cout << "Composing ..." << endl;
     predictNotes(model, sequence_length,size_notes, size_music);
