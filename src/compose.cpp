@@ -70,6 +70,15 @@ int main () {
     
   cout << "Loading trained model ..." << endl;
   RNN<> model(rho);
+  model.Add<Linear <> > (trainX.n_rows, rho);
+  model.Add<LSTM <> > (rho,512);
+  model.Add<Linear <> > (512, 512);
+  model.Add<LSTM <> > (512, 512);
+  model.Add<Linear <> > (512, 256);
+  model.Add<Dropout <> > (0.3);
+  model.Add<Linear <> > (256, size_notes);
+  //model.Add<SigmoidLayer <> >();
+  model.Add<LogSoftMax<> > ();
   data::Load("model.xml", "model", model);	
   
   cout << "Composing ..." << endl;
