@@ -69,6 +69,7 @@ int main () {
   const int size_music = 300; //must be multiple of sequence_length
     
   cout << "Loading trained model ..." << endl;
+  RNN<> model(rho);
   data::Load("model.xml", "model", model);	
   
   cout << "Composing ..." << endl;
