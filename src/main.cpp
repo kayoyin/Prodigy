@@ -231,7 +231,7 @@ int main () {
     //cube trainY = getTrainY(tempDataset, size_notes, sequence_length);
     mat real = getReal(tempDataset, sequence_length);	
     cout << trainX << trainY << endl;
-    /**
+    
     RNN<> model(rho);
     model.Add<Linear <> > (trainX.n_rows, rho);
     model.Add<LSTM <> > (rho,512);
@@ -243,6 +243,7 @@ int main () {
     //model.Add<SigmoidLayer <> >();
     model.Add<LogSoftMax<> > ();
     	
+    /**
     cout << "Training ..." << endl;
     trainModel(model, trainX, trainY, real);
     **/
