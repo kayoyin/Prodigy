@@ -250,7 +250,7 @@ int main () {
     predictNotes(model, sequence_length,size_notes, size_music);
     cout << "Finished :)" << endl;
     cout << "Saving model ..." << endl;
-    data::Save("model.xml", "model", model, false);
+    // data::Save("model.xml", "model", model, false);
     cout << "Saved!" << endl;
     return 0;
 }
