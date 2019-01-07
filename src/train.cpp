@@ -116,10 +116,10 @@ void trainModel(RNN<>& model,
     // options (here the step size is different).
         			      
      // Number of iteration per cycle.
-    constexpr int ITERATIONS_PER_CYCLE = 5;
+    constexpr int ITERATIONS_PER_CYCLE = 1;
 
     // Number of cycles.
-    constexpr int CYCLES = 100;
+    constexpr int CYCLES = 1;
 
     // Step size of an optimizer.
     constexpr double STEP_SIZE = 5e-10;
