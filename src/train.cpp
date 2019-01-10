@@ -1,7 +1,3 @@
-/**
- * Code adapted from https://github.com/mlpack/models/blob/master/Kaggle/DigitRecognizer/src/DigitRecognizer.cpp
- */
-
 #include <iostream>
 
 #include <mlpack/core.hpp>
@@ -14,20 +10,21 @@
 #include <mlpack/methods/ann/layer/layer.hpp>
 #include <mlpack/methods/ann/rnn.hpp>
 #include <mlpack/methods/ann/layer/lstm.hpp>
-#include <mlpack/methods/ann/loss_functions/kl_divergence.hpp>
-#include <mlpack/methods/ann/loss_functions/mean_squared_error.hpp>
-#include <mlpack/methods/ann/loss_functions/cross_entropy_error.hpp>
 #include <mlpack/prereqs.hpp>
 
 using namespace mlpack;
 using namespace mlpack::ann;
 using namespace mlpack::optimization;
+using namespace mlpack::data;
 
 using namespace arma;
 using namespace std;
-using namespace mlpack::data;
 
 // Prepare input of sequence of notes for LSTM
+// The LSTM inputs and outputs armadillo cubes, that is a three dimensional tensor
+// The rows are the features of our data (we only have 1 feature = note value)
+// The columns contain each time step within the music
+// The slices contain each sequence of music taken
 arma::cube getTrainX(const mat& tempDataset, const unsigned int& sequence_length)
 {
     const unsigned int num_notes = tempDataset.n_rows;	
@@ -43,6 +40,7 @@ arma::cube getTrainX(const mat& tempDataset, const unsigned int& sequence_length
     return trainX;
  }
 
+// Vector of "actual" notes from the training set used to calculate accuracy of training
 arma::mat getReal(const mat& tempDataset, const int& sequence_length)
 {
     mat real = mat(1,tempDataset.n_rows - sequence_length);
@@ -53,23 +51,10 @@ arma::mat getReal(const mat& tempDataset, const int& sequence_length)
     return real;
 }	
 
-// Generate array with 1 in the indice of the note present at a time step
-arma::cube getTrainY1(const mat& tempDataset, const int& size_notes, const int& sequence_length)
-{
-    cube proba = cube(size_notes, tempDataset.n_rows - sequence_length, sequence_length, fill::zeros);
-    for (unsigned int i = sequence_length; i < tempDataset.n_rows; i++)
-    {
-	int note = tempDataset.at(i,0);
-	proba.tube(note,i-sequence_length).fill(note+1);
-    }
-    return proba;
-}
-
+// Get the "labels" used for training, that is the note that follows each sequence of notes in trainX
 arma::cube getTrainY(const mat& tempDataset, const int& sequence_length)
 {
-    //const unsigned int num_notes = tempDataset.n_rows;	
-    //const unsigned int num_sequences = (num_notes / sequence_length) + 1;
-    cube trainY = cube(1, tempDataset.n_rows - sequence_length, sequence_length); //n slice = sequence_length?
+    cube trainY = cube(1, tempDataset.n_rows - sequence_length, sequence_length); 
     for (unsigned int i = sequence_length; i < tempDataset.n_rows; i++)
     {
 	int note = tempDataset.at(i,0);
@@ -78,6 +63,8 @@ arma::cube getTrainY(const mat& tempDataset, const int& sequence_length)
     return trainY;
 }
 
+// The output of the model is a vector that gives the probability of each note at the index representing it
+// To get the notes, we take the index with the max probability
 arma::mat getNotes(const mat& proba)
 {
     unsigned int num_notes = proba.n_cols;
@@ -90,10 +77,10 @@ arma::mat getNotes(const mat& proba)
     return notes;
 }				   
 
- /**
- * Returns the accuracy (percentage of correct answers).
- */
 
+// Returns the accuracy (percentage of correct notes)
+// Note that we expect the accuracy to be low even on a well trained model, 
+// we don't want the model to reproduce exactly the music given
 double accuracy(arma::mat& predicted, const arma::mat& real)
 {
     // Calculating how many predicted notes coincide with actual notes.
@@ -170,7 +157,7 @@ void trainModel(RNN<>& model,
 	// Save the model every 20 cycles
 	if (i % 20 == 0)
 	{
-		cout << "saving model at cycle" << i << endl;
+		cout << "Checkpoint at cycle" << i << endl;
    		data::Save("model.xml", "model", model, false);
 	}
 
@@ -183,19 +170,19 @@ int main () {
     cout << "Reading data ..." << endl; 
 	
     mat tempDataset;
-    const int rho = 5;
 
-    data::Load("../utils/training.csv", tempDataset, true); // read data from this csv file, creates arma matrix with loaded data in tempDataset
+    // the parameter rho for our LSTM model, also the length of the sequence considered during training
+    const int rho = 5;
     
-   
+    // load a matrice containing translated music file for training
+    data::Load("../utils/training.csv", tempDataset, true); 
+    
+    // the total number of different notes we have
     const int size_notes = max(tempDataset.row(0)) + 1;
-    const int sequence_length = rho;
 	
-    cube trainX = getTrainX(tempDataset, sequence_length);
-    cube trainY = getTrainY(tempDataset, sequence_length);
-    //cube trainY = getTrainY(tempDataset, size_notes, sequence_length);
-    mat real = getReal(tempDataset, sequence_length);	
-    cout << trainX << trainY << endl;
+    cube trainX = getTrainX(tempDataset, rho);
+    cube trainY = getTrainY(tempDataset, rho);
+    mat real = getReal(tempDataset, rho);	
     
     RNN<> model(rho);
     model.Add<Linear <> > (trainX.n_rows, rho);
@@ -203,12 +190,11 @@ int main () {
     model.Add<Linear <> > (512, 512);
     model.Add<LSTM <> > (512, 512);
     model.Add<Linear <> > (512, 256);
-    model.Add<Dropout <> > (0.3);
+    model.Add<Dropout <> > (0.3); // prevent overfitting
     model.Add<Linear <> > (256, size_notes);
-    //model.Add<SigmoidLayer <> >();
     model.Add<LogSoftMax<> > ();
     
-    // Load preexisting model to continue training
+    // Load preexisting weights to continue training, if it exists
     data::Load("model.xml", "model", model);
 
     cout << "Training ..." << endl;
