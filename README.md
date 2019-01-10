@@ -37,8 +37,12 @@ $> cd build
 $> make
 ```
 
+### Running the project
 Now, the project will have two executables `train` and `compose`. 
+
 You can either train a model from scratch or continue training on a model saved in `/utils` by running `./train`.
+You will need to have a training file `/utils/training.csv` that is a vector of integers corresponding to translated music.
+
 Then, you can generate compositions from the saved model by running `./compose`.
 
 <a name="trans"></a>
