@@ -1,5 +1,14 @@
 # Prodigy
 
+# Table of Contents
+
+* [Project Description](#Description)
+
+# <a name="Description></a>Project Description
+
+
+#
+
 ## Project description:
 
 Our aim is to train a machine learning algorithm for music composition. For this, we will use an existing LSTM library on C++ that we will use to train. Training will be done using text files, so we will also need to write an algorithm to convert MIDI files into usable text.
