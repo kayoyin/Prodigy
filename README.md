@@ -16,7 +16,30 @@ sometext
 <a name="usage"></a>
 ## 2. Usage Instructions
 
-sometext
+### Installing the dependencies
+After cloning from the project, you first need to install [mlpack](https://www.mlpack.org) and its dependencies.
+To do so, simply run the following command:
+```
+$> bash install_mlpack.bash 
+```
+
+### Build and compile
+To build the project, run the following commands:
+```
+$> mkdir build
+$> cd build
+$> cmake ../
+```
+
+Then, to compile the project, enter the `build` folder and type make.
+```
+$> cd build
+$> make
+```
+
+Now, the project will have two executables `train` and `compose`. 
+You can either train a model from scratch or continue training on a model saved in `/utils` by running `./train`.
+Then, you can generate compositions from the saved model by running `./compose`.
 
 <a name="trans"></a>
 ## 3. Translating 
