@@ -10,9 +10,6 @@
 #include <mlpack/methods/ann/layer/layer.hpp>
 #include <mlpack/methods/ann/rnn.hpp>
 #include <mlpack/methods/ann/layer/lstm.hpp>
-#include <mlpack/methods/ann/loss_functions/kl_divergence.hpp>
-#include <mlpack/methods/ann/loss_functions/mean_squared_error.hpp>
-#include <mlpack/methods/ann/loss_functions/cross_entropy_error.hpp>
 #include <mlpack/prereqs.hpp>
 
 using namespace mlpack;
@@ -39,23 +36,20 @@ void predictNotes(RNN<>& model,
     {	    
     	// Getting predictions after starting notes .
     	model.Predict(start, compose);
-    	// Fetching the notes from probability vector generated.
-    	//mat notes = getNotes(compose.slice(compose.n_slices - 1));
 	    
+    	// Fetching the notes from probability vector generated.	    
     	for (unsigned int j = 0; j < sequence_length; j++)
 	{
 		int note = arma::as_scalar(arma::find(
           arma::max(compose.slice(j).col(0)) == compose.slice(j).col(0), 1)) + 1;
 		music(i+j,0) = note;
-		start(0,0,j) = note; // update start to continue generation
+		start(0,0,j) = note; // update start to continue generation taking into account the sequence just predicted
 	}
 
 	
     }
-    cout << "Saving predicted notes to \"sonata.csv\" ..." << endl;
-
-    // Saving results into Kaggle compatibe CSV file.
-    data::Save("sonata.csv", music); 
+    cout << "Saving predicted notes to \"../utils/sonata.csv\" ..." << endl;
+    data::Save("../utils/sonata.csv", music); 
     cout << "Music saved to \"sonata.csv\"" << endl;
 }
 
@@ -66,19 +60,10 @@ int main () {
   data::Load("../utils/training.csv", tempDataset, true); // read data from this csv file, creates arma matrix with loaded data in tempDataset
   const int size_notes = max(tempDataset.row(0)) + 1;
   const int sequence_length = rho;
-  const int size_music = 300; //must be multiple of sequence_length
+  const int size_music = 300; //must be a multiple of sequence_length
     
   cout << "Loading trained model ..." << endl;
   RNN<> model(rho);
-  model.Add<Linear <> > (1, rho);
-  model.Add<LSTM <> > (rho,512);
-  model.Add<Linear <> > (512, 512);
-  model.Add<LSTM <> > (512, 512);
-  model.Add<Linear <> > (512, 256);
-  model.Add<Dropout <> > (0.3);
-  model.Add<Linear <> > (256, size_notes);
-  //model.Add<SigmoidLayer <> >();
-  model.Add<LogSoftMax<> > ();
   data::Load("model.xml", "model", model);	
   
   cout << "Composing ..." << endl;
