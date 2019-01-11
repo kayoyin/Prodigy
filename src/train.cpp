@@ -154,8 +154,8 @@ void trainModel(RNN<>& model,
 
         cout << i << " - accuracy = "<< trainAccuracy << "%," << endl;
 	
-	// Save the model every 20 cycles
-	if (i % 20 == 0)
+	// Save the model every 10 cycles
+	if (i % 10 == 0)
 	{
 		cout << "Checkpoint at cycle" << i << endl;
    		data::Save("model.xml", "model", model, false);
