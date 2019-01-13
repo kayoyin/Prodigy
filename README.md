@@ -90,20 +90,6 @@ Once we have trained a model, we can save the model with the trained weights for
 
 To have the network generate music, we then load the previously trained model. Essentially, the trained network is a prediction model, so it needs a starting point for composition. We use a randomly generated short sequence of notes as the seed sequence which we feed into the prediction method of the model. From then on, we feed the new sequence predicted by the model to obtain the next predicted sequence, and we continue this step until we get a music sequence of our desired length.
 
-Plan on what to say: 
-
-- overview of how we train/test accuracy.. 
-- layer design
-- why lstm 
-- optimiser used(?)
-- extensions? 
-
-we decided on using an LSTM layer 
-
-
-The second team, "Builders", will construct the AI used for training. They will grasp the theory and functioning of neural networks, determine which library to use, understand how to use it for music generation, and from the third week start training using translated MIDI files of Mozart's music.
-
-
 <a name="extra"></a>
 ## 5.Blah blah
 
