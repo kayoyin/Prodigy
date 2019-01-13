@@ -56,14 +56,14 @@ void predictNotes(RNN<>& model,
 int main () {
 
   mat tempDataset;
-  const int rho = 5;
+  const int rho = 5; // must be the same rho as the one used to train the model
   data::Load("../utils/training.csv", tempDataset, true); // read data from this csv file, creates arma matrix with loaded data in tempDataset
   const int size_notes = max(tempDataset.row(0)) + 1;
   const int sequence_length = rho;
   const int size_music = 300; //must be a multiple of sequence_length
     
   cout << "Loading trained model ..." << endl;
-  RNN<> model(rho);
+  RNN<> model(rho); 
   model.Add<Linear <> > (trainX.n_rows, rho);
   model.Add<LSTM <> > (rho,512);
   model.Add<Linear <> > (512, 512);
