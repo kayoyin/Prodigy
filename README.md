@@ -94,8 +94,12 @@ To have the network generate music, we then load the previously trained model. E
 ## 5. What now?
 
 Here are some extension ideas that has not been explored that could possibly improve our implementation:
-* Adding a temperature layer before the logsoftmax layer, to control the randomness of predictions by the LSTM. Temperature will rescale the logits before putting them through the softmax function, where high temperature will give similar probabilities to each notes and low temperature will give higher probability to the most expected note. We can therefore think of temperature as the parameter of the LSTM's creativity, where a model with low temperature will be more "creative".
-*
+* Adding a temperature layer before the logsoftmax layer, to control the randomness of predictions by the LSTM. 
+Temperature will rescale the logits before putting them through the softmax function, where high temperature will give similar probabilities to each notes and low temperature will give higher probability to the most expected note. We can therefore think of temperature as the parameter of the LSTM's creativity, where a model with low temperature will be more "creative".
+* Single-note training
+In our project, each combination of notes from the training set were encoded by a unique integer, which limits the combinations of notes the model can produce to ones it has already seen during training. Another way to encode music would be to give each note a unique character, then encode combinations of notes as combinations of these characters. This encoding is more complex but would be a more realistic modelization of true music composition.
+
+
 
 
 
