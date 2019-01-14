@@ -39,16 +39,15 @@ void predictNotes(RNN<>& model,
     cube compose;
     for (unsigned int i = 0; i < size_music; i = i + sequence_length)	
     {	    
-    	// Getting predictions after starting notes .
-    	model.Predict(start, compose);
-	    
-    	// Fetching the notes from probability vector generated.	    
+ 
+    	model.Predict(start, compose);    
+    		    
     	for (unsigned int j = 0; j < sequence_length; j++)
 	{
 		int note = arma::as_scalar(arma::find(
           arma::max(compose.slice(j).col(0)) == compose.slice(j).col(0), 1)) + 1;
 		music(i+j,0) = note;
-		start(0,0,j) = note; // update start to continue generation taking into account the sequence just predicted
+		start(0,0,j) = note; 
 	}
 
 	
