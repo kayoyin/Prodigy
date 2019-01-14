@@ -30,6 +30,11 @@ void predictNotes(RNN<>& model,
 	start(0,0,i) = rand() % size_notes + 1; // random integer between 1 and size_notes
     }
 	
+    /**
+    // Load notes from user input
+    data::Load("../utils/startnotes.csv", start, true);
+    **/
+	
     mat music = mat(size_music,1, fill::zeros);	
     cube compose;
     for (unsigned int i = 0; i < size_music; i = i + sequence_length)	
@@ -57,9 +62,9 @@ int main () {
 
   mat tempDataset;
   const int rho = 5; // must be the same rho as the one used to train the model
-  data::Load("../utils/training.csv", tempDataset, true); // read data from this csv file, creates arma matrix with loaded data in tempDataset
-  const int size_notes = max(tempDataset.row(0)) + 1;
-  const int sequence_length = rho;
+  data::Load("../utils/training.csv", tempDataset, true); // load training data to extract the note alphabet size
+  const int size_notes = max(tempDataset.row(0)) + 1; // number of different notes
+  const int sequence_length = rho; // length of sequence taken into consideration during training
   const int size_music = 300; //must be a multiple of sequence_length
     
   cout << "Loading trained model ..." << endl;
