@@ -91,9 +91,11 @@ Once we have trained a model, we can save the model with the trained weights for
 To have the network generate music, we then load the previously trained model. Essentially, the trained network is a prediction model, so it needs a starting point for composition. We use a randomly generated short sequence of notes as the seed sequence which we feed into the prediction method of the model. From then on, we feed the new sequence predicted by the model to obtain the next predicted sequence, and we continue this step until we get a music sequence of our desired length.
 
 <a name="extra"></a>
-## 5.Blah blah
+## 5. What now?
 
-extensions maybe? 
+Here are some extension ideas that has not been explored that could possibly improve our implementation:
+* Adding a temperature layer before the logsoftmax layer, to control the randomness of predictions by the LSTM. Temperature will rescale the logits before putting them through the softmax function, where high temperature will give similar probabilities to each notes and low temperature will give higher probability to the most expected note. We can therefore think of temperature as the parameter of the LSTM's creativity, where a model with low temperature will be more "creative".
+*
 
 
 
