@@ -25,7 +25,8 @@ void predictNotes(RNN<>& model,
 {
     
     cube start = cube(1, 1, sequence_length); // we initialize generation with a sequence of random notes
-    
+    mat music = mat(size_music,1, fill::zeros);	
+
     /**
     for (unsigned int i = 0; i < sequence_length; i++)
     {
@@ -39,12 +40,12 @@ void predictNotes(RNN<>& model,
     for (unsigned int i = 0; i < sequence_length; i++)
     {
 	start(0,0,i) = startnotes(i,0);
+	music(i,0) = startnotes(i,0);
     }
 	
 	
-    mat music = mat(size_music,1, fill::zeros);	
     cube compose;
-    for (unsigned int i = 0; i < size_music; i = i + sequence_length)	
+    for (unsigned int i = sequence_length; i < size_music; i = i + sequence_length)	
     {	    
     	// Getting predictions after starting notes .
     	model.Predict(start, compose);
