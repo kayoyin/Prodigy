@@ -112,7 +112,7 @@ void trainModel(RNN<>& model,
     constexpr double STEP_SIZE = 5e-6;
 
     // Number of data points in each iteration of SGD
-    const int BATCH_SIZE = trainX.n_rows / ITERATIONS_PER_CYCLE;
+    const int BATCH_SIZE = 100;
 
     // Setting parameters Stochastic Gradient Descent (SGD) optimizer.
     SGD<AdamUpdate> optimizer(
