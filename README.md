@@ -11,11 +11,11 @@
 <a name="desc"></a>
 ## 1. Project Description
 
-Our aim is to train a machine learning algorithm for music composition. For this, we used mlpack, a C++ library, to build a recurrent neural network with a LSTM layer. Since training is more optimal when using number, we wrote an algorithm (with the help of external libraries) (*is this true tranlating people?*) that translates and retranslates MIDI files into csv files containing integers. After then LSTM was build and translating processes was completed, we trained our network using Bach MIDI files located in the folder, *insert here*. A sample composition is uploaded in *insert here* and the some training weights is saved in the folder *insert here* if the user wants readily to compose music. 
+Our aim is to train a machine learning algorithm for music composition. For this, we used mlpack, a C++ library, to build a recurrent neural network with a LSTM layer. Since training is more optimal when using number, we wrote an algorithm (with the help of external libraries) (*is this true tranlating people?*) that translates and retranslates MIDI files into csv files containing integers. After the LSTM was build and translating processes was completed, we trained our network using Bach MIDI files located in the folder, *insert here*. A sample composition is uploaded in *insert here* and the some training weights is saved in the folder *insert here* if the user wants readily to compose music. 
 
-For the course of the project we thereby divided ourselves into two teams, the "Translators" and the "Builders". For more information on the respective parts, see the translating (*link*) and neural network(*link*) sections. 
+For the course of the project we thereby divided ourselves into two teams, the "Translators" and the "Builders". For more information on the respective parts, see the translating  and neural network sections. 
 
-Link to possible website? 
+*section about GUI if applicable* 
 
 <a name="usage"></a>
 ## 2. Usage Instructions
@@ -60,7 +60,7 @@ Then, you can generate compositions from the saved model by executing `compose`.
 old description - 
 The first team, "Translators", will define how music will be represented by text: what notes are mapped to which characters, how time/ticks are defined through text... They will also write an algorithm who takes as input MIDI files and outputs a text file with relevant elements in defined format. 
 
-Also talk here about evaluating translate algorithm accuracy evaluation 
+Also talk here about translate algorithm accuracy evaluation 
 
 <a name="network"></a>
 ## 4. Neural Network 
@@ -101,9 +101,12 @@ Temperature will rescale the logits before putting them through the softmax func
 
 In our project, each combination of notes from the training set were encoded by a unique integer, which limits the combinations of notes the model can produce to ones it has already seen during training. Another way to encode music would be to give each note a unique character, then encode combinations of notes as combinations of these characters. This encoding is more complex but would be a more realistic modelization of true music composition.
 
+Furthermore, we can add complexity by finding a better way to encode rhytm. Currently, the scope of our training music is limited to music containing notes with lower velocities. This is due to the way we translation of the MIDI files. In particularly the tick like representation of music and the duration of time that note is help adds complexity to the translating dictionary. 
+*translating hu,man verify the above/make more complete please* 
+
 * Improve measure used to keep track of training
 
-The accuracy measure we implemented is a very naive measure where we simply calculate the percentage of notes the model outputs given the training set, to the actual notes from the training set. This measure is misleading and not well-suited in the scope of this project, as a model we would consider very good at producing music does not, and should not even have a high accuracy during training.  
+The accuracy measure we implemented is a very naive measure where we simply calculate the percentage of notes the model outputs given the training set, to the actual notes from the training set. This measure is misleading and not well-suited in the scope of this project, as a model we would consider very good at producing music does not, and should not even have a high accuracy during training. This leads to a fundamental question of how to classify what music is considered as "good". Answering such a question might require developing a criteria based on musical theory. 
 
 
 
