@@ -103,7 +103,7 @@ void trainModel(RNN<>& model,
     // options (here the step size is different).
         			      
      // Number of iteration per cycle.
-    constexpr int ITERATIONS_PER_CYCLE = 10;
+    constexpr int ITERATIONS_PER_CYCLE = 200;
 
     // Number of cycles.
     constexpr int CYCLES = 500;
@@ -142,6 +142,7 @@ void trainModel(RNN<>& model,
         // Don't reset optimizer's parameters between cycles.
         optimizer.ResetPolicy() = false;
         
+	/**
         cube predOut;
         // Getting predictions on training data points.
         model.Predict(trainX, predOut);
@@ -153,9 +154,9 @@ void trainModel(RNN<>& model,
         double trainAccuracy = accuracy(pred, real);       
 
         cout << i << " - accuracy = "<< trainAccuracy << "%," << endl;
-	
+	**/
 	// Save the model every 10 cycles
-	if (i % 10 == 0)
+	if (i % 1 == 0)
 	{
 		cout << "Checkpoint at cycle" << i << endl;
    		data::Save("model.xml", "model", model, false);
@@ -172,7 +173,7 @@ int main () {
     mat tempDataset;
 
     // the parameter rho for our LSTM model, also the length of the sequence considered during training
-    const int rho = 5;
+    const int rho = 20;
     
     // load a matrice containing translated music file for training
     data::Load("../utils/training.csv", tempDataset, true); 
@@ -186,11 +187,11 @@ int main () {
     
     RNN<> model(rho);
     model.Add<Linear <> > (trainX.n_rows, rho);
-    model.Add<LSTM <> > (rho,512);
-    model.Add<Linear <> > (512, 512);
-    model.Add<LSTM <> > (512, 512);
-    model.Add<Linear <> > (512, 256);
-    model.Add<Dropout <> > (0.3); // prevent overfitting
+    model.Add<LSTM <> > (rho,256);
+    model.Add<Linear <> > (256, 256);
+    model.Add<LSTM <> > (256, 256);
+    model.Add<Linear <> > (256, 256);
+    // model.Add<Dropout <> > (0.3); // prevent overfitting
     model.Add<Linear <> > (256, size_notes);
     model.Add<LogSoftMax<> > ();
     
