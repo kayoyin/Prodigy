@@ -562,7 +562,7 @@ void piano::on_commandLinkButton_4_clicked() //train
             std::string command="mv startnotes.csv ../utils/startnotes.csv";
             system(command.c_str());
 
-            std::string command1="./compose";
+            std::string command1="./composegui";
             system(command1.c_str());
             //TO ADD AI Algorithm and make music .mid
             //----------------------------------------------------------------------
