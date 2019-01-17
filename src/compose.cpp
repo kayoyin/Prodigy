@@ -30,7 +30,9 @@ void predictNotes(RNN<>& model,
     
     for (unsigned int i = 0; i < sequence_length; i++)
     {
-	start(0,0,i) = rand() % size_notes + 1; // random integer between 1 and size_notes
+    	int note = rand() % size_notes + 1; // random integer between 1 and size_notes
+	start(0,0,i) = note
+	music(i,0) = note
     }
 	
     cout << "Headstart: " << start << endl;
