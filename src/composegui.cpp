@@ -30,7 +30,7 @@ void predictNotes(RNN<>& model,
  
     mat startnotes;
     // Load notes from user input
-    data::Load("../utils/startnotes.csv", startnotes, true);
+    data::Load("./utils/startnotes.csv", startnotes, true);
 	
     for (unsigned int i = 0; i < sequence_length; i++)
     {
