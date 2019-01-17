@@ -19,7 +19,6 @@
 #include <QVectorIterator>
 #include <cstdio>
 #include <QMediaPlayer>
-#include <src/compose.hpp>
 
 
 bool rec = 0;
@@ -529,7 +528,7 @@ void piano::on_commandLinkButton_4_clicked() //train
 
 
         numFile.open(QDir::currentPath().toStdString()+"/startnotes.csv", std::ios::out);
-        outFile.open(QDir::currentPath().toStdString()+"/totrans.csv", std::ios::out);
+        outFile.open(QDir::currentPath().toStdString()+"/midicsv-csvmidi/totrans.csv", std::ios::out);
 
 
         int j = 0;
@@ -552,8 +551,7 @@ void piano::on_commandLinkButton_4_clicked() //train
             }
 
 
-            std::string command="cd midicsv-csvmidi/ &&  ./csvmidi startnotes.csv startnotes.mid";
-            system(command.c_str());
+
 
 
 
@@ -561,8 +559,8 @@ void piano::on_commandLinkButton_4_clicked() //train
             //
             //
             //
-            Compose AI;
-            AI.compose();
+            std::string command1="cd ./compose";
+            system(command1.c_str());
             //TO ADD AI Algorithm and make music .mid
             //----------------------------------------------------------------------
             outFile <<"0,0, Header,1,20,240,,,,,,,,\n"<<
@@ -626,6 +624,9 @@ void piano::on_commandLinkButton_4_clicked() //train
             endFile.close();
             outFile.close();
             numFile.close();
+
+            std::string command2="cd midicsv-csvmidi/ &&  ./csvmidi totrans.csv totrans.mid";
+            system(command2.c_str());
             QMessageBox msgBox;
             msgBox.setWindowTitle("play");
 
