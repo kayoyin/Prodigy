@@ -12,6 +12,8 @@
 #include <mlpack/methods/ann/layer/lstm.hpp>
 #include <mlpack/prereqs.hpp>
 
+#include "compose.hpp"
+
 using namespace mlpack;
 using namespace mlpack::ann;
 using namespace mlpack::optimization;
@@ -20,7 +22,7 @@ using namespace arma;
 using namespace std;
 using namespace mlpack::data;
 
-void predictNotes(RNN<>& model,
+void Compose::predictNotes(RNN<>& model,
                   const unsigned int sequence_length, const unsigned int size_notes, const unsigned int size_music)
 {
     
@@ -60,7 +62,7 @@ void predictNotes(RNN<>& model,
     cout << "Music saved to \"sonata.csv\"" << endl;
 }
 
-int main () {
+int Compose::compose () {
 
   mat tempDataset;
   const int rho = 5; // must be the same rho as the one used to train the model
