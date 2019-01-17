@@ -1,0 +1,8 @@
+#!/bin/bash
+
+cd utils;
+cp sonata.csv ../;
+./translateback;
+mv otranslateb.csv midicsv-csvmidi;
+./csvmidi otranslateb.csv final.mid;
+mv final.mid ../; 

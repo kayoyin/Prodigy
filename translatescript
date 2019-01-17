@@ -1,0 +1,34 @@
+#!/bin/bash
+
+#We are here making the executables first
+cd midicsv;
+make;
+cd ../;
+cmake;
+cd Translation;
+make;
+cd ../;
+echo $PWD; 
+for filename in music_gen/*.mid; do cp "$filename" ./; done;
+
+for filename in  ./*.mid; do mv "$filename" midicsv; done;
+cd midicsv;
+for filename in ./*.mid; do mv "$filename" music; done;
+echo $PWD;
+
+for filename in music/*.mid; do ./midicsv "$filename" "$filename.csv";
+done;
+
+for filename in music/*.csv; do mv "$filename" ./; done;
+
+for filename in *.csv; do mv "$filename" csvs; done;
+
+for filename in csvs/*.csv; do ./merge "$filename"; done
+
+echo $PWD;
+mv test.csv ../;
+cd ../; cd Translation; [ -e test.csvs] &&  rm test.csv; mv translateback ../;
+cd ../; mv test.csv Translation; cd Translation;
+./translate; 
+rm translate; mv training.csv ../;
+cd ../; mv training.csv utils; cd midicsv; rm midicsv; rm csvmidi; rm merge;
