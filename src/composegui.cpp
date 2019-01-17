@@ -30,7 +30,7 @@ void predictNotes(RNN<>& model,
  
     mat startnotes;
     // Load notes from user input
-    data::Load("../build-piano-Desktop_Qt_5_12_0_GCC_64bit-Debug/startnotes.csv", startnotes, true);
+    data::Load("../utils/startnotes.csv", startnotes, true);
 	
     for (unsigned int i = 0; i < sequence_length; i++)
     {
