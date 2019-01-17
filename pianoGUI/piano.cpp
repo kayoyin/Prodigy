@@ -20,6 +20,7 @@
 #include <cstdio>
 #include <QMediaPlayer>
 
+#include <../src/composegui.cpp>
 
 bool rec = 0;
 
@@ -523,7 +524,9 @@ void piano::on_commandLinkButton_4_clicked() //train
         QVector<int> input;
         std::map<std::string,int>::iterator it = mapOfWords.begin();
         std::ofstream myFile;
-        myFile.open(QDir::currentPath().toStdString()+"/midicsv-csvmidi/startnotes.csv", std::ios::out);
+        std::ofstream numFile;
+        myFile.open(QDir::currentPath().toStdString()+"/midicsv-csvmidi/csvnotes.csv", std::ios::out);
+        numFile.open(QDir::currentPath().toStdString()+"../utils/startnotes.csv", std::ios::out);
         myFile <<"0,0, Header,1,20,240,,,,,,,,\n"<<
                  "1,0, Start_track,,,,,,,,,,,\n"<<
                  "1,0, Tempo,491803,,,,,,,,,,\n"<<
@@ -564,6 +567,7 @@ void piano::on_commandLinkButton_4_clicked() //train
                  "2,1300, Control_c,0,64,63,,,,,,,,\n"<<
                  "2,1305, Control_c,0,64,127,,,,,,,,\n";   //appending header.csv
         int j = 0;
+
         for(int i=0; i < lis.size(); i++) {
             int out;
             QString key = lis.at(i);
@@ -573,6 +577,7 @@ void piano::on_commandLinkButton_4_clicked() //train
                     out = it->second;
                     it = mapOfWords.begin();
                     myFile << "1,"<< j << ",note_on_c,1," << out<<",100\n";
+                    numFile << out <<",";
                     j+=5;
                     myFile << "1,"<< j << ",note_on_c,1," << out<<",0\n";
                     ui->listWidget->addItem(QString::number(out));
@@ -585,6 +590,7 @@ void piano::on_commandLinkButton_4_clicked() //train
             }
             myFile <<"1, "<< j <<",End_track";
             myFile.close();
+            numFile.close();
             std::string command="cd midicsv-csvmidi/ &&  ./csvmidi startnotes.csv startnotes.mid";
             system(command.c_str());
 
