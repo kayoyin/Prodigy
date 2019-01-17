@@ -61,7 +61,7 @@ void predictNotes(RNN<>& model,
     cout << "Music saved to \"notes.csv\"" << endl;
 }
 
-int compose () {
+int main () {
 
   mat tempDataset;
   const int rho = 5; // must be the same rho as the one used to train the model
