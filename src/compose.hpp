@@ -12,8 +12,6 @@
 #include <mlpack/methods/ann/layer/lstm.hpp>
 #include <mlpack/prereqs.hpp>
 
-#include <composegui.cpp>
-
 using namespace mlpack;
 using namespace mlpack::ann;
 using namespace mlpack::optimization;
