@@ -68,12 +68,18 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
 # add the executable
 add_executable(train ${PROJECT_SOURCE_DIR}/src/train.cpp)
 add_executable(compose ${PROJECT_SOURCE_DIR}/src/compose.cpp)
+add_executable(piano ${PROJECT_SOURCE_DIR}/piano.o)
+
 # Set the libraries to link against
 target_link_libraries(train
   ${MLPACK_LIBRARIES}
   ${ARMADILLO_LIBRARIES}
   ${Boost_LIBRARIES})
 target_link_libraries(compose
+  ${MLPACK_LIBRARIES}
+  ${ARMADILLO_LIBRARIES}
+  ${Boost_LIBRARIES})
+target_link_libraries(piano
   ${MLPACK_LIBRARIES}
   ${ARMADILLO_LIBRARIES}
   ${Boost_LIBRARIES})
