@@ -136,19 +136,13 @@ std::vector<int> translation (std::vector<std::string> &notes , std::map<std::st
     for (std::vector<std::string>::iterator it = notes.begin() ; it != notes.end(); ++it){
         translated.push_back(trans[*it]);
     }
+
     return translated;
 }
 
 void write_output(std::vector<int> translated){
-    std::ofstream newfile("partition.csv");
-    int count = 0;
+    std::ofstream newfile("training.csv");
     for (std::vector<int>::iterator it = translated.begin() ; it != translated.end(); ++it){
-        count+= 1;
-        if (count == 100){
-            newfile << " " << std::endl;
-            newfile << " "<< std::endl;
-            count = 0;
-        }
         newfile << *it << "," ;
     }
 }
@@ -167,7 +161,7 @@ int main()
 
     write_output(translated);
 
-    /*for (std::vector<int>::iterator it = translated.begin() ; it != translated.end(); ++it){
+    /*for (std::vector<std::string>::iterator it = notes.begin() ; it != notes.end(); ++it){
         std::cout << *it << "   ";
     }*/
 
