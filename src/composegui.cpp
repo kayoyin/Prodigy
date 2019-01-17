@@ -22,6 +22,11 @@ using namespace arma;
 using namespace std;
 using namespace mlpack::data;
 
+Compose::Compose()
+{
+    cout << "Ready to compose" << endl;
+}
+
 void Compose::predictNotes(RNN<>& model,
                   const unsigned int sequence_length, const unsigned int size_notes, const unsigned int size_music)
 {
