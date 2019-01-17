@@ -57,7 +57,7 @@ void predictNotes(RNN<>& model,
 	
     }
     cout << "Saving predicted notes to \"notes.csv\" ..." << endl;
-    data::Save("../build-piano-Desktop_Qt_5_12_0_GCC_64bit-Debug/notes.csv", music); 
+    data::Save("../utils/notes.csv", music); 
     cout << "Music saved to \"notes.csv\"" << endl;
 }
 
