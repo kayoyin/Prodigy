@@ -39,7 +39,7 @@ void writeData()
 
     
     // the different files that we open
-    std::ofstream newfile("test.csv");
+    std::ofstream newfile("otranslateb.csv");
     std::ifstream header("header.csv");
 
     // declaring variable
@@ -127,7 +127,7 @@ void writeData()
 int main()
 {
     // Creating an object of CSVWriter
-    CSVReader reader("sonata.csv");
+    CSVReader reader("test.csv");
 
     // Get the data from CSV File
 
@@ -137,7 +137,7 @@ int main()
     std::map<std::string, int> trans = bijection(pitches);
     std::vector<int> translated = translation(notes, trans);
     
-    CSVReader part("485cycles.csv");
+    CSVReader part("sonata.csv");
     std::vector<int> partition = part.read_input();
     std::tuple<std::map<std::string, int>,std::vector<int>> tup = std::make_tuple(trans,partition);
     
