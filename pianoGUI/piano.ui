@@ -248,7 +248,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Train Current csv</string>
+     <string>Compose from csv</string>
     </property>
    </widget>
    <widget class="QLabel" name="label">
@@ -319,7 +319,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Step 3. Create csv file then train it with our trained AI !</string>
+     <string>Step 3. Create csv file compose from  train it with our trained AI !</string>
     </property>
    </widget>
    <widget class="QFrame" name="frame">
@@ -676,7 +676,7 @@
      <x>0</x>
      <y>0</y>
      <width>874</width>
-     <height>25</height>
+     <height>22</height>
     </rect>
    </property>
   </widget>
