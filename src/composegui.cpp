@@ -26,21 +26,10 @@ void predictNotes(RNN<>& model,
     
     cube start = cube(1, 1, sequence_length); // we initialize generation with a sequence of random notes
     mat music = mat(size_music,1, fill::zeros);	
-
-    /**
-    for (unsigned int i = 0; i < sequence_length; i++)
-    {
-    	int note = rand() % size_notes + 1; // random integer between 1 and size_notes
-	start(0,0,i) = note
-	music(i,0) = note
-    }
-	
-    cout << "Headstart: " << start << endl;
-    **/
-	    
+ 
     mat startnotes;
     // Load notes from user input
-    data::Load("../utils/startnotes.csv", startnotes, true);
+    data::Load("../build-piano-Desktop_Qt_5_12_0_GCC_64bit-Debug/startnotes.csv", startnotes, true);
 	
     for (unsigned int i = 0; i < sequence_length; i++)
     {
