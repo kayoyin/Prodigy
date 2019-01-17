@@ -85,9 +85,9 @@ Also, as we wanted to translate a large amount of data, we also programmed merge
 Now, we had to find a way to translate back the output of the lstm (a sequence of integers) into a midi file that we could listen to. To do so, we had to use the same translation map that was build during the translation process to associate back each integer to a single note or chord. Then, we had to write back the csv file containing the midi ticks, the actions (Note_on and Note_off) executed on each note and the note velocities. 
 This can be done with some precision, especially for the sequence of notes, but it is important to understand that a lot of information about the initiall music has been lost through our translation process: we no longer know the exact time each action was made nor the velocity of each note. In this perspective, we now had to do the following approxiamtions:
 
--We consider the time interval between two consecutive midi ticks to be equal. 
--We consider the velocity of the notes to be equal.
--Also, some notes may have been lost of shifted in our translation process.
+- We consider the time interval between two consecutive midi ticks to be equal. 
+- We consider the velocity of the notes to be equal.
+- Also, some notes may have been lost of shifted in our translation process.
 
 Therefore, using the some translation map into account and using the above approximations, we can then translate back the output of the lstm into a csv understandable by the csvmidi code mentioned above, which can transform it back into midi files. This part corresponds to the transelatebackv.cpp code and some part of the translate.hpp code.
 
