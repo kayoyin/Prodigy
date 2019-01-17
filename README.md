@@ -55,12 +55,15 @@ Then, you can generate compositions from the saved model by executing `compose`.
 <a name="trans"></a>
 ## 3. Translating 
 
-Decision-Making on format:
+### Decision-Making on format:
 The translating part was about finding a way to get from a audio type input and return an output for the Neural Network, as well as finding a way to get from the outputted format of Neural Network back to an audio type file. We decided to choose midi files as those files are easily found on internet which means more available training data. While midi file was chosen to represent audio files, we decided to have the scores stored as csv files, since csv datas are easily accessible and is also what the Neural Network team needed as input. 
 
-Ways to go from midi to csv and vice versa:
+### Ways to go from midi to csv and vice versa:
 Looking up on internet, we made the decision to use a given library found on github written in C, which was fortunately 
 close to c++, and thus automatically encapsulated. The functions from library are inside midicsv-csvmidi and it suffices to "make" to get the following executables: midicsv/csvmidi which are receiving two arguments the input filename and output filename.
+
+### Format of the input for Neural Networks:
+In order to feed the Neural Network, we had to simplify the result given by midicsv. And thus iterate over with a class CSVReader. The way to simplify it was to have a given 
 
 Also talk here about translate algorithm accuracy evaluation 
 
