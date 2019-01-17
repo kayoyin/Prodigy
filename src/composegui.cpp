@@ -72,7 +72,7 @@ int main () {
   RNN<> model(rho); 
   data::Load("model.xml", "model", model);	
   
-  cout << "Composing ..." << endl;
+  cout << "Composing from user input ..." << endl;
   predictNotes(model, sequence_length,size_music);
   cout << "Finished :)" << endl;
   

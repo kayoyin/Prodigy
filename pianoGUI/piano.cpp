@@ -19,6 +19,8 @@
 #include <QVectorIterator>
 #include <cstdio>
 #include <QMediaPlayer>
+#include <QDesktopServices>
+#include <QUrl>
 
 
 bool rec = 0;
@@ -551,9 +553,7 @@ void piano::on_commandLinkButton_4_clicked() //train
             }
 
 
-
-
-
+            numFile<<"\n";
 
             ui->listWidget->addItem("csv file created");
             //
@@ -561,9 +561,16 @@ void piano::on_commandLinkButton_4_clicked() //train
             //
             std::string command="mv startnotes.csv ../utils/startnotes.csv";
             system(command.c_str());
+            QDesktopServices::openUrl(QUrl(QDir::currentPath()+"/composegui"));
+            //std::string command1="./composegui";
+            //system(command1.c_str());
 
-            std::string command1="./composegui";
-            system(command1.c_str());
+            ui->listWidget->addItem("composed csv is :");
+            QStringList test;
+            foreach(int i, input){
+                test << QString::number(i);
+            }
+            ui->listWidget->addItems(test);
             //TO ADD AI Algorithm and make music .mid
             //----------------------------------------------------------------------
             outFile <<"0,0, Header,1,20,240,,,,,,,,\n"<<
@@ -606,7 +613,7 @@ void piano::on_commandLinkButton_4_clicked() //train
                      "2,1300, Control_c,0,64,63,,,,,,,,\n"<<
                      "2,1305, Control_c,0,64,127,,,,,,,,\n"; //appending header.csv
             //---------------------------------------------------------------------------------------------
-            std::ifstream endFile(QDir::currentPath().toStdString()+"/endnotes.csv");  //endFile is csv of integer from AI
+            std::ifstream endFile(QDir::currentPath().toStdString()+"/utils/notes.csv");  //endFile is csv of integer from AI
             std::string c;
             if (endFile.is_open()){
                 while (getline(endFile,c, ',')){
@@ -641,11 +648,7 @@ void piano::on_commandLinkButton_4_clicked() //train
             msgBox.exec();
 
             if (msgBox.clickedButton()==pButtonYes) {
-                QMediaPlayer *player = new QMediaPlayer;
-                player->setMedia(QUrl::fromLocalFile(QDir::currentPath()+"/MP3 COMPOSITIONS/result2.mp3"));
-                player->setVolume(100);
-                player->play();
-                player->stop();
+
             }
             else{
                 lis.clear();
