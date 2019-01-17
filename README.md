@@ -7,7 +7,7 @@ Table of Contents
     Neural Network
     Other
 
-1. Project Description
+## 1. Project Description
 
 Our aim is to train a machine learning algorithm for music composition. For this, we used mlpack, a C++ library, to build a recurrent neural network with a LSTM layer. Since training is more optimal when using number, we wrote an algorithm (with the help of external libraries) (is this true tranlating people?) that translates and retranslates MIDI files into csv files containing integers. After the LSTM was build and translating processes was completed, we trained our network using Bach MIDI files located in the folder, insert here. A sample composition is uploaded in insert here and the some training weights is saved in the folder insert here if the user wants readily to compose music.
 
@@ -15,7 +15,7 @@ For the course of the project we thereby divided ourselves into two teams, the "
 
 section about GUI if applicable
 
-2. Usage Instructions
+## 2. Usage Instructions
 Installing the dependencies
 
 After cloning from the project, you first need to install mlpack and its dependencies. To do so, simply run the following command:
@@ -59,18 +59,18 @@ $./backscript
 
 
 
-3. Translating
+## 3. Translating
 
-Decision-making on the filetype:
+### Decision-making on the filetype:
 
 To begin with, we had to make a choice on what kind of audio file we wanted to use, and what kind of storing file for sheets we wanted to use. And finally we made up our mind on using midi files for audio and csv files for sheet writing purpose. Now stating the reasons: midi files are easy to find which implies more training data; for the latter, we were familiar with csv files, but most importantly, csv files were the input for the Neural Network and also its output.
 
-Dealing with filetype:
+### Dealing with filetype:
 
 Now in order to get the midi files in a human-readable csv file, we had to look for an external library on github that happened to be written in C. Fortunately, it was possible for us to still compile it using standard g++ command. Inside this external package, there was two main functions that we fetched: midicsv and csvmidi. Both functions' use are self-explanatory, moreover both functions receive two arguments, which are (depending on which function) a csv filename and a midi filename.
 Csv files outputted from the functions have a specific format which is a header, the main body and an ending line. The main parts has the following general format: "Track, Tick, Note_ON/Note_Off, instrument,note,velocity". A remark: among thoses, Tick is the absolute time value, and the velocity when 0 means that the note is not benig played. 
 
-Translating Process: 
+### Translating Process: 
 
 Now for the csv given by the function midicsv to yield a csv that is fit for the Neural Network. We had to pull out from the CSV only the main informations which are the tick, the notes, and the velocity. The assumptions that were noticeable, that we made were:
 - Considering the tempo to be regular, and thus not truly considering the difference between ticks.
@@ -87,14 +87,14 @@ For the translating back process, this time around, we made others practical ass
 
 Practical detail: In order to be a bit more efficient, we decided not to fix a given dictionary (the dictionary must be obviously the same for both translate, and translateback), but to create it when translating and having it created in translateback to use it.(creating the dictionary the same way we did before). The dictionary creation follows an easy principle which is to map a new note to the image of the last seen note + 1. 
 
-Mechanical for the purpose of training:
+### Mechanical for the purpose of training:
 
 To make the training of Neural Network easier, we had to find a way to be able to translate multiple midi files and then "merge" them to get one sole csv file that is given as input to the Nerual Network. And therefore we created a merge.cpp which executable is called merge that as mentioned, merges csv files that were transformed from midi files beforehand. Merge receives as an argument a csv file, that will append to the final file. 
 
-Also talk here about translate algorithm accuracy evaluation
+### Also talk here about translate algorithm accuracy evaluation
 
-4. Neural Network
-Music composition with recurrent neural networks (RNN)
+## 4. Neural Network
+### Music composition with recurrent neural networks (RNN)
 
 We chose to implement an artificial neural network for its sheer prediction power after enough training. Because of the sequential nature of music, the dependency of the value of the notes at a certain time step to the music that precedes it, a recurrent neural network rather than a feedforward neural network is the necessary choice.
 
@@ -113,13 +113,13 @@ The training labels or what the model is expected to output is defined as the si
 The output of our model is a cube with one row, as many columns as the total number of different notes, and as many slices as the length of the sequence considered at each time step. To extract the notes given a probability vector, we simply look for the index with the maximum probability and choose that as the note predicted by our model.
 
 We measure accuracy after each cycle of training by calculating the percentage of notes from the prediction that coincide with the note from the training set at the respective time step. Note that this accuracy is only one indicator to keep track of training, and we expect the percentage to stay low as the model should still have some creativity. This accuracy mostly ensures no overfitting happens, as we do not want the model to reproduce exactly the given training music.
-Generating music after training
+### Generating music after training
 
 Once we have trained a model, we can save the model with the trained weights for later use. We have chosen to have the model be saved automatically after each 20 cycles of training.
 
 To have the network generate music, we then load the previously trained model. Essentially, the trained network is a prediction model, so it needs a starting point for composition. We use a randomly generated short sequence of notes as the seed sequence which we feed into the prediction method of the model. From then on, we feed the new sequence predicted by the model to obtain the next predicted sequence, and we continue this step until we get a music sequence of our desired length.
 
-5. What now?
+## 5. What now?
 
 Here are some extension ideas that have not been explored that could possibly improve our implementation:
 
