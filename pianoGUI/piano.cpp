@@ -629,7 +629,7 @@ void piano::on_commandLinkButton_4_clicked() //train
             numFile.close();
             std::string command3="mv totrans.csv ../midicsv-csvmidi/totrans.csv";
             system(command3.c_str());
-            std::string command2="cd midicsv-csvmidi/ &&  ./csvmidi totrans.csv totrans.mid";
+            std::string command2="cd ../midicsv-csvmidi/ &&  ./csvmidi totrans.csv totrans.mid";
             system(command2.c_str());
             QMessageBox msgBox;
             msgBox.setWindowTitle("play");
