@@ -1,0 +1,16 @@
+#!/bin/bash
+
+cd Translation;
+cp test.csv ../;
+cp header.csv ../;
+cd ../;
+cd utils;
+cp sonata.csv ../;
+cd ../;
+./translateback;
+mv otranslateb.csv midicsv-csvmidi;
+cd midicsv-csvmidi;
+./csvmidi otranslateb.csv final.mid;
+mv final.mid ../;
+cd ../;
+rm test.csv; rm header.csv; rm sonata.csv; 

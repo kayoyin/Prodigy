@@ -1,0 +1,43 @@
+<RCC>
+    <qresource prefix="/new/prefix1">
+        <file>a3.wav</file>
+        <file>ab3.wav</file>
+        <file>b3.wav</file>
+        <file>bb3.wav</file>
+        <file>c3.wav</file>
+        <file>c4.wav</file>
+        <file>d3.wav</file>
+        <file>db3.wav</file>
+        <file>e3.wav</file>
+        <file>eb3.wav</file>
+        <file>f3.wav</file>
+        <file>g3.wav</file>
+        <file>gb3.wav</file>
+        <file>picture.png</file>
+        <file>gb5.wav</file>
+        <file>g5.wav</file>
+        <file>f5.wav</file>
+        <file>eb5.wav</file>
+        <file>e5.wav</file>
+        <file>db5.wav</file>
+        <file>d5.wav</file>
+        <file>c6.wav</file>
+        <file>bb5.wav</file>
+        <file>b5.wav</file>
+        <file>ab5.wav</file>
+        <file>a5.wav</file>
+        <file>g4.wav</file>
+        <file>eb4.wav</file>
+        <file>e4.wav</file>
+        <file>db4.wav</file>
+        <file>d4.wav</file>
+        <file>c5.wav</file>
+        <file>bb4.wav</file>
+        <file>b4.wav</file>
+        <file>ab4.wav</file>
+        <file>a4.wav</file>
+        <file>gb4.wav</file>
+        <file>f4.wav</file>
+        <file>1397558.ico</file>
+    </qresource>
+</RCC>
