@@ -41,7 +41,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 *gcc*:QMAKE_CXXFLAGS += -std=c++11
 
 QT += core gui
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets multimedia
+greaterThan(QT_MAJOR_VERSION, 4.8): QT += widgets multimedia
 
 RESOURCES += \
     audios.qrc

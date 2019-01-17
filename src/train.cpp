@@ -173,7 +173,7 @@ int main () {
     mat tempDataset;
 
     // the parameter rho for our LSTM model, also the length of the sequence considered during training
-    const int rho = 5;
+    const int rho = 20;
     
     // load a matrice containing translated music file for training
     data::Load("../utils/training.csv", tempDataset, true); 

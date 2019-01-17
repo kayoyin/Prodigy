@@ -1,4 +1,4 @@
-# Project Prodigy
+# Prodigy
 
 # Table of Contents 
 
@@ -9,15 +9,13 @@
 5. [ Other ](#other)
 
 <a name="desc"></a>
-## 1. Project Description 
+## 1. Project Description
 
 Our aim is to train a machine learning algorithm for music composition. For this, we used mlpack, a C++ library, to build a recurrent neural network with a LSTM layer. Since training is more optimal when using number, we wrote an algorithm (with the help of external libraries) (*is this true tranlating people?*) that translates and retranslates MIDI files into csv files containing integers. After the LSTM was build and translating processes was completed, we trained our network using Bach MIDI files located in the folder, *insert here*. A sample composition is uploaded in *insert here* and the some training weights is saved in the folder *insert here* if the user wants readily to compose music. 
 
 For the course of the project we thereby divided ourselves into two teams, the "Translators" and the "Builders". For more information on the respective parts, see the translating  and neural network sections. 
 
 *section about GUI if applicable* 
-
-If you do not have any particular software to play MIDI files, you can either translate them into mp3 using the following [website](https://www.onlineconverter.com/midi-to-mp3) - it looks like some websites do not convert all types of MIDI files properly, but this one has been working well so far - or use a specialized softwares like the [TiMidity++](http://timidity.sourceforge.net/) software synthesiser, which can also create wave audio files from MIDI songs.
 
 <a name="usage"></a>
 ## 2. Usage Instructions
@@ -57,48 +55,12 @@ Then, you can generate compositions from the saved model by executing `compose`.
 <a name="trans"></a>
 ## 3. Translating 
 
-### Decision-Making on format
-The translating part was about finding a way to get from a audio type input and return an output for the Neural Network, as well as finding a way to get from the outputted format of Neural Network back to an audio type file. We decided to choose midi files as those files are easily found on internet which means more available training data. While midi file was chosen to represent audio files, we decided to have the scores stored as csv files, since csv datas are easily accessible and is also what the Neural Network team needed as input. 
+- explain basic process behind your code - 
 
-### Ways to go from midi to csv and vice versa
-Looking up on internet, we made the decision to use a given library found on github written in C, which was fortunately 
-close to c++, and thus automatically encapsulated. The functions from this library are inside midicsv-csvmidi and it suffices to "make" to get the following executables: midicsv/csvmidi which are receiving two arguments the input filename and output filename. These two codes will translate the midi files into csv files of 5 colums detailing everything that is necessary to build back a csv file, that is, in order: 
+old description - 
+The first team, "Translators", will define how music will be represented by text: what notes are mapped to which characters, how time/ticks are defined through text... They will also write an algorithm who takes as input MIDI files and outputs a text file with relevant elements in defined format. 
 
-- The number of the track.
-- The number of MIDI ticks associated to the notes (time unit).
-- The number associated to the instrument played - here, we only use piano compositions.
-- The action applied on the note (Note_On_c = activate note and Note_Off_c = stop playing the note).
-- The velocity of the note.
-
-
-For more information on these csv formats, you can check the following [page](http://www.fourmilab.ch/webtools/midicsv/)
-
-### Format of the input for Neural Networks
-In order to feed the Neural Network, we had to simplify the result given by midicsv. We decided to use sequences of integers as the input of our LSTM, as these are easier to handle by the Neural network than a sequence of notes and chords. With this in mind, we tried to simplify the csv associated to our MIDI file to translate by iterating over it and decomposing the partition into a list of consecutive notes and chords (chord = several notes played together). The idea was to look at all the notes that were ON at each MIDI tick and remove the notes that were put OFF at this MIDI tick. The notes that were not eliminated through this process were considered as part of one chord. 
-
-Then, in order to get our sequence of integers, we had to use a specific "translation map" that maps every note or chord to a unique integer. Note that this map cannot be made in advance and has to be created and updated through the translation process are there are virtually an infinite possible number of chords. 
-
-We then use this translation map to form our sequence of integers, which will be written again in a csv format, ready to be sent to the LSTM. 
-
-This part corresponds to the translate.cpp code and and some parts of the translate.hpp code.
-
-Also, as we wanted to translate a large amount of data, we also programmed merge.cpp that merges the midi files together and translates the associated midi file into our sequence of integers.
-
-### The process of backward translation
-Now, we had to find a way to translate back the output of the lstm (a sequence of integers) into a midi file that we could listen to. To do so, we had to use the same translation map that was build during the translation process to associate back each integer to a single note or chord. Then, we had to write back the csv file containing the midi ticks, the actions (Note_on and Note_off) executed on each note and the note velocities. 
-This can be done with some precision, especially for the sequence of notes, but it is important to understand that a lot of information about the initial music has been lost through our translation process: we no longer know the exact time each action was made nor the velocity of each note. In this perspective, we now had to do the following approximations:
-
-- We consider the time interval between two consecutive midi ticks to be equal. 
-- We consider the velocity of the notes to be equal.
-- Also, some notes may have been lost or shifted in our translation process.
-
-Therefore, using the same translation map as before and taking into account the above approximations, we can then translate back the output of the lstm into a csv understandable by the csvmidi code mentioned above, which can transform it back into midi files. This part corresponds to the transelatebackv.cpp code and some part of the translate.hpp code.
-
-### Accuracy evaluation of the backward translation algorithm
-
-Once we had both algorithms, we wanted to assess more formally the accuracy of the backward translation algorithm, that is to say how the approximation we chose to make would change the file. The algorithm takes as input a csv file of a music translated by “midicsv” (not transformed) and a csv file translated both ways by “translate.cpp” and “translateback.cpp”. It outputs the average difference between two consecutive ticks' time intervals between the original file and the translated one and the average difference in velocity between the original file and the translated one. It was a way to quantify the lost but also to compare composers like Mozart and Bach, in order to see which one fitted our project the best. The algorithm also outputs the number of identical similar notes between the two files. As expected, some notes are lost, which creates a shift between the two files that complicates their analysis but doesn't really change the sound. 
- 
-
+Also talk here about translate algorithm accuracy evaluation 
 
 <a name="network"></a>
 ## 4. Neural Network 

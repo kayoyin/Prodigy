@@ -17,7 +17,6 @@
 #include <set>
 #include <tuple>
 #include <map>
-#include <sstream>
 
 class CSVReader
 {
@@ -81,17 +80,15 @@ std::tuple<std::set<std::string>,std::vector<std::string>>  getData()
 
         if (check == true){
 
-            if (dataList.at(y).at(5) == " 0" || dataList.at(y).at(2) == " Note_off_c"){
+            if (dataList.at(y).at(5) == " 0"){
 
                 memo.erase(dataList.at(y).at(4));
                 y++;
             }
 
-            else if (dataList.at(y).at(5) != " 0" && dataList.at(y).at(2) != " Note_off_c"){
+            else if (dataList.at(y).at(5) != " 0"){
                 while (dataList.at(y).at(1) == prev){
-                   if(dataList.at(y).at(5) != " 0" && dataList.at(y).at(2) != " Note_off_c" ) memo.insert(dataList.at(y).at(4));
-                    else if (dataList.at(y).at(2) == " Note_off_c") memo.erase(dataList.at(y).at(4));
-                    else memo.erase(dataList.at(y).at(4));
+                    memo.insert(dataList.at(y).at(4));
                     y++;
                 }
 
@@ -119,39 +116,9 @@ std::tuple<std::set<std::string>,std::vector<std::string>>  getData()
     return std::make_tuple(pitches,notes);
 }
 
-int sciToint(const std::string& str) {
-   std::stringstream ss(str);
-   double d = 0;
-   ss >> d;
-   return (int) d;
-}
+/*std::vector<int> get_partition(){
 
-//creates the list of integers from the new partition
-std::vector<int> read_input(){
-    std::ifstream file(fileName);
-    std::vector<std::vector<std::string> > dataList;
-    
-    std::string line = "";
-    // Iterate through each line and split the content using delimeter
-    
-    while (getline(file, line))
-    {
-        std::vector<std::string> vec;
-        boost::algorithm::split(vec, line, boost::is_any_of(delimeter));
-        dataList.push_back(vec);    
-        
-    }
-    // Close the File
-    file.close();
-    std::vector<int> partition;
-    int dummy;
-    for (std::vector<std::string>::iterator it = dataList.at(0).begin() ; it != dataList.at(0).end(); ++it){
-	    dummy = sciToint(*it);
-        partition.push_back(dummy);
-    }
-    return partition;
-}
-
+}*/
 };
 
 std::map<std::string, int> bijection (std::set<std::string> &myset) { // Returns the associated translation map

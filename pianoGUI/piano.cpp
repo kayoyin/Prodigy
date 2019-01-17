@@ -20,7 +20,6 @@
 #include <cstdio>
 #include <QMediaPlayer>
 
-#include <../src/composegui.cpp>
 
 bool rec = 0;
 
@@ -526,7 +525,7 @@ void piano::on_commandLinkButton_4_clicked() //train
         std::ofstream myFile;
         std::ofstream numFile;
         myFile.open(QDir::currentPath().toStdString()+"/midicsv-csvmidi/csvnotes.csv", std::ios::out);
-        numFile.open(QDir::currentPath().toStdString()+"../utils/startnotes.csv", std::ios::out);
+        numFile.open(QDir::currentPath().toStdString()+"/startnotes.csv", std::ios::out);
         myFile <<"0,0, Header,1,20,240,,,,,,,,\n"<<
                  "1,0, Start_track,,,,,,,,,,,\n"<<
                  "1,0, Tempo,491803,,,,,,,,,,\n"<<

@@ -246,7 +246,7 @@ public:
         piano->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(piano);
         menuBar->setObjectName(QString::fromUtf8("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 874, 25));
+        menuBar->setGeometry(QRect(0, 0, 874, 22));
         piano->setMenuBar(menuBar);
         mainToolBar = new QToolBar(piano);
         mainToolBar->setObjectName(QString::fromUtf8("mainToolBar"));
@@ -279,12 +279,12 @@ public:
         commandLinkButton_2->setText(QApplication::translate("piano", "Stop recording", nullptr));
         commandLinkButton_3->setText(QApplication::translate("piano", "Create csv file", nullptr));
         C_2->setText(QApplication::translate("piano", "C", nullptr));
-        commandLinkButton_4->setText(QApplication::translate("piano", "Train Current csv", nullptr));
+        commandLinkButton_4->setText(QApplication::translate("piano", "Compose from csv", nullptr));
         label->setText(QApplication::translate("piano", "<html><head/><body><p><span style=\" font-weight:600;\">Make your own music !</span></p></body></html>", nullptr));
         label_2->setText(QApplication::translate("piano", "Step 1. Play around with the given virtual piano below!", nullptr));
         label_3->setText(QApplication::translate("piano", "Step 2. Record the set of chords that you want the AI to generate", nullptr));
         label_4->setText(QApplication::translate("piano", "music from.", nullptr));
-        label_5->setText(QApplication::translate("piano", "Step 3. Create csv file then train it with our trained AI !", nullptr));
+        label_5->setText(QApplication::translate("piano", "Step 3. Create csv file compose from  train it with our trained AI !", nullptr));
         D_2->setText(QApplication::translate("piano", "D", nullptr));
         E_2->setText(QApplication::translate("piano", "E", nullptr));
         Gb_2->setText(QApplication::translate("piano", "Gb", nullptr));
