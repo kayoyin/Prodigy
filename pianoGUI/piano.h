@@ -105,6 +105,8 @@ private slots:
     void on_commandLinkButton_5_clicked();
 
 
+    void on_commandLinkButton_6_clicked();
+
 private:
     Ui::piano *ui;
 };

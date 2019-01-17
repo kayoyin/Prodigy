@@ -522,18 +522,18 @@ void piano::on_commandLinkButton_4_clicked() //train
         mapOfWords.insert(std::make_pair("Bb_3",82));
         mapOfWords.insert(std::make_pair("B_3",83));
         mapOfWords.insert(std::make_pair("C_4",84));
-        QVector<int> input;
+
         std::map<std::string,int>::iterator it = mapOfWords.begin();
 
         std::ofstream numFile;  //numFile is csv of user input
-        std::ofstream outFile;   //outFile is csv of csvAudio of AI composed music
+
 
 
         numFile.open(QDir::currentPath().toStdString()+"/startnotes.csv", std::ios::out);
-        outFile.open(QDir::currentPath().toStdString()+"/totrans.csv", std::ios::out);
 
 
-        int j = 0;
+
+
 
         for(int i=0; i < lis.size(); i++) {
             int out;
@@ -561,90 +561,20 @@ void piano::on_commandLinkButton_4_clicked() //train
             //
             std::string command="mv startnotes.csv ../utils/startnotes.csv";
             system(command.c_str());
-            QDesktopServices::openUrl(QUrl(QDir::currentPath()+"/composegui"));
+
             //std::string command1="./composegui";
             //system(command1.c_str());
 
-            ui->listWidget->addItem("composed csv is :");
-            QStringList test;
-            foreach(int i, input){
-                test << QString::number(i);
-            }
-            ui->listWidget->addItems(test);
-            //TO ADD AI Algorithm and make music .mid
-            //----------------------------------------------------------------------
-            outFile <<"0,0, Header,1,20,240,,,,,,,,\n"<<
-                     "1,0, Start_track,,,,,,,,,,,\n"<<
-                     "1,0, Tempo,491803,,,,,,,,,,\n"<<
-                     "1,0, Time_signature,4,2,24,8,,,,,,,\n"<<
-                     "1,0, Text_t,Mozart Sonate a moll K.V.310 (1st.mov.)  Play by Katsuhiro Oguri,,,,,,,,,,\n"<<
-                     "1,0, End_track,,,,,,,,,,,\n"<<
-                     "2,0, Start_track,,,,,,,,,,,\n"<<
-                     "2,0, Time_signature,4,2,24,8,,,,,,,\n"<<
-                     "2,0, Title_t,PIANO                               ,,,,,,,,,,\n"<<
-                     "2,0, System_exclusive,10,65,16,66,18,64,0,127,0,65,247\n"<<
-                     "2,0, System_exclusive,10,65,16,66,18,64,0,4,100,88,247\n"<<
-                     "2,170, System_exclusive,10,65,16,66,18,64,1,48,3,12,247\n"<<
-                     "2,170, System_exclusive,10,65,16,66,18,64,1,51,80,60,247\n"<<
-                     "2,170, System_exclusive,10,65,16,66,18,64,1,52,60,79,247\n"<<
-                     "2,372, Control_c,0,0,0,,,,,,,,\n"<<
-                     "2,374, Control_c,0,32,1,,,,,,,,\n"<<
-                     "2,376, Program_c,0,0,,,,,,,,,\n"<<
-                     "2,378, Control_c,0,7,100,,,,,,,,\n"<<
-                     "2,474, Control_c,0,11,100,,,,,,,,\n"<<
-                     "2,570, Control_c,0,10,64,,,,,,,,\n"<<
-                     "2,666, Control_c,0,1,0,,,,,,,,\n"<<
-                     "2,666, Control_c,0,91,80,,,,,,,,\n"<<
-                     "2,675, Control_c,0,99,1,,,,,,,,\n"<<
-                     "2,677, Control_c,0,98,32,,,,,,,,\n"<<
-                     "2,679, Control_c,0,6,62,,,,,,,,\n"<<
-                     "2,681, Control_c,0,99,1,,,,,,,,\n"<<
-                     "2,683, Control_c,0,98,33,,,,,,,,\n"<<
-                     "2,685, Control_c,0,6,54,,,,,,,,\n"<<
-                     "2,687, Control_c,0,99,1,,,,,,,,\n"<<
-                     "2,689, Control_c,0,98,99,,,,,,,,\n"<<
-                     "2,691, Control_c,0,6,62,,,,,,,,\n"<<
-                     "2,693, Control_c,0,99,1,,,,,,,,\n"<<
-                     "2,695, Control_c,0,98,100,,,,,,,,\n"<<
-                     "2,697, Control_c,0,6,60,,,,,,,,\n"<<
-                     "2,699, Control_c,0,99,1,,,,,,,,\n"<<
-                     "2,701, Control_c,0,98,102,,,,,,,,\n"<<
-                     "2,703, Control_c,0,6,70,,,,,,,,\n"<<
-                     "2,1300, Control_c,0,64,63,,,,,,,,\n"<<
-                     "2,1305, Control_c,0,64,127,,,,,,,,\n"; //appending header.csv
-            //---------------------------------------------------------------------------------------------
-            std::ifstream endFile(QDir::currentPath().toStdString()+"/utils/notes.csv");  //endFile is csv of integer from AI
-            std::string c;
-            if (endFile.is_open()){
-                while (getline(endFile,c, ',')){
-                            input.push_back(std::stoi(c));
-                }
-            }       //ADDING CONTENTS IN ENDNOTES.csv FROM AI TO QVECTOR INPUT
 
-            for (int i=0; i<input.size();i++){
-                j+=5;
-                outFile << "1,"<< j << ",note_on_c,1," << input.at(i)<<",100\n";
-                j+=5;
-                outFile << "1,"<< j << ",note_on_c,1," << input.at(i)<<",0\n";
-
-            }
-                outFile <<"1, "<< j <<",End_track";
-
-
-            endFile.close();
-            outFile.close();
             numFile.close();
-            std::string command3="mv totrans.csv ../midicsv-csvmidi/totrans.csv";
-            system(command3.c_str());
-            std::string command2="cd ../midicsv-csvmidi/ &&  ./csvmidi totrans.csv totrans.mid";
-            system(command2.c_str());
+
             QMessageBox msgBox;
             msgBox.setWindowTitle("play");
 
 
-            msgBox.setText("press \"Play\" to play and \"Cancel\" to do another one");
-            QAbstractButton* pButtonYes = msgBox.addButton(tr("Play!"), QMessageBox::YesRole);
-            msgBox.addButton(tr("Cancel"), QMessageBox::NoRole);
+            msgBox.setText("SURPRISE! We are not done yet, we like our users to be more hands on programmer, so now go to your command prompt and run \"./composegui\"");
+            QAbstractButton* pButtonYes = msgBox.addButton(tr("Ok!"), QMessageBox::YesRole);
+            msgBox.addButton(tr("Whatever"), QMessageBox::NoRole);
             msgBox.exec();
 
             if (msgBox.clickedButton()==pButtonYes) {
@@ -657,3 +587,91 @@ void piano::on_commandLinkButton_4_clicked() //train
 }
 
 
+
+void piano::on_commandLinkButton_6_clicked()
+{
+     QVector<int> input;
+     std::ofstream outFile;   //outFile is csv of csvAudio of AI composed music
+     outFile.open(QDir::currentPath().toStdString()+"/totrans.csv", std::ios::out);
+
+     std::ifstream endFile(QDir::currentPath().toStdString()+"/utils/notes.csv");  //endFile is csv of integer from AI
+     std::string c;
+     if (endFile.is_open()){
+         while (getline(endFile,c, ',')){
+                     input.push_back(std::stoi(c));
+         }
+     }       //ADDING CONTENTS IN ENDNOTES.csv FROM AI TO QVECTOR INPUT
+     ui->listWidget->addItem("composed csv is :");
+
+     QStringList test;
+     foreach(int i, input){
+         test << QString::number(i);
+     }
+
+     ui->listWidget->addItems(test);
+
+
+
+
+     //TO ADD AI Algorithm and make music .mid
+     //----------------------------------------------------------------------
+     outFile <<"0,0, Header,1,20,240,,,,,,,,\n"<<
+              "1,0, Start_track,,,,,,,,,,,\n"<<
+              "1,0, Tempo,491803,,,,,,,,,,\n"<<
+              "1,0, Time_signature,4,2,24,8,,,,,,,\n"<<
+              "1,0, Text_t,Mozart Sonate a moll K.V.310 (1st.mov.)  Play by Katsuhiro Oguri,,,,,,,,,,\n"<<
+              "1,0, End_track,,,,,,,,,,,\n"<<
+              "2,0, Start_track,,,,,,,,,,,\n"<<
+              "2,0, Time_signature,4,2,24,8,,,,,,,\n"<<
+              "2,0, Title_t,PIANO                               ,,,,,,,,,,\n"<<
+              "2,0, System_exclusive,10,65,16,66,18,64,0,127,0,65,247\n"<<
+              "2,0, System_exclusive,10,65,16,66,18,64,0,4,100,88,247\n"<<
+              "2,170, System_exclusive,10,65,16,66,18,64,1,48,3,12,247\n"<<
+              "2,170, System_exclusive,10,65,16,66,18,64,1,51,80,60,247\n"<<
+              "2,170, System_exclusive,10,65,16,66,18,64,1,52,60,79,247\n"<<
+              "2,372, Control_c,0,0,0,,,,,,,,\n"<<
+              "2,374, Control_c,0,32,1,,,,,,,,\n"<<
+              "2,376, Program_c,0,0,,,,,,,,,\n"<<
+              "2,378, Control_c,0,7,100,,,,,,,,\n"<<
+              "2,474, Control_c,0,11,100,,,,,,,,\n"<<
+              "2,570, Control_c,0,10,64,,,,,,,,\n"<<
+              "2,666, Control_c,0,1,0,,,,,,,,\n"<<
+              "2,666, Control_c,0,91,80,,,,,,,,\n"<<
+              "2,675, Control_c,0,99,1,,,,,,,,\n"<<
+              "2,677, Control_c,0,98,32,,,,,,,,\n"<<
+              "2,679, Control_c,0,6,62,,,,,,,,\n"<<
+              "2,681, Control_c,0,99,1,,,,,,,,\n"<<
+              "2,683, Control_c,0,98,33,,,,,,,,\n"<<
+              "2,685, Control_c,0,6,54,,,,,,,,\n"<<
+              "2,687, Control_c,0,99,1,,,,,,,,\n"<<
+              "2,689, Control_c,0,98,99,,,,,,,,\n"<<
+              "2,691, Control_c,0,6,62,,,,,,,,\n"<<
+              "2,693, Control_c,0,99,1,,,,,,,,\n"<<
+              "2,695, Control_c,0,98,100,,,,,,,,\n"<<
+              "2,697, Control_c,0,6,60,,,,,,,,\n"<<
+              "2,699, Control_c,0,99,1,,,,,,,,\n"<<
+              "2,701, Control_c,0,98,102,,,,,,,,\n"<<
+              "2,703, Control_c,0,6,70,,,,,,,,\n"<<
+              "2,1300, Control_c,0,64,63,,,,,,,,\n"<<
+              "2,1305, Control_c,0,64,127,,,,,,,,\n"; //appending header.csv
+     //---------------------------------------------------------------------------------------------
+     int j = 0;
+
+     for (int i=0; i<input.size();i++){
+         j+=5;
+         outFile << "1,"<< j << ",note_on_c,1," << input.at(i)<<",100\n";
+         j+=5;
+         outFile << "1,"<< j << ",note_on_c,1," << input.at(i)<<",0\n";
+
+     }
+         outFile <<"1, "<< j <<",End_track";
+
+
+     endFile.close();
+     outFile.close();
+
+    std::string command3="mv totrans.csv ../midicsv-csvmidi/totrans.csv";
+    system(command3.c_str());
+    std::string command2="cd ../midicsv-csvmidi/ &&  ./csvmidi totrans.csv totrans.mid";
+    system(command2.c_str());
+}
