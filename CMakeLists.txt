@@ -68,6 +68,8 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
 # add the executable
 add_executable(train ${PROJECT_SOURCE_DIR}/src/train.cpp)
 add_executable(compose ${PROJECT_SOURCE_DIR}/src/compose.cpp)
+add_executable(composegui ${PROJECT_SOURCE_DIR}/build-piano-Desktop_Qt_5_12_0_GCC_64bit-Debug/composegui.cpp)
+
 
 # Set the libraries to link against
 target_link_libraries(train
@@ -78,4 +80,7 @@ target_link_libraries(compose
   ${MLPACK_LIBRARIES}
   ${ARMADILLO_LIBRARIES}
   ${Boost_LIBRARIES})
-
+target_link_libraries(composegui
+  ${MLPACK_LIBRARIES}
+  ${ARMADILLO_LIBRARIES}
+  ${Boost_LIBRARIES})
