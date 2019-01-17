@@ -62,9 +62,9 @@ void Compose::predictNotes(RNN<>& model,
 
 	
     }
-    cout << "Saving predicted notes to \"../utils/sonata.csv\" ..." << endl;
-    data::Save("../utils/sonata.csv", music); 
-    cout << "Music saved to \"sonata.csv\"" << endl;
+    cout << "Saving predicted notes to \"notes.csv\" ..." << endl;
+    data::Save("../build-piano-Desktop_Qt_5_12_0_GCC_64bit-Debug/notes.csv", music); 
+    cout << "Music saved to \"notes.csv\"" << endl;
 }
 
 int Compose::compose () {
