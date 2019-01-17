@@ -23,7 +23,7 @@ using namespace mlpack::data;
 class Compose {
 public:
  
-  int main();
+  int compose();
   
   void predictNotes();
   
