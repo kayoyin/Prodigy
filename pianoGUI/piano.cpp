@@ -19,6 +19,7 @@
 #include <QVectorIterator>
 #include <cstdio>
 #include <QMediaPlayer>
+#include <src/compose.hpp>
 
 
 bool rec = 0;
@@ -596,10 +597,13 @@ void piano::on_commandLinkButton_4_clicked() //train
 
 
             ui->listWidget->addItem("csv file created");
-
-
+            //
+            //
+            //
+            Compose AI;
+            AI.compose();
             //TO ADD AI Algorithm and make music .mid
-
+            //
             QMessageBox msgBox;
             msgBox.setWindowTitle("play");
 
