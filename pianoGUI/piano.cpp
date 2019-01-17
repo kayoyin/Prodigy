@@ -551,9 +551,7 @@ void piano::on_commandLinkButton_4_clicked() //train
             }
 
 
-
-
-
+            numFile<<"\n";
 
             ui->listWidget->addItem("csv file created");
             //
@@ -648,11 +646,7 @@ void piano::on_commandLinkButton_4_clicked() //train
             msgBox.exec();
 
             if (msgBox.clickedButton()==pButtonYes) {
-                QMediaPlayer *player = new QMediaPlayer;
-                player->setMedia(QUrl::fromLocalFile(QDir::currentPath()+"/MP3 COMPOSITIONS/result2.mp3"));
-                player->setVolume(100);
-                player->play();
-                player->stop();
+
             }
             else{
                 lis.clear();
