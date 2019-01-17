@@ -60,20 +60,21 @@ The translating part was about finding a way to get from a audio type input and 
 
 ### Ways to go from midi to csv and vice versa
 Looking up on internet, we made the decision to use a given library found on github written in C, which was fortunately 
-close to c++, and thus automatically encapsulated. The functions from library are inside midicsv-csvmidi and it suffices to "make" to get the following executables: midicsv/csvmidi which are receiving two arguments the input filename and output filename. These two codes will translate the midi files into csv files of 5 colums detailing everything that is necessary to build back a csv file, that is, in order: 
+close to c++, and thus automatically encapsulated. The functions from this library are inside midicsv-csvmidi and it suffices to "make" to get the following executables: midicsv/csvmidi which are receiving two arguments the input filename and output filename. These two codes will translate the midi files into csv files of 5 colums detailing everything that is necessary to build back a csv file, that is, in order: 
 
 - The number of the track.
 - The number of MIDI ticks associated to the notes (time unit).
 - The number associated to the instrument played - here, we only use piano compositions.
-- The velocity of the note.
 - The action applied on the note (Note_On_c = activate note and Note_Off_c = stop playing the note).
+- The velocity of the note.
+
 
 For more information on these csv formats, you can check the following [page](http://www.fourmilab.ch/webtools/midicsv/)
 
 ### Format of the input for Neural Networks
 In order to feed the Neural Network, we had to simplify the result given by midicsv. We decided to use sequences of integers as the input of our LSTM, as these are easier to handle by the Neural network than a sequence of notes and chords. With this in mind, we tried to simplify the csv associated to our MIDI file to translate by iterating over it and decomposing the partition into a list of consecutive notes and chords (chord = several notes played together). The idea was to look at all the notes that were ON at each MIDI tick and remove the notes that were put OFF at this MIDI tick. The notes that were not eliminated through this process were considered as part of one chord. 
 
-Then, in order to get our sequence of integers, we had to use a specific "translation map" that maps every note or chord to a unique integer. Note that this map cannot be made in advance and has to be created and updated through the translation process are there are virtually and infinite possible number of chords. 
+Then, in order to get our sequence of integers, we had to use a specific "translation map" that maps every note or chord to a unique integer. Note that this map cannot be made in advance and has to be created and updated through the translation process are there are virtually an infinite possible number of chords. 
 
 We then use this translation map to form our sequence of integers, which will be written again in a csv format, ready to be sent to the LSTM. 
 
@@ -83,13 +84,13 @@ Also, as we wanted to translate a large amount of data, we also programmed merge
 
 ### The process of backward translation
 Now, we had to find a way to translate back the output of the lstm (a sequence of integers) into a midi file that we could listen to. To do so, we had to use the same translation map that was build during the translation process to associate back each integer to a single note or chord. Then, we had to write back the csv file containing the midi ticks, the actions (Note_on and Note_off) executed on each note and the note velocities. 
-This can be done with some precision, especially for the sequence of notes, but it is important to understand that a lot of information about the initiall music has been lost through our translation process: we no longer know the exact time each action was made nor the velocity of each note. In this perspective, we now had to do the following approxiamtions:
+This can be done with some precision, especially for the sequence of notes, but it is important to understand that a lot of information about the initial music has been lost through our translation process: we no longer know the exact time each action was made nor the velocity of each note. In this perspective, we now had to do the following approximations:
 
 - We consider the time interval between two consecutive midi ticks to be equal. 
 - We consider the velocity of the notes to be equal.
-- Also, some notes may have been lost of shifted in our translation process.
+- Also, some notes may have been lost or shifted in our translation process.
 
-Therefore, using the some translation map into account and using the above approximations, we can then translate back the output of the lstm into a csv understandable by the csvmidi code mentioned above, which can transform it back into midi files. This part corresponds to the transelatebackv.cpp code and some part of the translate.hpp code.
+Therefore, using the same translation map as before and taking into account the above approximations, we can then translate back the output of the lstm into a csv understandable by the csvmidi code mentioned above, which can transform it back into midi files. This part corresponds to the transelatebackv.cpp code and some part of the translate.hpp code.
 
 ### Accuracy evaluation of the backward translation algorithm
 
