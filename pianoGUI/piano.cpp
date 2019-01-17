@@ -19,6 +19,8 @@
 #include <QVectorIterator>
 #include <cstdio>
 #include <QMediaPlayer>
+#include <QDesktopServices>
+#include <QUrl>
 
 
 bool rec = 0;
@@ -559,9 +561,9 @@ void piano::on_commandLinkButton_4_clicked() //train
             //
             std::string command="mv startnotes.csv ../utils/startnotes.csv";
             system(command.c_str());
-
-            std::string command1="./composegui";
-            system(command1.c_str());
+            QDesktopServices::openUrl(QUrl(QDir::currentPath()+"/composegui"));
+            //std::string command1="./composegui";
+            //system(command1.c_str());
 
             ui->listWidget->addItem("composed csv is :");
             QStringList test;
