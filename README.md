@@ -1,4 +1,4 @@
-# Prodigy
+# Project Prodigy
 
 # Table of Contents 
 
@@ -16,6 +16,8 @@ Our aim is to train a machine learning algorithm for music composition. For this
 For the course of the project we thereby divided ourselves into two teams, the "Translators" and the "Builders". For more information on the respective parts, see the translating  and neural network sections. 
 
 *section about GUI if applicable* 
+
+If you do not have any particular software to play MIDI files, you can either translate them into mp3 using the following [website](https://www.onlineconverter.com/midi-to-mp3) - it looks like some websites do not convert all types of MIDI files properly, but this one has been working well so far - or use a specialize software like [TiMidity++](http://timidity.sourceforge.net/) software synthesiser, which can also create wave audio files from MIDI songs.
 
 <a name="usage"></a>
 ## 2. Usage Instructions
