@@ -22,6 +22,7 @@ using namespace mlpack::data;
 
 class Compose {
 public:
+  Compose(); // constructor
  
   int compose();
   
