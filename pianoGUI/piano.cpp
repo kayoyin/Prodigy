@@ -528,7 +528,7 @@ void piano::on_commandLinkButton_4_clicked() //train
 
 
         numFile.open(QDir::currentPath().toStdString()+"/startnotes.csv", std::ios::out);
-        outFile.open(QDir::currentPath().toStdString()+"/midicsv-csvmidi/totrans.csv", std::ios::out);
+        outFile.open(QDir::currentPath().toStdString()+"/totrans.csv", std::ios::out);
 
 
         int j = 0;
@@ -627,7 +627,8 @@ void piano::on_commandLinkButton_4_clicked() //train
             endFile.close();
             outFile.close();
             numFile.close();
-
+            std::string command3="mv totrans.csv ../midicsv-csvmidi/totrans.csv";
+            system(command3.c_str());
             std::string command2="cd midicsv-csvmidi/ &&  ./csvmidi totrans.csv totrans.mid";
             system(command2.c_str());
             QMessageBox msgBox;
