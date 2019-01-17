@@ -96,6 +96,9 @@ Therefore, using the same translation map as before and taking into account the 
 
 ### Accuracy evaluation of the backward translation algorithm
 
+Once we had both algorithms, we wanted to assess more formally the accuracy of the backward translation algorithm, that is to say how the approximation we chose to make would change the file. The algorithm takes as input a csv file of a music translated by “midicsv” (not transformed) and a csv file translated both ways by “translate.cpp” and “translateback.cpp”. It outputs the average difference between two consecutive ticks' time intervals between the original file and the translated one and the average difference in velocity between the original file and the translated one. It was a way to quantify the lost but also to compare composers like Mozart and Bach, in order to see which one fitted our project the best. The algorithm also outputs the number of identical similar notes between the two files. As expected, some notes are lost, which creates a shift between the two files that complicates their analysis but doesn't really change the sound. 
+ 
+
 
 <a name="network"></a>
 ## 4. Neural Network 
