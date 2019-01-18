@@ -62,7 +62,7 @@ void predictNotes(RNN<>& model,
 int main () {
 
   mat tempDataset;
-  const int rho = 5; // must be the same rho as the one used to train the model
+  const int rho = 10; // must be the same rho as the one used to train the model
   data::Load("../utils/training.csv", tempDataset, true); // load training data to extract the note alphabet size
   const int size_notes = max(tempDataset.row(0)) + 1; // number of different notes
   const int sequence_length = rho; // length of sequence taken into consideration during training
