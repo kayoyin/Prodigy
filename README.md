@@ -22,17 +22,17 @@ For the course of the project we thereby divided ourselves into two teams, the "
 <a name="usage"></a>
 ## 2. Usage Instructions 
 
-There ar three possible ways of composing music using project prodigy. In the first option (more technically advanced), the user has the freedom of choosing whichever music he or she likes to train the model on. In theory, the music the model produces will have similar stylistics features as the training data. To evualate the "friendliness to translation" of the music see, the user can use our translating evaluation algorithm *see end of the translating section for more information*.  A second option is to use a pretrained model, this saves a lot of time in training and allows the user to compose music instantaiously. Our third, more creative option designed for the musically inclided users is to use the graphics user interface. By running the interface using QT, the user is able to compose a short extract which the model will use as the beginning of the music it will compose. 
+There ar three possible ways of composing music using project prodigy. In the first option (more technically advanced), the user has the freedom of choosing whichever music he or she likes to train the model on. In theory, the music the model produces will have similar stylistics features as the training data. To evualate the "friendliness to translation" of the music see, the user can use our translating evaluation algorithm *see end of the translating section for more information*.  A second option is to use a pretrained model, this saves a lot of time in training and allows the user to compose music instantaiously. Our third, more creative option is designed for the musically inclided users with a graphics user interface. By running the interface using QT, the user is able to compose a short extract using a digital keyboard, which the model will use as the beginning of the music it composes
 
 See the respective sections for user information on method of use. But first, it is necesarry to install mlpack (the librarby used to implement the neural network) and all its dependencies. 
 
 ## Installing the dependencies
 
-After cloning from the project, you first need to install mlpack and its dependencies. To do so, simply run the following command in terminal:
+After cloning the repository, the user first needs to install mlpack and its dependencies. To do so, simply run the following command in terminal:
 
      $> bash install_mlpack.bash 
 
-Then, the user has to build the project, to do this, run the following commands:
+Then, the user has to build the project using:
 
     $> mkdir build
     $> cd build
@@ -49,10 +49,10 @@ From here on, the user can decide which method to employ.
 
 ## Running the project
 
-### Method 1:
+### Method 1: Starting from Scratch
+
 Firstly, the user must ensure that his/her selected MIDI files is stored in the folder called, *music_gen* in his/her local copy of the repository. From here, it is necesarry to make use of our provided translating algorithms to create a csv file which the model can train on. Notice that there are two script that are given in the main folder: translatescript and backscript. These two scipts are deisgned to ensure fluidity for the user and automate the translating and retranslating process. 
 
-partition.csv (merged midi files) 
 
 Running two following commands will change translatescript to executable, and then make use of the translating script. 
 
@@ -71,12 +71,28 @@ To use both of them, simply run them like any executable through the following c
     
     
 
-Now, the last thing to do it translate the the output of the neural network (.csv) into an audiofile (.mid). The backscript automatically loads the output file and saves the audio file as *final.midi* in the main folder of the repository. Run the following commands to execute this: 
+Now, the last thing to do is translate the the output of the neural network (.csv) into an audiofile (.mid). The backscript automatically loads the output file and saves the audio file as *final.mid* in the main folder of the repository. Run the following commands to execute this: 
 
     $> chmod +x backscript
     $> ./backscript
 
-You can either train a model from scratch or continue training on a saved model saved /utils/model.xml by executing train. You will need to have a training file /utils/training.csv that is a vector of integers corresponding to translated music.
+
+### Method 2: Composing with Ease
+
+To compose music directly, the user can run the following line in terminal. 
+
+     $> ./compose
+     
+To translate the output of the neural network back into a audio file, run the following commands: 
+
+    $> chmod +x backscript
+    $> ./backscript
+
+The resulting midi file, final.midi, can be found in the main folder of the repository. 
+
+### Method 3: 
+
+To use the GUI ensure you have QT creator installed on your machine. From there open piano.pro in QT and run it using the QT interface. This will create a build folder in your local copy of the repository called "build", open the folder and click the on the file named piano.exe, from here, user instructions are self explanatory. 
 
 <a name="trans"></a>
 ## 3. Translating 
