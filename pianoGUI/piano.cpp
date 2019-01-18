@@ -674,7 +674,7 @@ void piano::on_commandLinkButton_6_clicked()
     system(command3.c_str());
     std::string command2="cd ../midicsv-csvmidi/ &&  ./csvmidi sonata.csv sonata.mid";
     system(command2.c_str());
-    std::string command4="mv ../midicsv-csvmidi/sonata.mid ../";
+    std::string command4="mv ../midicsv-csvmidi/sonata.mid ../sonata.mid";
     system(command4.c_str());
     QMessageBox msgBox;
     msgBox.setWindowTitle("play");
