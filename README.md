@@ -60,6 +60,7 @@ Now in order to be able to use ./train and ./compose from midi files that are ad
 Now translatescript's description is within the file translatescript and similarly for backscript.
 
 To use both of them, simply run them like any executable through the following command:
+
     $./translatescript
     $./backscript
 
