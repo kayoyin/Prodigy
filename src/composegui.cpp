@@ -82,7 +82,7 @@ int main () {
   data::Load("model.xml", "model", model);	
   
   cout << "Composing from user input ..." << endl;
-  predictNotes(model, sequence_length,size_music);
+  predictNotes(model, sequence_length,size_music, size_notes);
   cout << "Finished :)" << endl;
   
   return 0;
