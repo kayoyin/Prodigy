@@ -660,13 +660,26 @@
     <property name="geometry">
      <rect>
       <x>590</x>
-      <y>560</y>
+      <y>670</y>
       <width>170</width>
       <height>41</height>
      </rect>
     </property>
     <property name="text">
      <string>Clear recorded csv</string>
+    </property>
+   </widget>
+   <widget class="QCommandLinkButton" name="commandLinkButton_6">
+    <property name="geometry">
+     <rect>
+      <x>590</x>
+      <y>580</y>
+      <width>170</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Save music !</string>
     </property>
    </widget>
   </widget>
@@ -676,7 +689,7 @@
      <x>0</x>
      <y>0</y>
      <width>874</width>
-     <height>22</height>
+     <height>25</height>
     </rect>
    </property>
   </widget>
