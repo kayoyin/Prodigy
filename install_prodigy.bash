@@ -54,4 +54,4 @@ pushd .
 git lfs clone https://github.com/kayoyin/model.git
 cd model
 mv easybach.xml ../Prodigy/build/modelgui.xml
-
+cd ../Prodigy
