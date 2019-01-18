@@ -26,27 +26,27 @@ Installing the dependencies
 
 After cloning from the project, you first need to install mlpack and its dependencies. To do so, simply run the following command:
 
-$> bash install_mlpack.bash 
+     $> bash install_mlpack.bash 
 
 Build and compile
 
 To build the project, run the following commands:
 
-$> mkdir build
-$> cd build
-$> cmake ../
+    $> mkdir build
+    $> cd build
+    $> cmake ../
 
 Then, to compile the project, enter the build folder and type make.
 
-$> cd build
-$> make
+    $> cd build
+    $> make
 
 Running the project
 
 Now, the project will have two executables train and compose which you can execute with the commands
 
-$> ./train
-$> ./compose
+    $> ./train
+    $> ./compose
 
 You can either train a model from scratch or continue training on a saved model saved /utils/model.xml by executing train. You will need to have a training file /utils/training.csv that is a vector of integers corresponding to translated music.
 
@@ -54,14 +54,14 @@ Then, you can generate compositions from the saved model by executing compose.
 
 Now in order to be able to use ./train and ./compose from midi files that are added by the user, notice that there are to script that are given in the main folder: translatescript and backscript. To change them to executable, the commands for both are :
 
-$ chmod +x translatescript
-$ chmod +x backscript
+    $ chmod +x translatescript
+    $ chmod +x backscript
 
 Now translatescript's description is within the file translatescript and similarly for backscript.
 
 To use both of them, simply run them like any executable through the following command:
-$./translatescript
-$./backscript
+    $./translatescript
+    $./backscript
 
 
 
