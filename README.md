@@ -79,7 +79,8 @@ Now, the last thing to do is translate the the output of the neural network (.cs
 
 ### Method 2: Composing with Ease
 
-To compose music directly, the user can run the following line in terminal. 
+To compose music directly, first make sure there is a pre-trained model `model.xml` under the `build` directory.
+Then, the user can run the following line in terminal. 
 
      $> ./compose
      
