@@ -139,7 +139,7 @@ std::vector<int> translation (std::vector<std::string> &notes , std::map<std::st
 }
 
 void write_output(std::vector<int> translated){
-    std::ofstream newfile("partition.csv");
+    std::ofstream newfile("training.csv");
     for (std::vector<int>::iterator it = translated.begin() ; it != translated.end(); ++it){
         newfile << *it << "," ;
     }
