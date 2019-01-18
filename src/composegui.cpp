@@ -22,7 +22,7 @@ using namespace mlpack::data;
 
 
 void predictNotes(RNN<>& model,
-                  const unsigned int sequence_length, const unsigned int size_music)
+                  const unsigned int sequence_length, const unsigned int size_music, const int size_notes)
 {
     
     cube start = cube(1, 1, sequence_length); // we initialize generation with a sequence of random notes
@@ -31,6 +31,14 @@ void predictNotes(RNN<>& model,
     mat startnotes;
     // Load notes from user input
     data::Load("../utils/startnotes.csv", startnotes, true);
+	
+    // protecting against insufficient number of notes from user input	
+    for (unsigned int i = 0; i < sequence_length; i++)
+    {
+    	int note = rand() % size_notes + 1; // random integer between 1 and size_notes
+	start(0,0,i) = note
+	music(i,0) = note
+    }
 	
     for (unsigned int i = 0; i < sequence_length; i++)
     {
@@ -67,6 +75,7 @@ int main () {
   const int rho = 5; // must be the same rho as the one used to train the model
   const int sequence_length = rho; // length of sequence taken into consideration during training
   const int size_music = 300; //must be a multiple of sequence_length
+  const int size_notes = 60; //size of dictionary used
     
   cout << "Loading trained model ..." << endl;
   RNN<> model(rho); 
