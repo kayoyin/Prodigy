@@ -36,8 +36,8 @@ void predictNotes(RNN<>& model,
     for (unsigned int i = 0; i < sequence_length; i++)
     {
     	int note = rand() % size_notes + 1; // random integer between 1 and size_notes
-	start(0,0,i) = note
-	music(i,0) = note
+	start(0,0,i) = note;
+	music(i,0) = note;
     }
 	
     for (unsigned int i = 0; i < startnotes.n_rows; i++)
