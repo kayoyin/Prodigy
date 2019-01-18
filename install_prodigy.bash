@@ -49,6 +49,6 @@ mkdir build
 cd build
 cmake ../
 make
-wget https://drive.google.com/file/d/1facBLd9K4M_szjrW6URXR8SIwUQE4yfr/view?usp=sharing -O model.xml
+wget https://drive.google.com/file/d/1facBLd9K4M_szjrW6URXR8SIwUQE4yfr/view?usp=sharing -O modelgui.xml
 wget https://we.tl/t-azbWeErPFi -O model1.xml
 wget https://we.tl/t-M7wXEz9oOp -O model2.xml
