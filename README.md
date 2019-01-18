@@ -24,7 +24,7 @@ We also provide models we have already trained [here](https://github.com/kayoyin
 ```
 $> git lfs clone https://github.com/kayoyin/ProdigyModels.git
 ```
-*note that this will take few minutes because of the large file sizes*
+*note that this will take seveal minutes due to the large file sizes*
 
 
 <a name="usage"></a>
@@ -32,13 +32,13 @@ $> git lfs clone https://github.com/kayoyin/ProdigyModels.git
 
 There are two possible ways of composing music using project prodigy. In the first option (more technically advanced), the user has the freedom of choosing whichever music he or she likes to train the model on. In theory, the music the model produces will have similar stylistics features as the training data. To evualate the "friendliness to translation" of the music see, the user can use our translating evaluation algorithm *see end of the translating section for more information*.   Our second, more creative option is designed for the musically inclided users with a graphics user interface. By running the interface using QT, the user is able to compose a short extract using a digital keyboard, which the model will use as the beginning of the music it composes
 
-See the respective sections for user information on method of use. But first, it is necesarry to install mlpack (the library used to implement the neural network) and all its dependencies. 
+See the respective sections for user information on method of use. But first, it is necessary to install mlpack (the library used to implement the neural network) and all its dependencies. 
 
 ## Installing the dependencies
 
 After cloning the repository, the user first needs to install mlpack and its dependencies. To do so, simply run the following command in terminal:
 
-     $> bash install_mlpack.bash 
+    $> bash install_mlpack.bash 
 
 Then, the user has to build the project using:
 
@@ -59,15 +59,15 @@ From here on, the user can decide which method to employ.
 
 ### Method 1: Starting from Scratch
 
-Firstly, the user must ensure that his/her selected MIDI files is stored in the folder called, *music_gen* in his/her local copy of the repository. From here, it is necesarry to make use of our provided translating algorithms to create a csv file which the model can train on. Notice that there are two scripts that are given in the main folder: translatescript and backscript. These two scripts are designed to ensure fluidity for the user and automate the translating and retranslating process. 
+Firstly, the user must ensure that his/her selected MIDI files is stored in the folder called, *music_gen* in his/her local copy of the repository. From here, it is necessary to make use of our provided translating algorithms to create a csv file which the model can train on. Notice that there are two scripts that are given in the main folder: translatescript and backscript. These two scripts are designed to ensure fluidity for the user and automate the translating and retranslating process. 
 
 
-Running two following commands will change translatescript to executable, and then make use of the translating script. 
+Running two following commands will change `translatescript` to an `executable`, and then make use of the translating script. 
 
     $> chmod +x translatescript
     $> ./translatescript
 
-The translatescript translates and merges all the midi files in a format ready to use for the neural network. Moreover, it saves the output csv file in the utils folder. From there on, the training function automatically loads the data. Since all the data is properly formatted for use, the user can start traing the model. To do this, simply run the following command in terminal: 
+The `translatescript` translates and merges all the midi files in a format ready to use for the neural network. Moreover, it saves the output csv file in the utils folder. From there on, the training function automatically loads the data. Since all the data is properly formatted for use, the user can start traing the model. To do this, simply run the following command in terminal: 
 
     $> ./train
     
@@ -81,12 +81,12 @@ Now, the last thing to do is translate the output of the neural network (.csv) i
     $> chmod +x backscript
     $> ./backscript
 
-If the user is experiencing any trouble playing the midi file, the following website can be used to convert to mp3: https://www.onlineconverter.com/midi-to-mp3
+If the user is experiencing any trouble playing the midi file on their machine, the following website can be used to convert to mp3: https://www.onlineconverter.com/midi-to-mp3
 
 
 ### Method 2: 
 
-To use the GUI ensure you have QT creator installed on your machine. From there open the piano.pro file (located in the pianoGUI folder) in QT and run it using the QT interface. This will create a build folder in your local copy of the repository called "build", open the folder and click the on the file named piano.exe, from here, user instructions are self explanatory. 
+To use the GUI ensure you have QT creator installed on your machine. From there, open the `piano.pro` file (located in the `pianoGUI` folder) in QT and run it using the QT interface. This will create a build folder in your local copy of the repository called "build", open the folder and click the on the file named `piano.exe`, from here, user instructions are self explanatory. 
 
 <a name="trans"></a>
 ## 3. Translating 
@@ -119,7 +119,7 @@ Practical detail: In order to be a bit more efficient, we decided not to fix a g
 
 ### Mechanical for the purpose of training:
 
-To make the training of Neural Network easier, we had to find a way to be able to translate multiple midi files and then "merge" them to get one sole csv file that is given as input to the Nerual Network. And therefore we created a merge.cpp which executable is called merge that as mentioned, merges csv files that were transformed from midi files beforehand. Merge receives as an argument a csv file, that will append to the final file. 
+To make the training of the neural network easier, we had to find a way to be able to translate multiple midi files and then "merge" them to get one sole csv file that is given as input to the Nerual Network. And therefore we created a merge.cpp which executable is called merge that as mentioned, merges csv files that were transformed from midi files beforehand. Merge receives as an argument a csv file, that will append to the final file. 
 
 ### Evaluating Translating Accuracy
 Once we had our translation algorithms, we decided to formally assess the accuracy of our codes. testtrans.cpp takes as input a csv file of a music translated by “midicsv” (not transformed) and a csv file translated both ways by translate.cpp and translateback.cpp. It compares the number of ordered similar notes and computes the average difference of the time between two consecutive ticks and the average difference in velocity between the files original and trans. We noticed that some notes from the original piece of music were removed during translation, creating some shifts between the two files. Qualitatively, it doesn't seem to alter the music.
@@ -139,13 +139,15 @@ To run the algorithm, open it to modify the names of the file you want to use: t
 
 We chose to implement an artificial neural network for its sheer prediction power after enough training. Because of the sequential nature of music, the dependency of the value of the notes at a certain time step to the music that precedes it, a recurrent neural network rather than a feedforward neural network is the necessary choice.
 
-More specifically, we implemented a Long short-term memory network (LSTM). This article gives a through explanation of LSTM networks, but the main idea is that LSTM units in our RNN will be able to recognize and learn long-time patterns, which is what we need for music composition.
+More specifically, we implemented a Long short-term memory network (LSTM). This [article](http://colah.github.io/posts/2015-08-Understanding-LSTMs/) gives a through explanation of LSTM networks, but the main idea is that LSTM units in our RNN will be able to recognize and learn long-time patterns, which is what we need for music composition.
 
-We decided to use an external C++ library for machine learning, mlpack to build and train our LSTM network.
+We decided to use an external C++ library for machine learning, [mlpack](https://www.mlpack.org) to build and train our LSTM network.
 
 ### Structure of our model
 
 We defined two hidden LSTM layers with 512 memory units, and a dropout layer of probability 0,3 which helps avoid overfitting. The output layer uses the softmax activation function to output the log of the probability prediction for each notes present in our model. The problem can be defined as a single integer classification problem with each note being a possible class, therefore training is minimizing the negative log-likelihood, which maximizes the likelihood that the output of the model produces the data actually observed. We also use the ADAM optimization algorithm for speed.
+
+The problem can be defined as a single integer classification problem with each note being a possible class, therefore training is minimizing the [negative log-likelihood](https://ljvmiranda921.github.io/notebook/2017/08/13/softmax-and-the-negative-log-likelihood/), which maximizes the likelihood that the output of the model produces the data actually observed. We also use the ADAM optimization algorithm for speed.
 
 ### Format of our data
 
@@ -179,7 +181,7 @@ These buttons will aid and lead the user to eventually play their own made .mid 
 
 
 <a name="ext"></a>
-## 5. What Next? 
+## 6. What Next? 
 
 Here are some extension ideas that have not been explored that could possibly improve our implementation:
 
@@ -193,6 +195,6 @@ In our project, each combination of notes from the training set were encoded by 
 
 Furthermore, we can add complexity by finding a better way to encode rhytm. Currently, the scope of our training music is limited to music containing notes with lower velocities. This is due to the way we translate MIDI files. In particularly the tick like representation of music and the duration of time that note is help adds complexity to the translating dictionary. !!!! translating human verify the above/make more complete please, talk about shifts?
 
-### Improve measure used to keep track of training
+### Accuracy measure used to keep track of training
 
-The accuracy measure we implemented is a very naive measure where we simply calculate the percentage of notes the model outputs given the training set, to the actual notes from the training set. This measure is misleading and not well-suited in the scope of this project, as a model we would consider very good at producing music does not, and should not even have a high accuracy during training. This leads to a fundamental question of how to classify what music is considered as "good". Answering such a question might require developing a criteria based on musical theory.
+Initially, we implemented a very naive accuracy measure naive measure where we simply calculate the percentage of notes the model outputs given the training set, to the actual notes from the training set. This measure is misleading and not well-suited in the scope of this project, as a model we would consider very good at producing music does not, and should not even have a high accuracy during training. This leads to a fundamental question of how to classify what music is considered as "good". Answering such a question might require developing a criteria based on musical theory.
