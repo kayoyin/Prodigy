@@ -55,7 +55,6 @@ std::tuple<std::set<std::string>,std::vector<std::string>>  getData()
 
 
     // Diff
-    std::ofstream newfile("translated.txt");
 
     std::set<std::string> pitches;
     std::vector<std::string> notes;
