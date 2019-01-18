@@ -36,5 +36,9 @@ rm mlpack-3.0.4.tar.gz
 rm -rf mlpack-mlpack-3.0.4
 
 pushd .
+mkdir build
+cd build
+cmake ../
+make
 wget https://drive.google.com/file/d/1facBLd9K4M_szjrW6URXR8SIwUQE4yfr/view?usp=sharing
 mv view model.xml
