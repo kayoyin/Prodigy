@@ -16,12 +16,9 @@
 
 Our aim is to train a machine learning algorithm for music composition. For this, we used mlpack, a C++ library, to build a recurrent neural network with a LSTM layer. Since training is more optimal when using number, we wrote an algorithm (with the help of external libraries)  that translates and retranslates MIDI files into csv files containing integers. After the LSTM was build and translating processes was completed, we trained our network using Bach MIDI files. You can listen to an album of music produced by different models we trained [here](https://soundcloud.com/kayo-yin/sets/prodigy)
 
-Since we had some time left at the end of the project, we took on an additional challange of complementing the project by created a GUI where users play a tune on a digital piano which the model uses as the beginning of its composition. This is clearly an extension and indepednt from our initial goal. Since this was not part of our original design, the code was not optimized for this use. Though, we thought it could be a fun  and pursued it nonetheless. Our GUI is therefore still in its initial stages and has potential erros and bugs. Since we spent time on it and we think it's a creative extension, we will include it as a idea to be perfected later on nonetheless. 
+Since we had some time left at the end of the project, we took on an additional challange of complementing the project by created a GUI where users play a tune on a digital piano which the model uses as the beginning of its composition. This is clearly an extension and indepednt from our initial goal. Since this was not part of our original design, the code was not optimized for this use. Though, we thought it could be a fun add-on and pursued it nonetheless. Our GUI is therefore still in its initial stages and has potential erros and bugs. Since we spent time on it and we think it's a creative extension, we will include it as a idea to be perfected later on nonetheless. 
 
 For the course of the project we divided ourselves into two teams, the "Translators" and the "Builders". For more information on the respective parts, see the translating and neural network sections.
-
-
-
 
 
 <a name="usage"></a>
