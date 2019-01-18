@@ -593,8 +593,8 @@ void piano::on_commandLinkButton_6_clicked()
      QVector<int> input;
      std::ofstream outFile;   //outFile is csv of csvAudio of AI composed music
      outFile.open(QDir::currentPath().toStdString()+"/sonata.csv", std::ios::out);
-
-     std::ifstream endFile(QDir::currentPath().toStdString()+"/utils/notes.csv");  //endFile is csv of integer from AI
+    std::string command="mv ../utils/notes.csv notes.csv";
+     std::ifstream endFile(QDir::currentPath().toStdString()+"/notes.csv");  //endFile is csv of integer from AI
      std::string c;
      if (endFile.is_open()){
          while (getline(endFile,c, ',')){
@@ -686,7 +686,7 @@ void piano::on_commandLinkButton_6_clicked()
     msgBox.exec();
 
     if (msgBox.clickedButton()==pButtonYes) {
-        std::string command5="timidity sonata.mid";
+        std::string command5="cd .. && timidity sonata.mid";
         system(command5.c_str());
     }
     else{
