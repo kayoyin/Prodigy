@@ -14,16 +14,15 @@
 <a name="project"></a>
 ## 1. Project Description 
 
-Our aim is to train a machine learning algorithm for music composition. For this, we used mlpack, a C++ library, to build a recurrent neural network with a LSTM layer. Since training is more optimal when using number, we wrote an algorithm (with the help of external libraries)  that translates and retranslates MIDI files into csv files containing integers. After the LSTM was build and translating processes was completed, we trained our network using Bach MIDI files. You can listen to an album of music produced by different models we trained [here](https://soundcloud.com/kayo-yin/sets/prodigy). Notice how quality of music the model has created increasingly improives from the first hit "Failing is Passing" to later hits, particularly noting "Love is a Deadly Cup of Tea". 
+Our aim is to train a machine learning algorithm for music composition. For this, we used mlpack, a C++ library, to build a recurrent neural network with a LSTM layer. Since training is more optimal when using number, we wrote an algorithm (with the help of external libraries)  that translates and retranslates MIDI files into csv files containing integers. After the LSTM was build and translating processes was completed, we trained our network using Bach MIDI files. To complete this project, the team was split into two groups, "Builders" and "Translators". 
 
-
-For the course of the project we divided ourselves into two teams, the "Translators" and the "Builders". For more information on the respective parts, see the translating and neural network sections.
+You can listen to an album of music produced by different models we trained [here](https://soundcloud.com/kayo-yin/sets/prodigy). Notice how the quality of music the model has created increasingly improves from the first hit "Failing is Passing" to later, particularly noting "Love is a Deadly Cup of Tea". 
 
 
 <a name="usage"></a>
 ## 2. Usage Instructions 
 
- In our design, the user has the freedom of choosing whichever music he or she likes to train the model on. In theory, the music the model produces will have similar stylistics features as the training data. To evualate the "friendliness to translation" of the music, the user can use our translating evaluation algorithm (*see end of the translating section for more information*).  
+In our design, the user has the freedom of choosing whichever music he or she likes to train the model on. In theory, the music the model produces will have similar stylistics features as the training data. To evualate the "friendliness to translation" of the music, the user can use our translating evaluation algorithm (*see end of the translating section for more information*).  
 
 Before beginning the composition procress, it is necessary to install mlpack (the library used to implement the neural network) and all its dependencies. 
 
