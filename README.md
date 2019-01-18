@@ -7,17 +7,17 @@
 2. [Usage Instructions](#usage)
 3. [Translating](#trans)
 4. [Neural Network](#network)
-5. [What Next?](#ext)
+5. [The GUI](#gui)
+6. [What Next?](#ext)
 
 
 <a name="project"></a>
 ## 1. Project Description 
 
-Our aim is to train a machine learning algorithm for music composition. For this, we used mlpack, a C++ library, to build a recurrent neural network with a LSTM layer. Since training is more optimal when using number, we wrote an algorithm (with the help of external libraries)  that translates and retranslates MIDI files into csv files containing integers. After the LSTM was build and translating processes was completed, we trained our network using Bach MIDI files located in the folder, insert here. A sample composition is uploaded in insert here and the some training weights is saved in the folder insert here if the user wants readily to compose music.
+Our aim is to train a machine learning algorithm for music composition. For this, we used mlpack, a C++ library, to build a recurrent neural network with a LSTM layer. Since training is more optimal when using number, we wrote an algorithm (with the help of external libraries)  that translates and retranslates MIDI files into csv files containing integers. After the LSTM was build and translating processes was completed, we trained our network using Bach MIDI files located in the folder, insert here. A sample composition is uploaded in *insert here*. To complete the project we created a GUI where users play a tune on a digital piano which the model uses as the beginning of its composition. 
 
-For the course of the project we thereby divided ourselves into two teams, the "Translators" and the "Builders". For more information on the respective parts, see the translating and neural network sections.
+For the course of the project we divided ourselves into two teams, the "Translators" and the "Builders". For more information on the respective parts, see the translating and neural network sections.
 
-*ADD SECTION OF GUI
 
 <a name="usage"></a>
 ## 2. Usage Instructions 
@@ -159,6 +159,11 @@ We measure accuracy after each cycle of training by calculating the percentage o
 Once we have trained a model, we can save the model with the trained weights for later use. We have chosen to have the model be saved automatically after each 20 cycles of training.
 
 To have the network generate music, we then load the previously trained model. Essentially, the trained network is a prediction model, so it needs a starting point for composition. We use a randomly generated short sequence of notes as the seed sequence which we feed into the prediction method of the model. From then on, we feed the new sequence predicted by the model to obtain the next predicted sequence, and we continue this step until we get a music sequence of our desired length.
+
+<a name="gui"></a>
+## 5. The GUI 
+ADD DESCRIPTION
+
 
 <a name="ext"></a>
 ## 5. What Next? 
