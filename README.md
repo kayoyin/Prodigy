@@ -26,9 +26,9 @@ You can also download a pre-trained model we provide [here](https://drive.google
 <a name="usage"></a>
 ## 2. Usage Instructions 
 
-There ar two possible ways of composing music using project prodigy. In the first option (more technically advanced), the user has the freedom of choosing whichever music he or she likes to train the model on. In theory, the music the model produces will have similar stylistics features as the training data. To evualate the "friendliness to translation" of the music see, the user can use our translating evaluation algorithm *see end of the translating section for more information*.   Our second, more creative option is designed for the musically inclided users with a graphics user interface. By running the interface using QT, the user is able to compose a short extract using a digital keyboard, which the model will use as the beginning of the music it composes
+There are two possible ways of composing music using project prodigy. In the first option (more technically advanced), the user has the freedom of choosing whichever music he or she likes to train the model on. In theory, the music the model produces will have similar stylistics features as the training data. To evualate the "friendliness to translation" of the music see, the user can use our translating evaluation algorithm *see end of the translating section for more information*.   Our second, more creative option is designed for the musically inclided users with a graphics user interface. By running the interface using QT, the user is able to compose a short extract using a digital keyboard, which the model will use as the beginning of the music it composes
 
-See the respective sections for user information on method of use. But first, it is necesarry to install mlpack (the librarby used to implement the neural network) and all its dependencies. 
+See the respective sections for user information on method of use. But first, it is necesarry to install mlpack (the library used to implement the neural network) and all its dependencies. 
 
 ## Installing the dependencies
 
