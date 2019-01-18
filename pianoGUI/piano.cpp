@@ -664,8 +664,8 @@ void piano::on_commandLinkButton_6_clicked()
          outFile << "1,"<< j << ",note_on_c,1," << input.at(i)<<",0\n";
 
      }
-         outFile <<"1, "<< j <<",End_track";
-
+     outFile <<"1, "<< j <<",End_track";
+     outFile <<"0,0,End_of_file";    
 
      endFile.close();
      outFile.close();
@@ -674,4 +674,21 @@ void piano::on_commandLinkButton_6_clicked()
     system(command3.c_str());
     std::string command2="cd ../midicsv-csvmidi/ &&  ./csvmidi totrans.csv totrans.mid";
     system(command2.c_str());
+    std::string command4="mv ../midicsv-csvmidi/totrans.mid ../";
+    system(command4.c_str());
+    QMessageBox msgBox;
+    msgBox.setWindowTitle("play");
+
+
+    msgBox.setText("So now your .mid file is in the main folder ! CONGRATULATIONS! You just collaborated with AI for music! now play your mid file with the button below!");
+    QAbstractButton* pButtonYes = msgBox.addButton(tr("Play! :)"), QMessageBox::YesRole);
+    msgBox.addButton(tr("I'll Pass :("), QMessageBox::NoRole);
+    msgBox.exec();
+
+    if (msgBox.clickedButton()==pButtonYes) {
+        std::string command5="timidity totrans.mid";
+        system(command5.c_str());
+    }
+    else{
+        }
 }
