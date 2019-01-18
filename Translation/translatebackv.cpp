@@ -39,7 +39,7 @@ void writeData()
 
     
     // the different files that we open
-    std::ofstream newfile("blank.csv");
+    std::ofstream newfile("otranslateb.csv");
     std::ifstream header("header.csv");
 
     // declaring variable
