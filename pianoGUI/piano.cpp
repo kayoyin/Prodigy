@@ -665,7 +665,7 @@ void piano::on_commandLinkButton_6_clicked()
 
      }
      outFile <<"1, "<< j <<",End_track\n";
-     outFile <<"0,0,End_of_file";    
+     outFile <<"0,0,End_of_file\n";
 
      endFile.close();
      outFile.close();
