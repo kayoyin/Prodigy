@@ -36,9 +36,19 @@ rm mlpack-3.0.4.tar.gz
 rm -rf mlpack-mlpack-3.0.4
 
 pushd .
+sudo apt-get install software-properties-common
+sudo add-apt-repository ppa:git-core/ppa
+apt-get update
+sudo apt-get install curl
+curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | sudo bash
+sudo apt-get install git-lfs
+git lfs install
+
+pushd .
 mkdir build
 cd build
 cmake ../
 make
 wget https://drive.google.com/file/d/1facBLd9K4M_szjrW6URXR8SIwUQE4yfr/view?usp=sharing -O model.xml
-
+wget https://we.tl/t-azbWeErPFi -O model1.xml
+wget https://we.tl/t-M7wXEz9oOp -O model2.xml
