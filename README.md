@@ -22,15 +22,17 @@ For the course of the project we thereby divided ourselves into two teams, the "
 <a name="usage"></a>
 ## 2. Usage Instructions 
 
-Installing the dependencies
+There ar three possible ways of composing music using project prodigy. In the first option (more technically advanced), the user has the freedom of choosing whichever music he or she likes to train the model on. In theory, the music the model produces will have similar stylistics features as the training data. To do this, upload the MIDI files in a folder named *ISERT HERE*. To evualate the "friendliness to translation" of the music see, the user can use our translating evaluation algorithm * see end of the translating section for more information*.  A second option is to use a pretrained model, this saves a lot of time in training and allows the user to compose music instantaiously. Our third, more creative option designed for the musically inclided users is to use the graphics user interface. By running the interface using QT, the user is able to compose a short extract which the model will use as the beginning of the music it will compose. 
 
-After cloning from the project, you first need to install mlpack and its dependencies. To do so, simply run the following command:
+See the respective sections for user information on method of use. But first, it is necesarry to install mlpack (the librarby used to implement the neural network) and all its dependencies. 
+
+## Installing the dependencies
+
+After cloning from the project, you first need to install mlpack and its dependencies. To do so, simply run the following command in terminal:
 
      $> bash install_mlpack.bash 
 
-Build and compile
-
-To build the project, run the following commands:
+Then, the user has to build the project, to do this, run the following commands:
 
     $> mkdir build
     $> cd build
@@ -41,7 +43,13 @@ Then, to compile the project, enter the build folder and type make.
     $> cd build
     $> make
 
-Running the project
+
+From here on, the user can decide which method to employ. 
+
+
+# Running the project
+
+## Method 1:
 
 Now, the project will have two executables train and compose which you can execute with the commands
 
