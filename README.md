@@ -14,15 +14,17 @@
 <a name="project"></a>
 ## 1. Project Description 
 
-https://we.tl/t-azbWeErPFi
-
 Our aim is to train a machine learning algorithm for music composition. For this, we used mlpack, a C++ library, to build a recurrent neural network with a LSTM layer. Since training is more optimal when using number, we wrote an algorithm (with the help of external libraries)  that translates and retranslates MIDI files into csv files containing integers. After the LSTM was build and translating processes was completed, we trained our network using Bach MIDI files located in the folder, insert here. A sample composition is uploaded in *insert here*. To complete the project we created a GUI where users play a tune on a digital piano which the model uses as the beginning of its composition. 
 
 For the course of the project we divided ourselves into two teams, the "Translators" and the "Builders". For more information on the respective parts, see the translating and neural network sections.
 
 You can listen to an album of music produced by different models we trained [here](https://soundcloud.com/kayo-yin/sets/prodigy)
 
-You can also download a pre-trained model we provide [here](https://drive.google.com/file/d/1facBLd9K4M_szjrW6URXR8SIwUQE4yfr/view?usp=sharing)
+You can also download pre-trained models we provide by running 
+```
+git lfs clone https://github.com/kayoyin/ProdigyModels
+```
+*note that this will take a few minutes because of the large file sizes*
 
 
 <a name="usage"></a>
