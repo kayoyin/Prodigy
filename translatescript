@@ -37,5 +37,5 @@ cd ../; for filename in  *.mid; do mv "$filename" music_gen; done;
 cd Translation; [ -e test.csvs] &&  rm test.csv; mv translateback ../;
 cd ../; mv test.csv Translation; cd Translation;
 ./translate; 
-rm translate; mv partition.csv ../;
-cd ../; mv partition.csv utils; cd midicsv-csvmidi; rm midicsv; rm merge;
+rm translate; mv training.csv ../;
+cd ../; mv training.csv utils; cd midicsv-csvmidi; rm midicsv; rm merge;
