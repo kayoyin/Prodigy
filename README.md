@@ -18,6 +18,10 @@ Our aim is to train a machine learning algorithm for music composition. For this
 
 For the course of the project we divided ourselves into two teams, the "Translators" and the "Builders". For more information on the respective parts, see the translating and neural network sections.
 
+You can listen to an album of music produced by different models we trained [here](https://soundcloud.com/kayo-yin/sets/prodigy)
+
+You can also download a pre-trained model we provide [here](https://drive.google.com/file/d/1facBLd9K4M_szjrW6URXR8SIwUQE4yfr/view?usp=sharing)
+
 
 <a name="usage"></a>
 ## 2. Usage Instructions 
