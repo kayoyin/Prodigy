@@ -1,6 +1,6 @@
 #include "piano.h"
 #include "ui_piano.h"
-
+#include <vector>
 #include <fstream>
 #include <iostream>
 
@@ -590,11 +590,11 @@ void piano::on_commandLinkButton_4_clicked() //train
 
 void piano::on_commandLinkButton_6_clicked()
 {
-     QVector<int> input;
+     std::vector<int> input;
      std::ofstream outFile;   //outFile is csv of csvAudio of AI composed music
-     outFile.open(QDir::currentPath().toStdString()+"/sonata.csv", std::ios::out);
-    std::string command="mv ../utils/notes.csv notes.csv";
-     std::ifstream endFile(QDir::currentPath().toStdString()+"/notes.csv");  //endFile is csv of integer from AI
+     outFile.open("/sonata.csv", std::ios::out);
+     std::string command="mv ../utils/notes.csv notes.csv";
+     std::ifstream endFile("/notes.csv");  //endFile is csv of integer from AI
      std::string c;
      if (endFile.is_open()){
          while (getline(endFile,c, ',')){
