@@ -54,15 +54,15 @@ Then, you can generate compositions from the saved model by executing compose.
 
 Now in order to be able to use ./train and ./compose from midi files that are added by the user, notice that there are to script that are given in the main folder: translatescript and backscript. To change them to executable, the commands for both are :
 
-    $ chmod +x translatescript
-    $ chmod +x backscript
+    $> chmod +x translatescript
+    $> chmod +x backscript
 
 Now translatescript's description is within the file translatescript and similarly for backscript.
 
 To use both of them, simply run them like any executable through the following command:
 
-    $./translatescript
-    $./backscript
+    $> ./translatescript
+    $> ./backscript
 
 
 
