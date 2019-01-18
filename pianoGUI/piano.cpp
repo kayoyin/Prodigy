@@ -21,6 +21,7 @@
 #include <QMediaPlayer>
 #include <QDesktopServices>
 #include <QUrl>
+#include <Translation/translate.hpp>
 
 bool rec = 0;
 
@@ -585,6 +586,7 @@ void piano::on_commandLinkButton_4_clicked() //train
 void piano::on_commandLinkButton_6_clicked()
 {
      std::vector<int> input;
+     std::vector<int> out;
      std::ofstream outFile;   //outFile is csv of csvAudio of AI composed music
      outFile.open("sonata.csv", std::ios::out);
      //std::string command="mv ../utils/notes.csv notes.csv";
@@ -605,10 +607,48 @@ void piano::on_commandLinkButton_6_clicked()
      ui->listWidget->addItems(test);
 
 
+    //asdafsdgsgd
 
+     CSVReader reader("test.csv");
+
+     std::tuple<std::set<std::string>, std::vector<std::string>> other = reader.getData();
+     std::set<std::string> pitches = std::get<0>(other);
+     std::vector<std::string> notes = std::get<1>(other);
+     std::map<std::string, int> trans = bijection(pitches);
+
+
+
+     std::string dum="( ";
+     std::vector<std::string> noteslist;
+
+     for (int i=0; i< input.size(); i++){
+        noteslist.push_back(dum+std::to_string(input.at(i))+")");
+     }
+     for (int i=0; i< noteslist.size(); i++) {// iterate on listnotes
+         std::map<std::string, int>::iterator it;
+
+         for (it = trans.begin(); it != trans.end(); it++ )  //iterate on trans bijection
+         {
+             bool check = 0;
+             if (noteslist[i]== it->first){
+                 out.push_back(it->second);
+             }
+             else{
+                 out.push_back(1);
+                 it++;
+             }
+         }
+     }
+
+
+
+     //abfsdfius uif
 
      //TO ADD AI Algorithm and make music .mid
      //----------------------------------------------------------------------
+
+
+
      outFile <<"0,0, Header,1,20,240,,,,,,,,\n"<<
               "1,0, Start_track,,,,,,,,,,,\n"<<
               "1,0, Tempo,491803,,,,,,,,,,\n"<<
@@ -618,11 +658,8 @@ void piano::on_commandLinkButton_6_clicked()
               "2,0, Start_track,,,,,,,,,,,\n"<<
               "2,0, Time_signature,4,2,24,8,,,,,,,\n"<<
               "2,0, Title_t,PIANO                               ,,,,,,,,,,\n"<<
-               "2, 0, Program_c, 1, 19";
-
-
-
-              /*"2,0, System_exclusive,10,65,16,66,18,64,0,127,0,65,247\n"<<
+               "2, 0, Program_c, 1, 19"<<
+              "2,0, System_exclusive,10,65,16,66,18,64,0,127,0,65,247\n"<<
               "2,0, System_exclusive,10,65,16,66,18,64,0,4,100,88,247\n"<<
               "2,170, System_exclusive,10,65,16,66,18,64,1,48,3,12,247\n"<<
               "2,170, System_exclusive,10,65,16,66,18,64,1,51,80,60,247\n"<<
@@ -651,15 +688,15 @@ void piano::on_commandLinkButton_6_clicked()
               "2,701, Control_c,0,98,102,,,,,,,,\n"<<
               "2,703, Control_c,0,6,70,,,,,,,,\n"<<
               "2,1300, Control_c,0,64,63,,,,,,,,\n"<<
-              "2,1305, Control_c,0,64,127,,,,,,,,\n"*/ //appending header.csv
+              "2,1305, Control_c,0,64,127,,,,,,,,\n"; //appending header.csv
      //---------------------------------------------------------------------------------------------
      int j = 10;
 
-     for (int i=0; i<input.size();i++){
+     for (int i=0; i<out.size();i++){
          j+=5;
-         outFile << "2,"<< j << ",note_on_c,1," << input.at(i)<<",100\n";
+         outFile << "2,"<< j << ",note_on_c,1," << out[i]<<",100\n";
          j+=5;
-         outFile << "2,"<< j << ",note_off_c,1," << input.at(i)<<",0\n";
+         outFile << "2,"<< j << ",note_off_c,1," << out[i]<<",0\n";
 
      }
 
