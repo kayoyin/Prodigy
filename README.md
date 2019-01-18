@@ -23,9 +23,9 @@ For the course of the project we divided ourselves into two teams, the "Translat
 <a name="usage"></a>
 ## 2. Usage Instructions 
 
-There are two possible ways of composing music using project prodigy. In the first option (more technically advanced), the user has the freedom of choosing whichever music he or she likes to train the model on. In theory, the music the model produces will have similar stylistics features as the training data. To evualate the "friendliness to translation" of the music see, the user can use our translating evaluation algorithm *see end of the translating section for more information*.   Our second, more creative option is designed for the musically inclided users with a graphics user interface. By running the interface using QT, the user is able to compose a short extract using a digital keyboard, which the model will use as the beginning of the music it composes
+ In our design, the user has the freedom of choosing whichever music he or she likes to train the model on. In theory, the music the model produces will have similar stylistics features as the training data. To evualate the "friendliness to translation" of the music, the user can use our translating evaluation algorithm *see end of the translating section for more information*.  
 
-See the respective sections for user information on method of use. But first, it is necessary to install mlpack (the library used to implement the neural network) and all its dependencies. 
+Before beginning the composition procress, it is necessary to install mlpack (the library used to implement the neural network) and all its dependencies. 
 
 ## Installing the dependencies
 
@@ -33,13 +33,12 @@ After cloning the repository, the user first needs to install mlpack and its dep
 
     $> bash install_prodigy.bash 
 
-
+From here, it is good to go. 
 
 ## Running the project
 
-### Method 1: Starting from Scratch
 
-Firstly, the user must ensure that his/her selected MIDI files is stored in the folder called, *music_gen* in his/her local copy of the repository. From here, it is necessary to make use of our provided translating algorithms to create a csv file which the model can train on. Notice that there are two scripts that are given in the main folder: translatescript and backscript. These two scripts are designed to ensure fluidity for the user and automate the translating and retranslating process. 
+Firstly, the user must ensure that his/her selected MIDI files is stored in the folder called, *music_gen* in his/her local copy of the repository. It is necessary to make use of our provided translating algorithms to create a csv file which the model can train on. Notice that there are two scripts that are given in the main folder: translatescript and backscript. These two scripts are designed to ensure fluidity for the user and automate the translating and retranslating process. 
 
 
 Running two following commands will change `translatescript` to an `executable`, and then make use of the translating script. 
@@ -61,7 +60,9 @@ Now, the last thing to do is translate the output of the neural network (.csv) i
     $> chmod +x backscript
     $> ./backscript
 
-If the user is experiencing any trouble playing the midi file on their machine, the following website can be used to convert to mp3: https://www.onlineconverter.com/midi-to-mp3
+If the user is experiencing any trouble playing the midi file on their machine, the following website can be used to convert to mp3: https://www.onlineconverter.com/midi-to-mp3. 
+
+Below is further explination on how the translating scripts work. 
 
 Explanation on steps taken by translatescript:
 - We are here making the executables first
@@ -76,9 +77,7 @@ Explanation on steps taken by backscript:
 - Having the right final csv, we output using csvmidi the final midi file that is kept in the main folder
 
 
-### Method 2: 
 
-To use the GUI ensure you have QT creator installed on your machine. From there, open the `piano.pro` file (located in the `pianoGUI` folder) in QT and run it using the QT interface. This will create a build folder in your local copy of the repository called "build", open the folder and click the on the file named `piano.exe`, from here, user instructions are self explanatory. 
 
 <a name="trans"></a>
 ## 3. Translating 
@@ -161,6 +160,7 @@ To have the network generate music, we then load the previously trained model. E
 
 Since we had some time left at the end of the project, we took on an additional challange of complementing the project by created a GUI where users play a tune on a digital piano which the model uses as the beginning of its composition. This is clearly an extension and indepednt from our initial goal. Since this was not part of our original design, the code was not optimized for this use. Though, we thought it could be a fun add-on and pursued it nonetheless. Our GUI is therefore still in its initial stages and has potential erros and bugs. Since we spent time on it and we think it's a creative extension, we will include it as a idea to be perfected later on nonetheless.
 
+The idea is to create a more creative option, designed for the musically inclided users. By running the interface using QT, the user is able to compose a short extract using a digital keyboard, which the model will use as the beginning of the music it composes. To see a preface of the GUI ensure you have QT creator installed on your machine. From there, open the `piano.pro` file (located in the `pianoGUI` folder) in QT and run it using the QT interface. This will create a build folder in your local copy of the repository called "build", open the folder and click the on the file named `piano.exe`, from here, user instructions are self explanatory. This shows the idea behind the GUI we had in mind though it still does not function perfectly yet! 
 
 For the User interface in the making ,with the help of Qt creayor, we tried to make it as user friendly as possible. with thorough steps and guidelines on the main window that a user can read while running the program. 
 
@@ -172,7 +172,6 @@ which is a 3 octaves virtual piano that we implemented with an accurate sound of
 this list view will help the user to remember the history of all the notes that they pressed. This box will also be added with various actions that the user did (e.g. "start / stop recording" , "training", etc)
 - Buttons
 These buttons will aid and lead the user to eventually play their own made .mid file
-
 
 
 <a name="ext"></a>
