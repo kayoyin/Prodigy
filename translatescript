@@ -10,7 +10,7 @@ cd ../;
 
 #Having the to put the midi files that the user added in the right directory
 echo $PWD; 
-for filename in music_gen/*.mid; do cp "$filename" ./; done;
+for filename in music_gen/*.mid; do mv "$filename" ./; done;
 
 for filename in  ./*.mid; do mv "$filename" midicsv-csvmidi; done;
 cd midicsv-csvmidi;
