@@ -7,15 +7,9 @@
 2. [Usage Instructions](#usage)
 3. [Translating](#trans)
 4. [Neural Network](#network)
-5. [What Now?](#ext)
+5. [What Next?](#ext)
 
-## My second title
 
-    Project Description.
-    Usage Instructions
-    Translating
-    Neural Network
-    Other
 <a name="project"></a>
 ## 1. Project Description 
 
@@ -134,7 +128,7 @@ Once we have trained a model, we can save the model with the trained weights for
 To have the network generate music, we then load the previously trained model. Essentially, the trained network is a prediction model, so it needs a starting point for composition. We use a randomly generated short sequence of notes as the seed sequence which we feed into the prediction method of the model. From then on, we feed the new sequence predicted by the model to obtain the next predicted sequence, and we continue this step until we get a music sequence of our desired length.
 
 <a name="ext"></a>
-## 5. What now? 
+## 5. What Next? 
 
 Here are some extension ideas that have not been explored that could possibly improve our implementation:
 
