@@ -138,10 +138,12 @@ We chose to implement an artificial neural network for its sheer prediction powe
 More specifically, we implemented a Long short-term memory network (LSTM). This article gives a through explanation of LSTM networks, but the main idea is that LSTM units in our RNN will be able to recognize and learn long-time patterns, which is what we need for music composition.
 
 We decided to use an external C++ library for machine learning, mlpack to build and train our LSTM network.
-Structure of our model
+
+### Structure of our model
 
 We defined two hidden LSTM layers with 512 memory units, and a dropout layer of probability 0,3 which helps avoid overfitting. The output layer uses the softmax activation function to output the log of the probability prediction for each notes present in our model. The problem can be defined as a single integer classification problem with each note being a possible class, therefore training is minimizing the negative log-likelihood, which maximizes the likelihood that the output of the model produces the data actually observed. We also use the ADAM optimization algorithm for speed.
-Format of our data
+
+### Format of our data
 
 In general, LSTM networks expect input data with different features, time step and points. Specifically, in the mlpack library, the LSTM layer takes in an armadillo cube where each row corresponds to a "feature", in our case we only have one feature that is the note, each column corresponds to a "time step" which is the point in time within our sequence of music, and each slice (the third dimension of our tensor) corresponds to a point, or the specific sequence of notes at the time step considered.
 
@@ -185,7 +187,7 @@ Temperature will rescale the logits before putting them through the softmax func
 
 In our project, each combination of notes from the training set were encoded by a unique integer, which limits the combinations of notes the model can produce to ones it has already seen during training. Another way to encode music would be to give each note a unique character, then encode combinations of notes as combinations of these characters. This encoding is more complex but would be a more realistic modelization of true music composition.
 
-Furthermore, we can add complexity by finding a better way to encode rhytm. Currently, the scope of our training music is limited to music containing notes with lower velocities. This is due to the way we translation of the MIDI files. In particularly the tick like representation of music and the duration of time that note is help adds complexity to the translating dictionary. translating hu,man verify the above/make more complete please
+Furthermore, we can add complexity by finding a better way to encode rhytm. Currently, the scope of our training music is limited to music containing notes with lower velocities. This is due to the way we translate MIDI files. In particularly the tick like representation of music and the duration of time that note is help adds complexity to the translating dictionary. !!!! translating human verify the above/make more complete please, talk about shifts?
 
 ### Improve measure used to keep track of training
 
