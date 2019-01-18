@@ -31,22 +31,11 @@ void predictNotes(RNN<>& model,
     for (unsigned int i = 0; i < sequence_length; i++)
     {
     	int note = rand() % size_notes + 1; // random integer between 1 and size_notes
-	start(0,0,i) = note
-	music(i,0) = note
+	start(0,0,i) = note;
+	music(i,0) = note;
     }
 	
     cout << "Headstart: " << start << endl;
-    /**
-    mat startnotes;
-    // Load notes from user input
-    data::Load("../utils/startnotes.csv", startnotes, true);
-	
-    for (unsigned int i = 0; i < sequence_length; i++)
-    {
-	start(0,0,i) = startnotes(i,0);
-	music(i,0) = startnotes(i,0);
-    }
-    **/
 	
     cube compose;
     for (unsigned int i = sequence_length; i < size_music; i = i + sequence_length)	
