@@ -23,7 +23,7 @@ For the course of the project we divided ourselves into two teams, the "Translat
 <a name="usage"></a>
 ## 2. Usage Instructions 
 
- In our design, the user has the freedom of choosing whichever music he or she likes to train the model on. In theory, the music the model produces will have similar stylistics features as the training data. To evualate the "friendliness to translation" of the music, the user can use our translating evaluation algorithm *see end of the translating section for more information*.  
+ In our design, the user has the freedom of choosing whichever music he or she likes to train the model on. In theory, the music the model produces will have similar stylistics features as the training data. To evualate the "friendliness to translation" of the music, the user can use our translating evaluation algorithm (*see end of the translating section for more information*).  
 
 Before beginning the composition procress, it is necessary to install mlpack (the library used to implement the neural network) and all its dependencies. 
 
