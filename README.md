@@ -1,6 +1,15 @@
-#Prodigy
+# Prodigy
 
-##Table of Contents
+## Table of Contents
+
+
+1. [Project Description.](#project)
+2. [Usage Instructions](#usage)
+3. [Translating](#trans)
+4. [Neural Network](#network)
+5. [What Now?](#ext)
+
+## My second title
 
     Project Description.
     Usage Instructions
@@ -8,7 +17,7 @@
     Neural Network
     Other
 
-## 1. Project Description
+## 1. Project Description (#project)
 
 Our aim is to train a machine learning algorithm for music composition. For this, we used mlpack, a C++ library, to build a recurrent neural network with a LSTM layer. Since training is more optimal when using number, we wrote an algorithm (with the help of external libraries) (is this true tranlating people?) that translates and retranslates MIDI files into csv files containing integers. After the LSTM was build and translating processes was completed, we trained our network using Bach MIDI files located in the folder, insert here. A sample composition is uploaded in insert here and the some training weights is saved in the folder insert here if the user wants readily to compose music.
 
@@ -16,7 +25,8 @@ For the course of the project we thereby divided ourselves into two teams, the "
 
 section about GUI if applicable
 
-## 2. Usage Instructions
+## 2. Usage Instructions (#usage)
+
 Installing the dependencies
 
 After cloning from the project, you first need to install mlpack and its dependencies. To do so, simply run the following command:
@@ -61,7 +71,7 @@ $./backscript
 
 
 
-## 3. Translating
+## 3. Translating (#trans)
 
 ### Decision-making on the filetype:
 
@@ -95,7 +105,7 @@ To make the training of Neural Network easier, we had to find a way to be able t
 
 ### Also talk here about translate algorithm accuracy evaluation
 
-## 4. Neural Network
+## 4. Neural Network (#network)
 ### Music composition with recurrent neural networks (RNN)
 
 We chose to implement an artificial neural network for its sheer prediction power after enough training. Because of the sequential nature of music, the dependency of the value of the notes at a certain time step to the music that precedes it, a recurrent neural network rather than a feedforward neural network is the necessary choice.
@@ -121,7 +131,7 @@ Once we have trained a model, we can save the model with the trained weights for
 
 To have the network generate music, we then load the previously trained model. Essentially, the trained network is a prediction model, so it needs a starting point for composition. We use a randomly generated short sequence of notes as the seed sequence which we feed into the prediction method of the model. From then on, we feed the new sequence predicted by the model to obtain the next predicted sequence, and we continue this step until we get a music sequence of our desired length.
 
-## 5. What now?
+## 5. What now? (#ext)
 
 Here are some extension ideas that have not been explored that could possibly improve our implementation:
 
