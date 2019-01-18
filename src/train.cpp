@@ -40,17 +40,6 @@ arma::cube getTrainX(const mat& tempDataset, const unsigned int& sequence_length
     return trainX;
  }
 
-// Vector of "actual" notes from the training set used to calculate accuracy of training
-arma::mat getReal(const mat& tempDataset, const int& sequence_length)
-{
-    mat real = mat(1,tempDataset.n_rows - sequence_length);
-    for (unsigned int i = sequence_length; i < tempDataset.n_rows; i++)
-    {
-	 real(0,i-sequence_length) = tempDataset(i,0);
-    }
-    return real;
-}	
-
 // Get the "labels" used for training, that is the note that follows each sequence of notes in trainX
 arma::cube getTrainY(const mat& tempDataset, const int& sequence_length)
 {
@@ -78,25 +67,9 @@ arma::mat getNotes(const mat& proba)
 }				   
 
 
-// Returns the accuracy (percentage of correct notes)
-// Note that we expect the accuracy to be low even on a well trained model, 
-// we don't want the model to reproduce exactly the music given
-double accuracy(arma::mat& predicted, const arma::mat& real)
-{
-    // Calculating how many predicted notes coincide with actual notes.
-    size_t success = 0;
-    for (size_t j = 0; j < predicted.n_cols; j++) {
-        if (predicted(0,j) == std::round(real(0,j))) {
-            ++success;
-        }
-    }
-    
-    // Calculating percentage of correctly predicted notes.
-    return (double) success / (double)predicted.n_cols * 100.0;
-}
 
 void trainModel(RNN<>& model,
-                const cube& trainX, const cube& trainY, const mat& real)
+                const cube& trainX, const cube& trainY)
 {
     // The solution is done in several approaches (CYCLES), so each approach
     // uses previous results as starting point and have a different optimizer
@@ -142,23 +115,10 @@ void trainModel(RNN<>& model,
         // Don't reset optimizer's parameters between cycles.
         optimizer.ResetPolicy() = false;
         
-	/**
-        cube predOut;
-        // Getting predictions on training data points.
-        model.Predict(trainX, predOut);
-
-        // Calculating accuracy on training data points.
-        mat pred = getNotes(predOut.slice(predOut.n_slices - 1));
-	cout << "Predicted notes" << pred << endl;
-	cout <<	 "Actual notes" << real << endl;    
-        double trainAccuracy = accuracy(pred, real);       
-
-        cout << i << " - accuracy = "<< trainAccuracy << "%," << endl;
-	**/
-	// Save the model every 10 cycles
-	if (i % 1 == 0)
+	// Save the model every 5 cycles
+	if (i % 5 == 0)
 	{
-		cout << "Checkpoint at cycle" << i << endl;
+		cout << "Checkpoint at cycle " << i << endl;
    		data::Save("model.xml", "model", model, false);
 	}
 
@@ -173,7 +133,7 @@ int main () {
     mat tempDataset;
 
     // the parameter rho for our LSTM model, also the length of the sequence considered during training
-    const int rho = 20;
+    const int rho = 10;
     
     // load a matrice containing translated music file for training
     data::Load("../utils/training.csv", tempDataset, true); 
@@ -187,11 +147,11 @@ int main () {
     
     RNN<> model(rho);
     model.Add<Linear <> > (trainX.n_rows, rho);
-    model.Add<LSTM <> > (rho,256);
-    model.Add<Linear <> > (256, 256);
-    model.Add<LSTM <> > (256, 256);
-    model.Add<Linear <> > (256, 256);
-    // model.Add<Dropout <> > (0.3); // prevent overfitting
+    model.Add<LSTM <> > (rho,512);
+    model.Add<Linear <> > (512, 512);
+    model.Add<LSTM <> > (512, 512);
+    model.Add<Linear <> > (512, 256);
+    model.Add<Dropout <> > (0.3); // prevent overfitting
     model.Add<Linear <> > (256, size_notes);
     model.Add<LogSoftMax<> > ();
     
@@ -199,9 +159,9 @@ int main () {
     data::Load("model.xml", "model", model);
 
     cout << "Training ..." << endl;
-    trainModel(model, trainX, trainY, real);
+    trainModel(model, trainX, trainY);
 
-    cout << "Saving model ..." << endl;
+    cout << "Saving model.xml ..." << endl;
     data::Save("model.xml", "model", model, false);
     cout << "Saved!" << endl;
     return 0;
