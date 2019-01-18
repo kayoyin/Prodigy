@@ -1,3 +1,6 @@
+//merge.cpp
+//Raymond Diab and Michael Chan
+
 #include <stdio.h>
 #include <iostream>
 #include <fstream>
@@ -16,7 +19,7 @@
 void  merging(std::string fileName)
 {
     std::ifstream file(fileName.c_str());
-    std::ofstream output("test.csv");
+    std::ofstream output("test.csv",std::ios_base::app);
     bool check;
 
     std::vector<std::vector<std::string> > dataList;
@@ -49,4 +52,5 @@ int main(int argc, char* file[]){
     std::cout << file[1];
     merging(str);
 }
+
 
