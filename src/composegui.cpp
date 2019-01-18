@@ -40,8 +40,8 @@ void predictNotes(RNN<>& model,
 	music(i,0) = note;
     }
 	
-    int n = startnotes.n_rows;
-    for (unsigned int i = 0; i < min(sequence_length,n); i++)
+
+    for (unsigned int i = 0; i < startnotes.n_rows; i++)
     {
 	start(0,0,i) = startnotes(i,0);
 	music(i,0) = startnotes(i,0);
