@@ -28,7 +28,7 @@ Before beginning the composition procress, it is necessary to install mlpack (th
 
 ## Installing the dependencies
 
-After cloning the repository, the user first needs to install mlpack and its dependencies. To do so, simply run the following command in terminal:
+After cloning the project in a local repository named `Prodigy`, the user first needs to install mlpack and its dependencies. To do so, simply run the following command in terminal:
 
     $> bash install_prodigy.bash 
 
