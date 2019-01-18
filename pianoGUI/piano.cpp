@@ -21,7 +21,7 @@
 #include <QMediaPlayer>
 #include <QDesktopServices>
 #include <QUrl>
-#include <Translation/translate.hpp>
+#include <../Translation/translate.hpp>
 
 bool rec = 0;
 
@@ -484,10 +484,62 @@ void piano::on_commandLinkButton_4_clicked() //train
 
         numFile.open(QDir::currentPath().toStdString()+"/startnotes.csv", std::ios::out);
 
+        std::map<std::string, int> mapOfWords;
+        //C:48, Db:49, D:50 ...
+        mapOfWords.insert(std::make_pair("C",48));
+        mapOfWords.insert(std::make_pair("Db",49));
+        mapOfWords.insert(std::make_pair("D",50));
+        mapOfWords.insert(std::make_pair("Eb",51));
+        mapOfWords.insert(std::make_pair("E",52));
+        mapOfWords.insert(std::make_pair("F",53));
+        mapOfWords.insert(std::make_pair("Gb",54));
+        mapOfWords.insert(std::make_pair("G",55));
+        mapOfWords.insert(std::make_pair("Ab",56));
+        mapOfWords.insert(std::make_pair("A",57));
+        mapOfWords.insert(std::make_pair("Bb",58));
+        mapOfWords.insert(std::make_pair("B",59));
+        mapOfWords.insert(std::make_pair("C_2",60));
+        mapOfWords.insert(std::make_pair("Db_2",61));
+        mapOfWords.insert(std::make_pair("D_2",62));
+        mapOfWords.insert(std::make_pair("Eb_2",63));
+        mapOfWords.insert(std::make_pair("E_2",64));
+        mapOfWords.insert(std::make_pair("F_2",65));
+        mapOfWords.insert(std::make_pair("Gb_2",66));
+        mapOfWords.insert(std::make_pair("G_2",67));
+        mapOfWords.insert(std::make_pair("Ab_2",68));
+        mapOfWords.insert(std::make_pair("A_2",69));
+        mapOfWords.insert(std::make_pair("Bb_2",70));
+        mapOfWords.insert(std::make_pair("B_2",71));
+        mapOfWords.insert(std::make_pair("C_3",72));
+        mapOfWords.insert(std::make_pair("Db_3",73));
+        mapOfWords.insert(std::make_pair("D_3",74));
+        mapOfWords.insert(std::make_pair("Eb_3",75));
+        mapOfWords.insert(std::make_pair("E_3",76));
+        mapOfWords.insert(std::make_pair("F_3",77));
+        mapOfWords.insert(std::make_pair("Gb_3",78));
+        mapOfWords.insert(std::make_pair("G_3",79));
+        mapOfWords.insert(std::make_pair("Ab_3",80));
+        mapOfWords.insert(std::make_pair("A_3",81));
+        mapOfWords.insert(std::make_pair("Bb_3",82));
+        mapOfWords.insert(std::make_pair("B_3",83));
+        mapOfWords.insert(std::make_pair("C_4",84));
 
         std::vector<int> out;
+        std::vector<int> numlis;
+        for (int i=0;i<lis.size();i++){
+            std::map<std::string, int>::iterator it;
+            for ( it = mapOfWords.begin(); it != mapOfWords.end(); it++ )
+            {
+                if (it->first == lis.at(i).toStdString()){
+                    numlis.push_back(it->second);
+                }
+                else{}
+            }
 
-        CSVReader reader("test.csv");
+        }
+
+
+        CSVReader reader("../Translation/test.csv");
 
         std::tuple<std::set<std::string>, std::vector<std::string>> other = reader.getData();
         std::set<std::string> pitches = std::get<0>(other);
@@ -496,23 +548,32 @@ void piano::on_commandLinkButton_4_clicked() //train
 
 
 
-        std::string dum="( ";
-        std::string dum2 = ")";
+        QString dum="( ";
+        QString dum2 = ")";
         std::vector<std::string> noteslist;
 
-        for (int i=0; i< lis.size(); i++){
-           noteslist.push_back(dum+lis.at(i).toStdString()+dum2);
+        for (int i=0; i< numlis.size(); i++){
+            std::string h=(dum+QString::number(numlis.at(i))+dum2).toStdString();
+           noteslist.push_back(h);
+           ui->listWidget->addItem(QString::fromStdString(h));
         }
         for (int i=0; i< noteslist.size(); i++) {// iterate on listnotes
             std::map<std::string, int>::iterator it;
 
-            for (it = trans.begin(); it != trans.end(); it++ )  //iterate on trans bijection
+            for (it = trans.begin(); it != trans.end(); ++it )  //iterate on trans bijection
             {
+                //ui->listWidget->addItem(QString::fromStdString(it->first));
+                //ui->listWidget->addItem(QString::number(it->second));
                 if (noteslist[i]== it->first){
                     out.push_back(it->second);
+                    ui->listWidget->addItem(" ------------------------------------- ");
+                    ui->listWidget->addItem(QString::fromStdString(it->first));
+                    ui->listWidget->addItem(" was translated to ");
+                    ui->listWidget->addItem(QString::number(it->second));
+                    ui->listWidget->addItem(" ------------------------------------- ");
                 }
                 else{
-                    out.push_back(1);
+                    //ut.push_back(1);
 
                 }
             }
@@ -522,26 +583,28 @@ void piano::on_commandLinkButton_4_clicked() //train
         for(int i=0; i < out.size(); i++) {
             int c;
             numFile << out[i] <<",";
-            ui->listWidget->addItem(QString::number(out[i]));
+            //ui->listWidget->addItem(QString::number(out[i]));
           }
 
             numFile<<"\n";
+            numFile.close();
 
             ui->listWidget->addItem("csv file created");
             //
             //
             //
+
             std::string command="mv startnotes.csv ../utils/startnotes.csv";
             system(command.c_str());
 
 
-            numFile.close();
+
 
             QMessageBox msgBox;
             msgBox.setWindowTitle("play");
 
 
-            msgBox.setText("SURPRISE! We are not done yet, we like our users to be more hands on programmer, so now go to your command prompt and run \"./composegui\"");
+            msgBox.setText("SURPRISE! We are not done yet, we like our users to be more hands on programmer, so now go to your command prompt and run \n \"./composegui\" this will call our AI Buddy BOB to start helping you compose your first music");
             QAbstractButton* pButtonYes = msgBox.addButton(tr("Ok!"), QMessageBox::YesRole);
             msgBox.addButton(tr("Whatever"), QMessageBox::NoRole);
             msgBox.exec();
@@ -560,8 +623,10 @@ void piano::on_commandLinkButton_4_clicked() //train
 void piano::on_commandLinkButton_6_clicked()
 {
 
-    std::string command="cd .. && ./backscript";
-    system(command.c_str());
+
+
+    //std::string command="cd .. && ./backscript";
+    //system(command.c_str());
 
     /*
      *
@@ -578,26 +643,15 @@ void piano::on_commandLinkButton_6_clicked()
          }
      }       //ADDING CONTENTS IN ENDNOTES.csv FROM AI TO QVECTOR INPUT
      ui->listWidget->addItem("composed csv is :");
-
      QStringList test;
      foreach(int i, input){
          test << QString::number(i);
      }
-
      ui->listWidget->addItems(test);
-
-
     //asdafsdgsgd
-
-
-
      //abfsdfius uif
-
      //TO ADD AI Algorithm and make music .mid
      //----------------------------------------------------------------------
-
-
-
      outFile <<"0,0, Header,1,20,240,,,,,,,,\n"<<
               "1,0, Start_track,,,,,,,,,,,\n"<<
               "1,0, Tempo,491803,,,,,,,,,,\n"<<
@@ -640,22 +694,16 @@ void piano::on_commandLinkButton_6_clicked()
               "2,1305, Control_c,0,64,127,,,,,,,,\n"; //appending header.csv
      //---------------------------------------------------------------------------------------------
      int j = 10;
-
      for (int i=0; i<out.size();i++){
          j+=5;
          outFile << "2,"<< j << ",note_on_c,1," << out[i]<<",100\n";
          j+=5;
          outFile << "2,"<< j << ",note_off_c,1," << out[i]<<",0\n";
-
      }
-
      outFile <<"2, "<< j <<",End_track\n";
      outFile <<"0,0,End_of_file\n";
      outFile.close();
-
-
      endFile.close();
-
     std::string command3="mv sonata.csv ../midicsv-csvmidi/sonata.csv";
     system(command3.c_str());
     std::string command2="cd ../midicsv-csvmidi/ &&  ./csvmidi sonata.csv sonata.mid";
@@ -667,15 +715,22 @@ void piano::on_commandLinkButton_6_clicked()
     msgBox.setWindowTitle("play");
 
 
-    msgBox.setText("So now your .mid file is in the main folder ! CONGRATULATIONS! You just collaborated with AI for music! now play your mid file with the button below!");
-    QAbstractButton* pButtonYes = msgBox.addButton(tr("Play! :)"), QMessageBox::YesRole);
-    msgBox.addButton(tr("I'll Pass :("), QMessageBox::NoRole);
+    msgBox.setText("YOU ARE ALMOST THERE! Now in the same command prompt, run \" ./translatescript \" then \" ./backscript \" ");
+    QAbstractButton* pButtonYes = msgBox.addButton(tr("Ok!"), QMessageBox::YesRole);
+    msgBox.addButton(tr("Whatever"), QMessageBox::NoRole);
     msgBox.exec();
 
     if (msgBox.clickedButton()==pButtonYes) {
-        std::string command5="cd .. && timidity sonata.mid";
-        system(command5.c_str());
+        QMessageBox msgBox2;
+        msgBox2.setWindowTitle("play");
+
+
+        msgBox2.setText("So now your .mid file is in the main folder ! CONGRATULATIONS! You just collaborated with AI for music! now play your mid file with the button below! if you dont have a midi player installed, you can convert it online to mp3 in this site \"https://www.onlineconverter.com/midi-to-mp3 \"");
+        QAbstractButton* pButtonYes2 = msgBox2.addButton(tr("OK :)"), QMessageBox::YesRole);
+        msgBox2.addButton(tr("I'll Pass :("), QMessageBox::NoRole);
+        msgBox2.exec();
     }
     else{
+        lis.clear();
         }
 }
