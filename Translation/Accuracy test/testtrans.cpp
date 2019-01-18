@@ -1,5 +1,3 @@
-
-
 //
 //  testtrans.cpp
 //
@@ -39,7 +37,7 @@ int main() {
 //The first step is to open both files to get matrices with files' lines in rows and vectors [1, tick, Note_on/Pitch_benc etc, Instrument, Note, Velocity] in lines.
 
     //For original 
-    std::ifstream original("bach.csv");
+    std::ifstream original("bach.csv"); //insert the name of your original file here
     
 
     std::vector<std::vector<std::string> > dataList1;
@@ -103,7 +101,7 @@ int main() {
 //Second step: compare notes. We use the class CSVreader created in translated.hpp to create vector of notes
 
 //For original
-    CSVReader original1("bach.csv");
+    CSVReader original1("bach.csv"); //insert the name of your original file here
     
     std::tuple<std::set<std::string>,std::vector<std::string>> other = original1.getData();
     std::set<std::string> pitches = std::get<0>(other);
@@ -111,7 +109,7 @@ int main() {
 
 
 //For trans
-    CSVReader trans1("tbach.csv");
+    CSVReader trans1("tbach.csv"); //insert the name of your translated file here
     
     std::tuple<std::set<std::string>,std::vector<std::string>> other1 = trans1.getData();
     std::set<std::string> pitches1 = std::get<0>(other1);
