@@ -33,7 +33,7 @@ After cloning the repository, the user first needs to install mlpack and its dep
 
     $> bash install_prodigy.bash 
 
-From here, it is good to go. 
+The above script will equally make and build the project, creating the necessary executables, and download a pre-trained model.
 
 ## Running the project
 
