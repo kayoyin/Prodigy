@@ -17,7 +17,7 @@ Our aim is to train a machine learning algorithm for music composition. For this
 
 For the course of the project we thereby divided ourselves into two teams, the "Translators" and the "Builders". For more information on the respective parts, see the translating and neural network sections.
 
-section about GUI if applicable
+*ADD SECTION OF GUI
 
 <a name="usage"></a>
 ## 2. Usage Instructions 
@@ -76,7 +76,7 @@ To begin with, we had to make a choice on what kind of audio file we wanted to u
 ### Dealing with filetype:
 
 Now in order to get the midi files in a human-readable csv file, we had to look for an external library on github that happened to be written in C. Fortunately, it was possible for us to still compile it using standard g++ command. Inside this external package, there was two main functions that we fetched: midicsv and csvmidi. Both functions' use are self-explanatory, moreover both functions receive two arguments, which are (depending on which function) a csv filename and a midi filename.
-Csv files outputted from the functions have a specific format which is a header, the main body and an ending line. The main parts has the following general format: "Track, Tick, Note_ON/Note_Off, instrument,note,velocity". A remark: among thoses, Tick is the absolute time value, and the velocity when 0 means that the note is not benig played. 
+Csv files outputted from the functions have a specific format which is a header, the main body and an ending line. The main parts has the following general format: "Track, Tick, Note_ON/Note_Off, instrument,note,velocity". A remark: among thoses, Tick is the absolute time value, and the velocity when 0 means that the note is not being played. 
 
 ### Translating Process: 
 
@@ -99,7 +99,8 @@ Practical detail: In order to be a bit more efficient, we decided not to fix a g
 
 To make the training of Neural Network easier, we had to find a way to be able to translate multiple midi files and then "merge" them to get one sole csv file that is given as input to the Nerual Network. And therefore we created a merge.cpp which executable is called merge that as mentioned, merges csv files that were transformed from midi files beforehand. Merge receives as an argument a csv file, that will append to the final file. 
 
-### Also talk here about translate algorithm accuracy evaluation
+### Evaluating Translating Accuracy
+*EDIT THIS
 
 <a name="network"></a>
 ## 4. Neural Network 

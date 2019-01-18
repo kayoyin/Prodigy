@@ -71,7 +71,7 @@ std::tuple<std::set<std::string>,std::vector<std::string>>  getData()
 
     for (int y=0;y<dataList.size();){
 
-        if (dataList.at(y).at(2) == " Note_on_c"){
+        if (dataList.at(y).at(2) == " Note_on_c" || dataList.at(y).at(2) == " Note_off_c" ){
             check = true;
         }
 
@@ -80,15 +80,16 @@ std::tuple<std::set<std::string>,std::vector<std::string>>  getData()
 
         if (check == true){
 
-            if (dataList.at(y).at(5) == " 0"){
+            if (dataList.at(y).at(5) == " 0" || dataList.at(y).at(2) == " Note_off_c" ){
 
                 memo.erase(dataList.at(y).at(4));
                 y++;
             }
 
-            else if (dataList.at(y).at(5) != " 0"){
+            else if (dataList.at(y).at(5) != " 0" || dataList.at(y).at(2) == " Note_off_c" ){
                 while (dataList.at(y).at(1) == prev){
-                    if(dataList.at(y).at(5) != " 0") memo.insert(dataList.at(y).at(4));
+                    if(dataList.at(y).at(5) != " 0" && dataList.at(y).at(2) != " Note_off_c" ) memo.insert(dataList.at(y).at(4));
+                    else if (dataList.at(y).at(2) == " Note_off_c") memo.erase(dataList.at(y).at(4));
                     else memo.erase(dataList.at(y).at(4));
                     y++;
                 }
@@ -141,14 +142,7 @@ std::vector<int> translation (std::vector<std::string> &notes , std::map<std::st
 
 void write_output(std::vector<int> translated){
     std::ofstream newfile("partition.csv");
-    int count = 0;
     for (std::vector<int>::iterator it = translated.begin() ; it != translated.end(); ++it){
-        count+= 1;
-        if (count == 100){
-            newfile << " " << std::endl;
-            newfile << " "<< std::endl;
-            count = 0;
-        }
         newfile << *it << "," ;
     }
 }
@@ -156,7 +150,7 @@ void write_output(std::vector<int> translated){
 int main()
 {
     // Creating an object of CSVWriter
-    CSVReader reader("test.csv");
+    CSVReader reader("river.csv");
     
     // Get the data from CSV File
     std::tuple<std::set<std::string>,std::vector<std::string>> other = reader.getData();
@@ -167,9 +161,9 @@ int main()
 
     write_output(translated);
 
-    /*for (std::vector<int>::iterator it = translated.begin() ; it != translated.end(); ++it){
+    for (std::vector<int>::iterator it = translated.begin() ; it != translated.end(); ++it){
         std::cout << *it << "   ";
-    }*/
+    }
 
     /*for (std::vector<std::string>::iterator it = notes.begin() ; it != notes.end(); ++it){
         std::cout << *it << "   ";

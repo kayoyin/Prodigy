@@ -1,7 +1,7 @@
 
 //  translate.cpp
 //  
-// 
+// Raymond Diab and Michael Chan
 //
 
 #include <stdio.h>
@@ -70,7 +70,7 @@ void writeData()
 
     for (std::vector<int>::iterator it = translated.begin() ; it != translated.end(); ++it){
         dummy = reverse[*it];
-        tick = tick + 100;
+        tick = tick + 70;
         for (std::string::iterator bit = dummy.begin() ; bit < dummy.end() ; ){
             while (*bit == '0' || *bit == '1' || *bit == '2' || *bit == '3' || *bit == '4' || *bit == '5' || *bit == '6'|| *bit == '7' || *bit == '8' || *bit == '9' ) {
                 number = number + *bit; 
@@ -83,7 +83,7 @@ void writeData()
             for (std::set<int>::iterator nb = keep.begin(); nb != keep.end(); nb++){
                 if (*nb == n) ok = false;
             }
-            if (number != "" && ok == true) newfile << "2" << "," << tick << "," <<  "Note_on_c" << "," << "0" << "," << number << "," << "100" << std::endl;
+            if (number != "" && ok == true) newfile << "2" << ", " << tick << ", " <<  "Note_on_c" << ", " << "0" << ", " << number << ", " << "100" << std::endl;
             
             ok = true;
 
@@ -99,7 +99,7 @@ void writeData()
                     if (*nb == *cb) check = true;
                 }
                 if (check == false)  {
-                    newfile << "2" << "," << tick << "," <<  "Note_on_c" << "," << "0" << "," << *nb << "," << "0" << std::endl;
+                    newfile << "2" << ", " << tick << ", " <<  "Note_on_c" << ", " << "0" << ", " << *nb << ", " << "0" << std::endl;
                     keep.erase(*nb);
                 }
                 check = false;
@@ -136,11 +136,14 @@ int main()
     std::vector<std::string> notes = std::get<1>(other);
     std::map<std::string, int> trans = bijection(pitches);
     std::vector<int> translated = translation(notes, trans);
-    std::vector<int> partition{26,38,26,18,26,26,26,34,34,18,26,21,18,8,18,26,30,18,18,2,26,8,18,18,18,26,30,18,8,18,26,8,18,18,8,26,30,18,8,8,26,8,18,18,15,26,30,18,8,18,26,8,18,18,8,26,30,18,8,8,26,8,18,18,15,26,30,18,8,18,26,8,18,18,8,26,30,18,8,8,26,8,18,18,15,26,30,18,8,18,26,8,18,18,8,26,30,18,8,8,26,8,18,18,15,26,30,18,8,18,26,8,18,18,8,26,30,18,8,8,26,8,18,18,15,26,30,18,8,18,26,8,18,18,8,26,30,18,8,8,26,8,18,18,15,26,30,18,8,18,26,8,18,18,8,26,30,18,8,8,26,8,18,18,15,26,30,18,8,18,26,8,18,18,8,26,30,18,8,8,26,8,18,18,15,26,30,18,8,18,26,8,18,18,8,26,30,18,8,8,26,8,18,18,15,26,30,18,8,18,26,8,18,18,8,26,30,18,8,8,26,8,18,18,15,26,30,18,8,18,26,8,18,18,8,26,30,18,8,8,26,8,18,18,15,26,30,18,8,18,26,8,18,18,8,26,30,18,8,8,26,8,18,18,15,26,30,18,8,18,26,8,18,18,8,26,30,18,8,8,26,8,18,18,15,26,30,18,8,18,26,8,18,18,8,26,30,18,8,8};
+    
+    CSVReader part("sonata.csv");
+    std::vector<int> partition = part.read_input();
     std::tuple<std::map<std::string, int>,std::vector<int>> tup = std::make_tuple(trans,partition);
+    
     // Creating an object of CSVWriter
     CSVWriter writer(tup);
-    // outputting the csv file named, "translated.csv"
+    // outputting the csv file named, "blank.csv"
     writer.writeData();
     
     return 0;

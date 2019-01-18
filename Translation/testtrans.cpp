@@ -125,14 +125,12 @@ int main() {
 
     for (int i=0; i<notes.size();i++) {
         if ((notes[i]) == "()") {
-  //      std::cout << notes[i];
         notes.erase(notes.begin()+i);
         }
     }
 
     for (int j=0; j<notes1.size();j++) {
         if ((notes1[j]) == "()") {
-     //       std::cout << notes1[j];
             notes1.erase(notes1.begin()+j);
         }
     }
@@ -155,12 +153,14 @@ int main() {
 
 
 
-
- /*   int j;
+//enter this loop if notes is the biggest vector
+std::string S;
+if (sizE == notes.size()) {
+     S = "original";
+    int j; //counts the shifts
     j = 0;
     bool checkN = false;
     std::string prevN = notes1[0];
-    std::cout<< prevN;
 
     for (int i=0;i<size;){
         
@@ -170,11 +170,10 @@ int main() {
         
         if( checkN == true) {
             count += 1;
-            prevN = notes1[i+1];
-            std::cout<<"ok";
+            prevN = notes1[i+1];   
             i++;
 
-        if (checkN == false) i++;
+
             
         }
         
@@ -186,33 +185,71 @@ int main() {
                     c += 1;
                     prevN = notes1[i+1];
                     i++;
+                    checkN = true;
                     break;
 
                 }
-                
+                //            std::cout<<"ok";     
                 else if (notes[i+j] != prevN) j++;
         
             
 
             }
-            }
+            }}}
+            
 
-            }*/
-    
-  //part that doesn't work yet. seems to be an infinite loop. how to manage shifts??  
-    
-    
-    
-    
-    
+//enter this loop if notes1 is the biggest vector
+
+
+if (sizE == notes1.size()) {
+
+    S = "trans";
+    int j;
+    j = 0;
+    bool checkN = false;
+    std::string prevN = notes[0];
+
+    for (int i=0;i<size;){
+        
+        checkN = false;
+        
+        if (notes1[i+j] == prevN) checkN = true;
+        
+        if( checkN == true) {
+            count += 1;
+            prevN = notes[i+1];
+            i++;
+
+            
+        }
+        
+       if (checkN == false){
+            
+            
+            for(int j; j<sizE-i;){
+                if (notes1[i+j] == prevN) {
+                    c += 1;
+                    prevN = notes[i+1];
+                    i++;
+                    checkN = true;
+                    break;
+
+                }
+                
+                else if (notes1[i+j] != prevN) j++;
+        
+            
+
+            }
+            }}}
+            
+
     
     
     
 //Print the results.
     std::cout << count + c <<" similar notes out of " << size << std::endl;
-    std::cout << "However, there are " << sizE - size << " shifts:" << std::endl;
- //   std::cout << "However, there are " << j << " shifts:" << std::endl;
-    std::cout<< std::endl;
+    std::cout << "However, there are " << sizE - size << " additional notes in " <<  S<< std::endl;
     std::cout << (sizE - size)*100/size << " % of shifts." << std::endl;
 
     std::cout << "On average, the velocity of notes in original and trans differs by " << average2 << std::endl;
