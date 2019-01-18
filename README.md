@@ -34,19 +34,9 @@ See the respective sections for user information on method of use. But first, it
 
 After cloning the repository, the user first needs to install mlpack and its dependencies. To do so, simply run the following command in terminal:
 
-     $> bash install_mlpack.bash 
+     $> bash install_prodigy.bash 
 
-Then, the user has to build the project using:
-
-    $> mkdir build
-    $> cd build
-    $> cmake ../
-
-Then, to compile the project, enter the build folder and type make.
-
-    $> cd build
-    $> make
-
+The above script will also build the executables `train`, `compose` and `composegui` under the directory `build` to run the neural network model.
 
 From here on, the user can decide which method to employ. 
 
