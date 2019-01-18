@@ -201,6 +201,6 @@ $> git lfs clone https://github.com/kayoyin/ProdigyModels.git
 
 ### Accuracy measure used to keep track of training
 
-Initially, we implemented a very naive accuracy measure naive measure where we simply calculate the percentage of notes the model outputs given the training set, to the actual notes from the training set. This measure is misleading and not well-suited in the scope of this project, as a model we would consider very good at producing music does not, and should not even have a high accuracy during training. This leads to a fundamental question of how to classify what music is considered as "good". Answering such a question might require developing a criteria based on musical theory.
+Initially, we implemented a very naive accuracy measure where we simply calculate the percentage of notes the model outputs given the training set, to the actual notes from the training set. This measure is misleading and not well-suited in the scope of this project, as a model we would consider very good at producing music does not, and should not even have a high accuracy during training. Evaluating the accuracy of the music leads to a fundamental question of how to classify what music is considered as "good". Answering such a question might require developing a criteria based on musical theory.
 
 
