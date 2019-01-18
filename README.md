@@ -34,9 +34,19 @@ See the respective sections for user information on method of use. But first, it
 
 After cloning the repository, the user first needs to install mlpack and its dependencies. To do so, simply run the following command in terminal:
 
-     $> bash install_prodigy.bash 
+     $> bash install_mlpack.bash 
 
-The above script will also build the executables `train`, `compose` and `composegui` under the directory `build` to run the neural network model.
+Then, the user has to build the project using:
+
+    $> mkdir build
+    $> cd build
+    $> cmake ../
+
+Then, to compile the project, enter the build folder and type make.
+
+    $> cd build
+    $> make
+
 
 From here on, the user can decide which method to employ. 
 
@@ -53,16 +63,16 @@ Running two following commands will change translatescript to executable, and th
     $> chmod +x translatescript
     $> ./translatescript
 
-The translatescript translates and merges all the midi files in a format ready to use for the neural network. Moreover, it saves the output csv file in the utils folder. From there on, the training function automatically loads the data. Since alll the data is properly formatted for use, the user can start traing the model. To do this, simply run the following command in terminal: 
+The translatescript translates and merges all the midi files in a format ready to use for the neural network. Moreover, it saves the output csv file in the utils folder. From there on, the training function automatically loads the data. Since all the data is properly formatted for use, the user can start traing the model. To do this, simply run the following command in terminal: 
 
     $> ./train
     
-Once training is complete (do not be allarmed if this takes time), simply run the following comand to start composing music: 
+Once training is complete (do not be alarmed if this takes time), simply run the following command to start composing music: 
 
     $> ./compose
 
 
-Now, the last thing to do is translate the the output of the neural network (.csv) into an audiofile (.mid). The backscript automatically loads the output file and saves the audio file as *final.mid* in the main folder of the repository. Run the following commands to execute this: 
+Now, the last thing to do is translate the output of the neural network (.csv) into an audiofile (.mid). The backscript automatically loads the output file and saves the audio file as *final.mid* in the main folder of the repository. Run the following commands to execute this: 
 
     $> chmod +x backscript
     $> ./backscript
@@ -70,7 +80,7 @@ Now, the last thing to do is translate the the output of the neural network (.cs
 If the user is experiencing any trouble playing the midi file, the following website can be used to convert to mp3: https://www.onlineconverter.com/midi-to-mp3
 
 
-### Method 3: 
+### Method 2: 
 
 To use the GUI ensure you have QT creator installed on your machine. From there open the piano.pro file (located in the pianoGUI folder) in QT and run it using the QT interface. This will create a build folder in your local copy of the repository called "build", open the folder and click the on the file named piano.exe, from here, user instructions are self explanatory. 
 
@@ -84,7 +94,7 @@ To begin with, we had to make a choice on what kind of audio file we wanted to u
 ### Dealing with filetype:
 
 Now in order to get the midi files in a human-readable csv file, we had to look for an external library on github that happened to be written in C. Fortunately, it was possible for us to still compile it using standard g++ command. Inside this external package, there was two main functions that we fetched: midicsv and csvmidi. Both functions' use are self-explanatory, moreover both functions receive two arguments, which are (depending on which function) a csv filename and a midi filename.
-Csv files outputted from the functions have a specific format which is a header, the main body and an ending line. The main parts has the following general format: "Track, Tick, Note_ON/Note_Off, instrument,note,velocity". A remark: among thoses, Tick is the absolute time value, and the velocity when 0 means that the note is not benig played. 
+Csv files outputted from the functions have a specific format which is a header, the main body and an ending line. The main part has the following general format: "Track, Tick, Note_ON/Note_Off, instrument,note,velocity". A remark: among thoses, Tick is the absolute time value, and the velocity when 0 means that the note is not being played. 
 
 ### Translating Process: 
 
@@ -101,16 +111,22 @@ For the translating back process, this time around, we made others practical ass
 - tick as well were incremented constantly, an incrementing that is written in the code, to make the notes regular.
 - In the ouput of translate back, every header are the same (we had made some test to see whether the header changed drastically the midi output, which it did not).
 
-Practical detail: In order to be a bit more efficient, we decided not to fix a given dictionary (the dictionary must be obviously the same for both translate, and translateback), but to create it when translating and having it created in translateback to use it.(creating the dictionary the same way we did before). The dictionary creation follows an easy principle which is to map a new note to the image of the last seen note + 1. 
+Practical detail: In order to be a bit more efficient, we decided not to fix a given dictionary (the dictionary must be obviously the same for both translate, and translateback), but to create it when translating and having it created in translateback to use it (creating the dictionary the same way we did before). The dictionary creation follows an easy principle which is to map a new note to the image of the last seen note + 1. 
 
 ### Mechanical for the purpose of training:
 
 To make the training of Neural Network easier, we had to find a way to be able to translate multiple midi files and then "merge" them to get one sole csv file that is given as input to the Nerual Network. And therefore we created a merge.cpp which executable is called merge that as mentioned, merges csv files that were transformed from midi files beforehand. Merge receives as an argument a csv file, that will append to the final file. 
 
 ### Evaluating Translating Accuracy
-Once we had our translation algorithm, we decided to formally assess the precision of our codes. The “testtrans” algorithm takes as input a csv file of a music translated by “midicsv” (not transformed) and a csv file translated both ways by “translate” and “translateback”. It outputs the number of ordered similar notes, the average difference of the time between two consecutive ticks and the average difference in velocity between the files original and trans. We noticed shifts in our files, meaning that some notes from the original piece of music were removed during tanslation. It doesn't seem to alter the quality of the music.  This algorithm was a way to quantify the lost but also to compare composers like Mozart and Bach, and see which one fitted our project the best. We obtained more accuracy with bach.
-To run the algorithm, we have to modify inside of it the names of the file you want to use: the original one for original and original1 and the translated one for trans. Then we can compile it using the same line than the for the translation algorithm on the terminal and run it.
+Once we had our translation algorithms, we decided to formally assess the accuracy of our codes. testtrans.cpp takes as input a csv file of a music translated by “midicsv” (not transformed) and a csv file translated both ways by translate.cpp and translateback.cpp. It compares the number of ordered similar notes and computes the average difference of the time between two consecutive ticks and the average difference in velocity between the files original and trans. We noticed that some notes from the original piece of music were removed during translation, creating some shifts between the two files. Qualitatively, it doesn't seem to alter the music.
+
+This algorithm was a way to quantify the lost but also to compare composers like Mozart and Bach, and see which one fitted our project the best. We obtained more accuracy with Bach since it was the best compromise between lack of accuracy and good quality of music. Indeed, its translation didn't alter its tick interval - and therefore the rhythm - too much.
+
+To run the algorithm, open it to modify the names of the file you want to use: the original one for original and original1 and the translated one for trans. Then compile and run it using the following lines in the terminal:
+
+         $> g++ -std=c++11 testtrans.cpp -o ttrans
  
+         $> ttrans
 
 
 <a name="network"></a>
