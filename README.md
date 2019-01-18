@@ -20,11 +20,6 @@ For the course of the project we divided ourselves into two teams, the "Translat
 
 You can listen to an album of music produced by different models we trained [here](https://soundcloud.com/kayo-yin/sets/prodigy)
 
-We also provide models we have already trained [here](https://github.com/kayoyin/ProdigyModels), which you can clone by running 
-```
-$> git lfs clone https://github.com/kayoyin/ProdigyModels.git
-```
-*note that this will take seveal minutes due to the large file sizes*
 
 
 <a name="usage"></a>
@@ -194,11 +189,7 @@ In our project, each combination of notes from the training set were encoded by 
 
 Furthermore, we can add complexity by finding a better way to encode rhythm. Currently, the scope of our training music is limited to music containing notes with lower velocities. This is due to the way we translate MIDI files. In particularly the tick like representation of music and the duration of time that note is help adds complexity to the translating dictionary. !!!! translating human verify the above/make more complete please, talk about shifts?
 
-### Accuracy measure used to keep track of training
-
-Initially, we implemented a very naive accuracy measure naive measure where we simply calculate the percentage of notes the model outputs given the training set, to the actual notes from the training set. This measure is misleading and not well-suited in the scope of this project, as a model we would consider very good at producing music does not, and should not even have a high accuracy during training. This leads to a fundamental question of how to classify what music is considered as "good". Answering such a question might require developing a criteria based on musical theory.
-
-### Make the trained model less dependent on its training data
+### Make the trained models less dependent on the training data
 
 This issue is related to the above idea. In our current implementation, one significant contraint is that each trained model can only be used with the specific dictionary map between integers and notes related to its training set. This is why although we have several different trained models, we have only provided one for the user to play around with in the scope of this project. We would like to have a more generalized trained models that would all use the same dictionary mapping, so that with the same translation codes, the user will be able to test several different models.
 
@@ -207,3 +198,9 @@ For completeness, we have still uploaded some of our trained models in this repo
 $> git lfs clone https://github.com/kayoyin/ProdigyModels.git
 ```
 *note that this will take several minutes due to the large file sizes*
+
+### Accuracy measure used to keep track of training
+
+Initially, we implemented a very naive accuracy measure naive measure where we simply calculate the percentage of notes the model outputs given the training set, to the actual notes from the training set. This measure is misleading and not well-suited in the scope of this project, as a model we would consider very good at producing music does not, and should not even have a high accuracy during training. This leads to a fundamental question of how to classify what music is considered as "good". Answering such a question might require developing a criteria based on musical theory.
+
+
