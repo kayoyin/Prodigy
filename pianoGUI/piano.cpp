@@ -592,9 +592,9 @@ void piano::on_commandLinkButton_6_clicked()
 {
      std::vector<int> input;
      std::ofstream outFile;   //outFile is csv of csvAudio of AI composed music
-     outFile.open("/sonata.csv", std::ios::out);
+     outFile.open("sonata.csv", std::ios::out);
      std::string command="mv ../utils/notes.csv notes.csv";
-     std::ifstream endFile("/notes.csv");  //endFile is csv of integer from AI
+     std::ifstream endFile("notes.csv");  //endFile is csv of integer from AI
      std::string c;
      if (endFile.is_open()){
          while (getline(endFile,c, ',')){
