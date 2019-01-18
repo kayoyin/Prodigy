@@ -604,7 +604,7 @@ void piano::on_commandLinkButton_4_clicked() //train
             msgBox.setWindowTitle("play");
 
 
-            msgBox.setText("SURPRISE! We are not done yet, we like our users to be more hands on programmer, so now go to your command prompt and run \n \"./composegui\" this will call our AI Buddy BOB to start helping you compose your first music");
+            msgBox.setText("SURPRISE! We are not done yet, we like our users to be more hands on programmer, so now run command prompt in Prodigy/build and run \n \"./composegui\" this will call our AI Buddy BOB to start helping you compose your first music");
             QAbstractButton* pButtonYes = msgBox.addButton(tr("Ok!"), QMessageBox::YesRole);
             msgBox.addButton(tr("Whatever"), QMessageBox::NoRole);
             msgBox.exec();
@@ -715,7 +715,7 @@ void piano::on_commandLinkButton_6_clicked()
     msgBox.setWindowTitle("play");
 
 
-    msgBox.setText("YOU ARE ALMOST THERE! Now in the same command prompt, run \" ./translatescript \" then \" ./backscript \" ");
+    msgBox.setText("YOU ARE ALMOST THERE! Now in the run command prompt from Prodigy folder and run \" ./translatescript \" then \" ./backscript \" ");
     QAbstractButton* pButtonYes = msgBox.addButton(tr("Ok!"), QMessageBox::YesRole);
     msgBox.addButton(tr("Whatever"), QMessageBox::NoRole);
     msgBox.exec();
