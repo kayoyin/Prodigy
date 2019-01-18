@@ -592,7 +592,7 @@ void piano::on_commandLinkButton_6_clicked()
 {
      QVector<int> input;
      std::ofstream outFile;   //outFile is csv of csvAudio of AI composed music
-     outFile.open(QDir::currentPath().toStdString()+"/totrans.csv", std::ios::out);
+     outFile.open(QDir::currentPath().toStdString()+"/sonata.csv", std::ios::out);
 
      std::ifstream endFile(QDir::currentPath().toStdString()+"/utils/notes.csv");  //endFile is csv of integer from AI
      std::string c;
@@ -670,11 +670,11 @@ void piano::on_commandLinkButton_6_clicked()
      endFile.close();
      outFile.close();
 
-    std::string command3="mv totrans.csv ../midicsv-csvmidi/totrans.csv";
+    std::string command3="mv sonata.csv ../midicsv-csvmidi/sonata.csv";
     system(command3.c_str());
-    std::string command2="cd ../midicsv-csvmidi/ &&  ./csvmidi totrans.csv totrans.mid";
+    std::string command2="cd ../midicsv-csvmidi/ &&  ./csvmidi sonata.csv sonata.mid";
     system(command2.c_str());
-    std::string command4="mv ../midicsv-csvmidi/totrans.mid ../";
+    std::string command4="mv ../midicsv-csvmidi/sonata.mid ../";
     system(command4.c_str());
     QMessageBox msgBox;
     msgBox.setWindowTitle("play");
@@ -686,7 +686,7 @@ void piano::on_commandLinkButton_6_clicked()
     msgBox.exec();
 
     if (msgBox.clickedButton()==pButtonYes) {
-        std::string command5="timidity totrans.mid";
+        std::string command5="timidity sonata.mid";
         system(command5.c_str());
     }
     else{
