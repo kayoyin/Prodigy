@@ -1,5 +1,6 @@
-Prodigy
-Table of Contents
+#Prodigy
+
+##Table of Contents
 
     Project Description.
     Usage Instructions
