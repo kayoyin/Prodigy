@@ -7,7 +7,7 @@
 2. [Usage Instructions](#usage)
 3. [Translating](#trans)
 4. [Neural Network](#network)
-5. [The GUI](#gui)
+5. [Bonus: The GUI](#gui)
 6. [What Next?](#ext)
 
 
@@ -16,7 +16,6 @@
 
 Our aim is to train a machine learning algorithm for music composition. For this, we used mlpack, a C++ library, to build a recurrent neural network with a LSTM layer. Since training is more optimal when using number, we wrote an algorithm (with the help of external libraries)  that translates and retranslates MIDI files into csv files containing integers. After the LSTM was build and translating processes was completed, we trained our network using Bach MIDI files. You can listen to an album of music produced by different models we trained [here](https://soundcloud.com/kayo-yin/sets/prodigy)
 
-Since we had some time left at the end of the project, we took on an additional challange of complementing the project by created a GUI where users play a tune on a digital piano which the model uses as the beginning of its composition. This is clearly an extension and indepednt from our initial goal. Since this was not part of our original design, the code was not optimized for this use. Though, we thought it could be a fun add-on and pursued it nonetheless. Our GUI is therefore still in its initial stages and has potential erros and bugs. Since we spent time on it and we think it's a creative extension, we will include it as a idea to be perfected later on nonetheless. 
 
 For the course of the project we divided ourselves into two teams, the "Translators" and the "Builders". For more information on the respective parts, see the translating and neural network sections.
 
@@ -158,9 +157,12 @@ Once we have trained a model, we can save the model with the trained weights for
 To have the network generate music, we then load the previously trained model. Essentially, the trained network is a prediction model, so it needs a starting point for composition. We use a randomly generated short sequence of notes as the seed sequence which we feed into the prediction method of the model. From then on, we feed the new sequence predicted by the model to obtain the next predicted sequence, and we continue this step until we get a music sequence of our desired length.
 
 <a name="gui"></a>
-## 5. The GUI 
+## 5. Bonus: The GUI 
 
-For the User interface ,with the help of Qt creayor, we tried to make it as user friendly as possible. with thorough steps and guidelines on the main window that a user can read while running the program. 
+Since we had some time left at the end of the project, we took on an additional challange of complementing the project by created a GUI where users play a tune on a digital piano which the model uses as the beginning of its composition. This is clearly an extension and indepednt from our initial goal. Since this was not part of our original design, the code was not optimized for this use. Though, we thought it could be a fun add-on and pursued it nonetheless. Our GUI is therefore still in its initial stages and has potential erros and bugs. Since we spent time on it and we think it's a creative extension, we will include it as a idea to be perfected later on nonetheless.
+
+
+For the User interface in the making ,with the help of Qt creayor, we tried to make it as user friendly as possible. with thorough steps and guidelines on the main window that a user can read while running the program. 
 
 There are 3 main parts of the GUI:
 
