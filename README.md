@@ -168,11 +168,11 @@ For the User interface ,with the help of Qt creayor, we tried to make it as user
 There are 3 main parts of the GUI:
 
 - The virtual piano. 
-which is a 3 octaves virtual piano that we implemented with an accurate sound of every notes played when pressed.
+which is a 3 octaves virtual piano that we implemented with an accurate sound of every notes will be played when pressed.
 - A list view.
 this list view will help the user to remember the history of all the notes that they pressed. This box will also be added with various actions that the user did (e.g. "start / stop recording" , "training", etc)
 - Buttons
-These buttons will aid and lead the user to eventually play theyre own made .mid file
+These buttons will aid and lead the user to eventually play their own made .mid file
 
 
 
