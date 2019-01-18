@@ -13,7 +13,7 @@
 <a name="project"></a>
 ## 1. Project Description 
 
-Our aim is to train a machine learning algorithm for music composition. For this, we used mlpack, a C++ library, to build a recurrent neural network with a LSTM layer. Since training is more optimal when using number, we wrote an algorithm (with the help of external libraries) (is this true tranlating people?) that translates and retranslates MIDI files into csv files containing integers. After the LSTM was build and translating processes was completed, we trained our network using Bach MIDI files located in the folder, insert here. A sample composition is uploaded in insert here and the some training weights is saved in the folder insert here if the user wants readily to compose music.
+Our aim is to train a machine learning algorithm for music composition. For this, we used mlpack, a C++ library, to build a recurrent neural network with a LSTM layer. Since training is more optimal when using number, we wrote an algorithm (with the help of external libraries)  that translates and retranslates MIDI files into csv files containing integers. After the LSTM was build and translating processes was completed, we trained our network using Bach MIDI files located in the folder, insert here. A sample composition is uploaded in insert here and the some training weights is saved in the folder insert here if the user wants readily to compose music.
 
 For the course of the project we thereby divided ourselves into two teams, the "Translators" and the "Builders". For more information on the respective parts, see the translating and neural network sections.
 
