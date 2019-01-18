@@ -29,7 +29,6 @@ public:
     { }
     
     // Function to fetch data from a CSV File
-   // std::vector<std::string> getData();
 
 /*
  * Parses through csv file line by line and returns the data
@@ -160,9 +159,11 @@ int main()
 
     write_output(translated);
 
+    //Uncomment the code below if you want to see the list of notes.
+    /*
     for (std::vector<int>::iterator it = translated.begin() ; it != translated.end(); ++it){
         std::cout << *it << "   ";
-    }
+    }*/
 
     /*for (std::vector<std::string>::iterator it = notes.begin() ; it != notes.end(); ++it){
         std::cout << *it << "   ";
