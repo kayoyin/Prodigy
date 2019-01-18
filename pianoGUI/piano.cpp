@@ -598,7 +598,7 @@ void piano::on_commandLinkButton_6_clicked()
      std::string c;
      if (endFile.is_open()){
          while (getline(endFile,c, ',')){
-                     input.push_back(std::stoi(c));
+                     input.push_back(std::atoi(c.c_str()));
          }
      }       //ADDING CONTENTS IN ENDNOTES.csv FROM AI TO QVECTOR INPUT
      ui->listWidget->addItem("composed csv is :");
