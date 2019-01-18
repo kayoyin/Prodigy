@@ -477,76 +477,53 @@ void piano::on_commandLinkButton_4_clicked() //train
         QMessageBox::warning(this, tr("Warning"),tr("nothing typed"));
     }
     else {
-        ui->listWidget->addItem("training.......");
-        std::map<std::string, int> mapOfWords;
-        //C:48, Db:49, D:50 ...
-        mapOfWords.insert(std::make_pair("C",48));
-        mapOfWords.insert(std::make_pair("Db",49));
-        mapOfWords.insert(std::make_pair("D",50));
-        mapOfWords.insert(std::make_pair("Eb",51));
-        mapOfWords.insert(std::make_pair("E",52));
-        mapOfWords.insert(std::make_pair("F",53));
-        mapOfWords.insert(std::make_pair("Gb",54));
-        mapOfWords.insert(std::make_pair("G",55));
-        mapOfWords.insert(std::make_pair("Ab",56));
-        mapOfWords.insert(std::make_pair("A",57));
-        mapOfWords.insert(std::make_pair("Bb",58));
-        mapOfWords.insert(std::make_pair("B",59));
-        mapOfWords.insert(std::make_pair("C_2",60));
-        mapOfWords.insert(std::make_pair("Db_2",61));
-        mapOfWords.insert(std::make_pair("D_2",62));
-        mapOfWords.insert(std::make_pair("Eb_2",63));
-        mapOfWords.insert(std::make_pair("E_2",64));
-        mapOfWords.insert(std::make_pair("F_2",65));
-        mapOfWords.insert(std::make_pair("Gb_2",66));
-        mapOfWords.insert(std::make_pair("G_2",67));
-        mapOfWords.insert(std::make_pair("Ab_2",68));
-        mapOfWords.insert(std::make_pair("A_2",69));
-        mapOfWords.insert(std::make_pair("Bb_2",70));
-        mapOfWords.insert(std::make_pair("B_2",71));
-        mapOfWords.insert(std::make_pair("C_3",72));
-        mapOfWords.insert(std::make_pair("Db_3",73));
-        mapOfWords.insert(std::make_pair("D_3",74));
-        mapOfWords.insert(std::make_pair("Eb_3",75));
-        mapOfWords.insert(std::make_pair("E_3",76));
-        mapOfWords.insert(std::make_pair("F_3",77));
-        mapOfWords.insert(std::make_pair("Gb_3",78));
-        mapOfWords.insert(std::make_pair("G_3",79));
-        mapOfWords.insert(std::make_pair("Ab_3",80));
-        mapOfWords.insert(std::make_pair("A_3",81));
-        mapOfWords.insert(std::make_pair("Bb_3",82));
-        mapOfWords.insert(std::make_pair("B_3",83));
-        mapOfWords.insert(std::make_pair("C_4",84));
-
-        std::map<std::string,int>::iterator it = mapOfWords.begin();
+        ui->listWidget->addItem("composing.......");
 
         std::ofstream numFile;  //numFile is csv of user input
-
 
 
         numFile.open(QDir::currentPath().toStdString()+"/startnotes.csv", std::ios::out);
 
 
+        std::vector<int> out;
+
+        CSVReader reader("test.csv");
+
+        std::tuple<std::set<std::string>, std::vector<std::string>> other = reader.getData();
+        std::set<std::string> pitches = std::get<0>(other);
+        std::vector<std::string> notes = std::get<1>(other);
+        std::map<std::string, int> trans = bijection(pitches);
 
 
 
-        for(int i=0; i < lis.size(); i++) {
-            int out;
-            QString key = lis.at(i);
-            while(it!= mapOfWords.end()){
-                if (QString::fromStdString(it->first) == key){
-                    out = it->second;
-                    it = mapOfWords.begin();
-                    numFile << out <<",";
-                    ui->listWidget->addItem(QString::number(out));
-                    break;
-                    }
+        std::string dum="( ";
+        std::string dum2 = ")";
+        std::vector<std::string> noteslist;
+
+        for (int i=0; i< lis.size(); i++){
+           noteslist.push_back(dum+lis.at(i).toStdString()+dum2);
+        }
+        for (int i=0; i< noteslist.size(); i++) {// iterate on listnotes
+            std::map<std::string, int>::iterator it;
+
+            for (it = trans.begin(); it != trans.end(); it++ )  //iterate on trans bijection
+            {
+                if (noteslist[i]== it->first){
+                    out.push_back(it->second);
+                }
                 else{
+                    out.push_back(1);
                     it++;
-                    }
                 }
             }
+        }
 
+
+        for(int i=0; i < out.size(); i++) {
+            int c;
+            numFile << out[i] <<",";
+            ui->listWidget->addItem(QString::number(out[i]));
+          }
 
             numFile<<"\n";
 
@@ -556,9 +533,6 @@ void piano::on_commandLinkButton_4_clicked() //train
             //
             std::string command="mv startnotes.csv ../utils/startnotes.csv";
             system(command.c_str());
-
-            //std::string command1="./composegui";
-            //system(command1.c_str());
 
 
             numFile.close();
@@ -585,6 +559,12 @@ void piano::on_commandLinkButton_4_clicked() //train
 
 void piano::on_commandLinkButton_6_clicked()
 {
+
+    std::string command="cd .. && ./backscript";
+    system(command.c_str());
+
+    /*
+     *
      std::vector<int> input;
      std::vector<int> out;
      std::ofstream outFile;   //outFile is csv of csvAudio of AI composed music
@@ -608,37 +588,6 @@ void piano::on_commandLinkButton_6_clicked()
 
 
     //asdafsdgsgd
-
-     CSVReader reader("test.csv");
-
-     std::tuple<std::set<std::string>, std::vector<std::string>> other = reader.getData();
-     std::set<std::string> pitches = std::get<0>(other);
-     std::vector<std::string> notes = std::get<1>(other);
-     std::map<std::string, int> trans = bijection(pitches);
-
-
-
-     std::string dum="( ";
-     std::vector<std::string> noteslist;
-
-     for (int i=0; i< input.size(); i++){
-        noteslist.push_back(dum+std::to_string(input.at(i))+")");
-     }
-     for (int i=0; i< noteslist.size(); i++) {// iterate on listnotes
-         std::map<std::string, int>::iterator it;
-
-         for (it = trans.begin(); it != trans.end(); it++ )  //iterate on trans bijection
-         {
-             bool check = 0;
-             if (noteslist[i]== it->first){
-                 out.push_back(it->second);
-             }
-             else{
-                 out.push_back(1);
-                 it++;
-             }
-         }
-     }
 
 
 
@@ -713,6 +662,7 @@ void piano::on_commandLinkButton_6_clicked()
     system(command2.c_str());
     std::string command4="mv ../midicsv-csvmidi/sonata.mid ../sonata.mid";
     system(command4.c_str());
+    */
     QMessageBox msgBox;
     msgBox.setWindowTitle("play");
 

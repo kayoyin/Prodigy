@@ -4,7 +4,6 @@
 cd midicsv-csvmidi;
 make;
 cd ../;
-cmake;
 cd Translation;
 make;
 cd ../;
