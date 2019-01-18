@@ -143,7 +143,6 @@ int main () {
 	
     cube trainX = getTrainX(tempDataset, rho);
     cube trainY = getTrainY(tempDataset, rho);
-    mat real = getReal(tempDataset, rho);	
     
     RNN<> model(rho);
     model.Add<Linear <> > (trainX.n_rows, rho);
