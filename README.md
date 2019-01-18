@@ -38,21 +38,8 @@ See the respective sections for user information on method of use. But first, it
 
 After cloning the repository, the user first needs to install mlpack and its dependencies. To do so, simply run the following command in terminal:
 
-    $> bash install_mlpack.bash 
+    $> bash install_prodigy.bash 
 
-Then, the user has to build the project using:
-
-    $> mkdir build
-    $> cd build
-    $> cmake ../
-
-Then, to compile the project, enter the build folder and type make.
-
-    $> cd build
-    $> make
-
-
-From here on, the user can decide which method to employ. 
 
 
 ## Running the project
@@ -205,8 +192,18 @@ Temperature will rescale the logits before putting them through the softmax func
 
 In our project, each combination of notes from the training set were encoded by a unique integer, which limits the combinations of notes the model can produce to ones it has already seen during training. Another way to encode music would be to give each note a unique character, then encode combinations of notes as combinations of these characters. This encoding is more complex but would be a more realistic modelization of true music composition.
 
-Furthermore, we can add complexity by finding a better way to encode rhytm. Currently, the scope of our training music is limited to music containing notes with lower velocities. This is due to the way we translate MIDI files. In particularly the tick like representation of music and the duration of time that note is help adds complexity to the translating dictionary. !!!! translating human verify the above/make more complete please, talk about shifts?
+Furthermore, we can add complexity by finding a better way to encode rhythm. Currently, the scope of our training music is limited to music containing notes with lower velocities. This is due to the way we translate MIDI files. In particularly the tick like representation of music and the duration of time that note is help adds complexity to the translating dictionary. !!!! translating human verify the above/make more complete please, talk about shifts?
 
 ### Accuracy measure used to keep track of training
 
 Initially, we implemented a very naive accuracy measure naive measure where we simply calculate the percentage of notes the model outputs given the training set, to the actual notes from the training set. This measure is misleading and not well-suited in the scope of this project, as a model we would consider very good at producing music does not, and should not even have a high accuracy during training. This leads to a fundamental question of how to classify what music is considered as "good". Answering such a question might require developing a criteria based on musical theory.
+
+### Make the trained model less dependent on its training data
+
+This issue is related to the above idea. In our current implementation, one significant contraint is that each trained model can only be used with the specific dictionary map between integers and notes related to its training set. This is why although we have several different trained models, we have only provided one for the user to play around with in the scope of this project. We would like to have a more generalized trained models that would all use the same dictionary mapping, so that with the same translation codes, the user will be able to test several different models.
+
+For completeness, we have still uploaded some of our trained models in this repository [here](https://github.com/kayoyin/ProdigyModels), which you can clone, if you have git lfs installed, by running 
+```
+$> git lfs clone https://github.com/kayoyin/ProdigyModels.git
+```
+*note that this will take several minutes due to the large file sizes*
