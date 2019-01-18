@@ -46,9 +46,10 @@ void predictNotes(RNN<>& model,
 	if( i == sequence_length) {
          // terminate the loop
         break;
+	}
 	start(0,0,i) = startnotes(i,0);
 	music(i,0) = startnotes(i,0);
-      }
+      
     }
     
 	
