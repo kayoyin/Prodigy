@@ -22,7 +22,7 @@ You can listen to an album of music produced by different models we trained [her
 
 We also provide models we have already trained [here](https://github.com/kayoyin/ProdigyModels), which you can clone by running 
 ```
->$ git lfs clone https://github.com/kayoyin/ProdigyModels.git
+$> git lfs clone https://github.com/kayoyin/ProdigyModels.git
 ```
 *note that this will take few minutes because of the large file sizes*
 
