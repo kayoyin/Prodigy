@@ -76,7 +76,7 @@ To begin with, we had to make a choice on what kind of audio file we wanted to u
 ### Dealing with filetype:
 
 Now in order to get the midi files in a human-readable csv file, we had to look for an external library on github that happened to be written in C. Fortunately, it was possible for us to still compile it using standard g++ command. Inside this external package, there was two main functions that we fetched: midicsv and csvmidi. Both functions' use are self-explanatory, moreover both functions receive two arguments, which are (depending on which function) a csv filename and a midi filename.
-Csv files outputted from the functions have a specific format which is a header, the main body and an ending line. The main parts has the following general format: "Track, Tick, Note_ON/Note_Off, instrument,note,velocity". A remark: among thoses, Tick is the absolute time value, and the velocity when 0 means that the note is not being played. 
+Csv files outputted from the functions have a specific format which is a header, the main body and an ending line. The main parts has the following general format: "Track, Tick, Note_ON/Note_Off, instrument,note,velocity". A remark: among thoses, Tick is the absolute time value, and the velocity when 0 means that the note is not benig played. 
 
 ### Translating Process: 
 
@@ -100,7 +100,10 @@ Practical detail: In order to be a bit more efficient, we decided not to fix a g
 To make the training of Neural Network easier, we had to find a way to be able to translate multiple midi files and then "merge" them to get one sole csv file that is given as input to the Nerual Network. And therefore we created a merge.cpp which executable is called merge that as mentioned, merges csv files that were transformed from midi files beforehand. Merge receives as an argument a csv file, that will append to the final file. 
 
 ### Evaluating Translating Accuracy
-*EDIT THIS
+Once we had our translation algorithm, we decided to formally assess the precision of our codes. The “testtrans” algorithm takes as input a csv file of a music translated by “midicsv” (not transformed) and a csv file translated both ways by “translate” and “translateback”. It outputs the number of ordered similar notes, the average difference of the time between two consecutive ticks and the average difference in velocity between the files original and trans. We noticed shifts in our files, meaning that some notes from the original piece of music were removed during tanslation. It doesn't seem to alter the quality of the music.  This algorithm was a way to quantify the lost but also to compare composers like Mozart and Bach, and see which one fitted our project the best. We obtained more accuracy with bach.
+To run the algorithm, we have to modify inside of it the names of the file you want to use: the original one for original and original1 and the translated one for trans. Then we can compile it using the same line than the for the translation algorithm on the terminal and run it.
+ 
+
 
 <a name="network"></a>
 ## 4. Neural Network 
