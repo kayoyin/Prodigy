@@ -83,6 +83,18 @@ Now, the last thing to do is translate the output of the neural network (.csv) i
 
 If the user is experiencing any trouble playing the midi file on their machine, the following website can be used to convert to mp3: https://www.onlineconverter.com/midi-to-mp3
 
+Explanation on steps taken by translatescript:
+- We are here making the executables first
+- Making sure to put the midi files that the user added in the right directory
+- Creating all the csvs from the midi files that were moved accordingly
+- Now as said in the ReadMe, merging all the csvs to a merged one
+- Moving the merged csv to the right directory then translating it + other details. The translation will be an actual csv file which is stored in utils
+
+Explanation on steps taken by backscript:
+- Going into the right directory
+- After having fetched the ouptut from Neural network, we put it trough translateback which outputs a final csv.
+- Having the right final csv, we output using csvmidi the final midi file that is kept in the main folder
+
 
 ### Method 2: 
 
