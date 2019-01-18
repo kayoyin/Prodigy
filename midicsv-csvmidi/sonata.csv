@@ -37,5 +37,5 @@
 2,703, Control_c,0,6,70,,,,,,,,
 2,1300, Control_c,0,64,63,,,,,,,,
 2,1305, Control_c,0,64,127,,,,,,,,
-1, 0,End_track
-0,0,End_of_file
+2,1310, End_track
+2,0,End_of_file

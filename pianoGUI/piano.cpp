@@ -659,13 +659,14 @@ void piano::on_commandLinkButton_6_clicked()
 
      for (int i=0; i<input.size();i++){
          j+=5;
-         outFile << "1,"<< j << ",note_on_c,1," << input.at(i)<<",100\n";
+         outFile << "2,"<< j << ",note_on_c,1," << input.at(i)<<",100\n";
          j+=5;
-         outFile << "1,"<< j << ",note_on_c,1," << input.at(i)<<",0\n";
+         outFile << "2,"<< j << ",note_on_c,1," << input.at(i)<<",0\n";
 
      }
-     outFile <<"1, "<< j <<",End_track\n";
-     outFile <<"0,0,End_of_file\n";
+
+     outFile <<"2, "<< j <<",End_track\n";
+     outFile <<"2,0,End_of_file\n";
 
      endFile.close();
      outFile.close();
