@@ -64,9 +64,9 @@ void predictNotes(RNN<>& model,
 
 	
     }
-    cout << "Saving predicted notes to \"notes.csv\" ..." << endl;
-    data::Save("notes.csv", music); 
-    cout << "Music saved to \"notes.csv\"" << endl;
+    cout << "Saving predicted notes to \"sonata.csv\" ..." << endl;
+    data::Save("../utils/sonata.csv", music); 
+    cout << "Music saved to \"/utils/sonata.csv\"" << endl;
 }
 
 int main () {
@@ -79,7 +79,7 @@ int main () {
     
   cout << "Loading trained model ..." << endl;
   RNN<> model(rho); 
-  data::Load("model.xml", "model", model);	
+  data::Load("modelgui.xml", "model", model);	
   
   cout << "Composing from user input ..." << endl;
   predictNotes(model, sequence_length,size_music, size_notes);
