@@ -20,9 +20,6 @@ For the course of the project we divided ourselves into two teams, the "Translat
 
 You can listen to an album of music produced by different models we trained [here](https://soundcloud.com/kayo-yin/sets/prodigy)
 
-You can also download a pre-trained model we provide [here](https://drive.google.com/file/d/1facBLd9K4M_szjrW6URXR8SIwUQE4yfr/view?usp=sharing)
-
-
 <a name="usage"></a>
 ## 2. Usage Instructions 
 
