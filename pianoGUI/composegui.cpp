@@ -79,7 +79,7 @@ int main () {
     
   cout << "Loading trained model ..." << endl;
   RNN<> model(rho); 
-  data::Load("model.xml", "model", model);	
+  data::Load("modelgui.xml", "model", model);	
   
   cout << "Composing from user input ..." << endl;
   predictNotes(model, sequence_length,size_music, size_notes);
