@@ -22,7 +22,7 @@ For the course of the project we divided ourselves into two teams, the "Translat
 <a name="usage"></a>
 ## 2. Usage Instructions 
 
-There ar three possible ways of composing music using project prodigy. In the first option (more technically advanced), the user has the freedom of choosing whichever music he or she likes to train the model on. In theory, the music the model produces will have similar stylistics features as the training data. To evualate the "friendliness to translation" of the music see, the user can use our translating evaluation algorithm *see end of the translating section for more information*.  A second option is to use a pretrained model, this saves a lot of time in training and allows the user to compose music instantaiously. Our third, more creative option is designed for the musically inclided users with a graphics user interface. By running the interface using QT, the user is able to compose a short extract using a digital keyboard, which the model will use as the beginning of the music it composes
+There ar two possible ways of composing music using project prodigy. In the first option (more technically advanced), the user has the freedom of choosing whichever music he or she likes to train the model on. In theory, the music the model produces will have similar stylistics features as the training data. To evualate the "friendliness to translation" of the music see, the user can use our translating evaluation algorithm *see end of the translating section for more information*.   Our second, more creative option is designed for the musically inclided users with a graphics user interface. By running the interface using QT, the user is able to compose a short extract using a digital keyboard, which the model will use as the beginning of the music it composes
 
 See the respective sections for user information on method of use. But first, it is necesarry to install mlpack (the librarby used to implement the neural network) and all its dependencies. 
 
@@ -59,37 +59,22 @@ Running two following commands will change translatescript to executable, and th
     $> chmod +x translatescript
     $> ./translatescript
 
-The translatescript translates and merges all the midi files in a format ready to use for the neural network. Moreover, it saves the output csv file in the utils folder as *insert here*. From there on, the training function automatically loads the data. Since alll the data is properly formatted for use, the user can start traing the model. To do this, simply run the following command in terminal: 
+The translatescript translates and merges all the midi files in a format ready to use for the neural network. Moreover, it saves the output csv file in the utils folder. From there on, the training function automatically loads the data. Since alll the data is properly formatted for use, the user can start traing the model. To do this, simply run the following command in terminal: 
 
     $> ./train
     
-Once training is complete (do not be allarmed if this takes time), simply run the following comapnd to start composing music! 
+Once training is complete (do not be allarmed if this takes time), simply run the following comand to start composing music: 
 
     $> ./compose
 
-To use both of them, simply run them like any executable through the following command in terminal:
-    
-    
 
 Now, the last thing to do is translate the the output of the neural network (.csv) into an audiofile (.mid). The backscript automatically loads the output file and saves the audio file as *final.mid* in the main folder of the repository. Run the following commands to execute this: 
 
     $> chmod +x backscript
     $> ./backscript
 
+If the user is experiencing any trouble playing the midi file, the following website can be used to convert to mp3: https://www.onlineconverter.com/midi-to-mp3
 
-### Method 2: Composing with Ease
-
-To compose music directly, first make sure there is a pre-trained model `model.xml` under the `build` directory.
-Then, the user can run the following line in terminal. 
-
-     $> ./compose
-     
-To translate the output of the neural network back into a audio file, run the following commands: 
-
-    $> chmod +x backscript
-    $> ./backscript
-
-The resulting midi file, final.midi, can be found in the main folder of the repository. 
 
 ### Method 3: 
 
