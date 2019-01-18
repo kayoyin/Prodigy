@@ -132,16 +132,16 @@ To have the network generate music, we then load the previously trained model. E
 
 Here are some extension ideas that have not been explored that could possibly improve our implementation:
 
-    Adding a temperature layer before the logsoftmax layer, to control the randomness of predictions by the LSTM.
+### Adding a temperature layer before the logsoftmax layer, to control the randomness of predictions by the LSTM.
 
 Temperature will rescale the logits before putting them through the softmax function, where high temperature will give similar probabilities to each notes and low temperature will give higher probability to the most expected note. We can therefore think of temperature as the parameter of the LSTM's creativity, where a model with low temperature will be more "creative".
 
-    Single-note training
+### Single-note training
 
 In our project, each combination of notes from the training set were encoded by a unique integer, which limits the combinations of notes the model can produce to ones it has already seen during training. Another way to encode music would be to give each note a unique character, then encode combinations of notes as combinations of these characters. This encoding is more complex but would be a more realistic modelization of true music composition.
 
 Furthermore, we can add complexity by finding a better way to encode rhytm. Currently, the scope of our training music is limited to music containing notes with lower velocities. This is due to the way we translation of the MIDI files. In particularly the tick like representation of music and the duration of time that note is help adds complexity to the translating dictionary. translating hu,man verify the above/make more complete please
 
-    Improve measure used to keep track of training
+### Improve measure used to keep track of training
 
 The accuracy measure we implemented is a very naive measure where we simply calculate the percentage of notes the model outputs given the training set, to the actual notes from the training set. This measure is misleading and not well-suited in the scope of this project, as a model we would consider very good at producing music does not, and should not even have a high accuracy during training. This leads to a fundamental question of how to classify what music is considered as "good". Answering such a question might require developing a criteria based on musical theory.
