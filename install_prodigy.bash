@@ -49,6 +49,9 @@ mkdir build
 cd build
 cmake ../
 make
-wget https://drive.google.com/file/d/1facBLd9K4M_szjrW6URXR8SIwUQE4yfr/view?usp=sharing -O modelgui.xml
-wget https://we.tl/t-azbWeErPFi -O model1.xml
-wget https://we.tl/t-M7wXEz9oOp -O model2.xml
+
+pushd .
+git lfs clone https://github.com/kayoyin/model.git
+cd model
+mv easybach.xml ../Prodigy/build/modelgui.xml
+
