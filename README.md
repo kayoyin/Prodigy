@@ -92,7 +92,7 @@ The resulting midi file, final.midi, can be found in the main folder of the repo
 
 ### Method 3: 
 
-To use the GUI ensure you have QT creator installed on your machine. From there open piano.pro in QT and run it using the QT interface. This will create a build folder in your local copy of the repository called "build", open the folder and click the on the file named piano.exe, from here, user instructions are self explanatory. 
+To use the GUI ensure you have QT creator installed on your machine. From there open the piano.pro file (located in the pianoGUI folder) in QT and run it using the QT interface. This will create a build folder in your local copy of the repository called "build", open the folder and click the on the file named piano.exe, from here, user instructions are self explanatory. 
 
 <a name="trans"></a>
 ## 3. Translating 
