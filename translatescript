@@ -22,7 +22,7 @@ for filename in music/*.mid; do ./midicsv "$filename" "$filename.csv";
 done;
 
 for filename in music/*.csv; do mv "$filename" ./; done;
-for filename in music/*.mid do mv "$filename" ./; done;
+for filename in music/*.mid; do mv "$filename" ./; done;
 
 for filename in *.csv; do mv "$filename" csvs; done;
 for filename in *.mid; do mv "$filename" ../; done;
