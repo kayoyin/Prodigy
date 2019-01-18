@@ -20,11 +20,11 @@ For the course of the project we divided ourselves into two teams, the "Translat
 
 You can listen to an album of music produced by different models we trained [here](https://soundcloud.com/kayo-yin/sets/prodigy)
 
-You can also download pre-trained models we provide by running 
+We also provide models we have already trained [here](https://github.com/kayoyin/ProdigyModels), which you can clone by running 
 ```
-git lfs clone https://github.com/kayoyin/ProdigyModels
+>$ git lfs clone https://github.com/kayoyin/ProdigyModels.git
 ```
-*note that this will take a few minutes because of the large file sizes*
+*note that this will take few minutes because of the large file sizes*
 
 
 <a name="usage"></a>
