@@ -150,7 +150,7 @@ void write_output(std::vector<int> translated){
 int main()
 {
     // Creating an object of CSVWriter
-    CSVReader reader("river.csv");
+    CSVReader reader("test.csv");
     
     // Get the data from CSV File
     std::tuple<std::set<std::string>,std::vector<std::string>> other = reader.getData();
