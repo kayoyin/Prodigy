@@ -22,7 +22,6 @@
 #include <QDesktopServices>
 #include <QUrl>
 
-
 bool rec = 0;
 
 QStringList lis;
@@ -71,11 +70,6 @@ piano::piano(QWidget *parent) :
     ui->A_3->setStyleSheet("QPushButton {background-color: rgb(255,255,255)}");
     ui->B_3->setStyleSheet("QPushButton {background-color: rgb(255,255,255)}");
     ui->C_4->setStyleSheet("QPushButton {background-color: rgb(255,255,255)}");
-    ui->label->setStyleSheet("QLabel {background-color: rgb(255,255,255)}");
-    ui->label_2->setStyleSheet("QLabel {background-color: rgb(255,255,255)}");
-    ui->label_3->setStyleSheet("QLabel {background-color: rgb(255,255,255)}");
-    ui->label_4->setStyleSheet("QLabel {background-color: rgb(255,255,255)}");
-    ui->label_5->setStyleSheet("QLabel {background-color: rgb(255,255,255)}");
 }
 
 piano::~piano()
@@ -433,7 +427,7 @@ void piano::on_commandLinkButton_2_clicked()
     ui->listWidget->addItem("stop recording");
     QMessageBox msgBox;
     msgBox.setWindowTitle("save");
-    msgBox.setText("Do you want to save this set of chords?");
+    msgBox.setText("Do you want to save this set of notes?");
     msgBox.setStandardButtons(QMessageBox::Yes);
     msgBox.addButton(QMessageBox::No);
     msgBox.setDefaultButton(QMessageBox::Yes);
@@ -624,7 +618,11 @@ void piano::on_commandLinkButton_6_clicked()
               "2,0, Start_track,,,,,,,,,,,\n"<<
               "2,0, Time_signature,4,2,24,8,,,,,,,\n"<<
               "2,0, Title_t,PIANO                               ,,,,,,,,,,\n"<<
-              "2,0, System_exclusive,10,65,16,66,18,64,0,127,0,65,247\n"<<
+               "2, 0, Program_c, 1, 19";
+
+
+
+              /*"2,0, System_exclusive,10,65,16,66,18,64,0,127,0,65,247\n"<<
               "2,0, System_exclusive,10,65,16,66,18,64,0,4,100,88,247\n"<<
               "2,170, System_exclusive,10,65,16,66,18,64,1,48,3,12,247\n"<<
               "2,170, System_exclusive,10,65,16,66,18,64,1,51,80,60,247\n"<<
@@ -653,23 +651,24 @@ void piano::on_commandLinkButton_6_clicked()
               "2,701, Control_c,0,98,102,,,,,,,,\n"<<
               "2,703, Control_c,0,6,70,,,,,,,,\n"<<
               "2,1300, Control_c,0,64,63,,,,,,,,\n"<<
-              "2,1305, Control_c,0,64,127,,,,,,,,\n"; //appending header.csv
+              "2,1305, Control_c,0,64,127,,,,,,,,\n"*/ //appending header.csv
      //---------------------------------------------------------------------------------------------
-     int j = 0;
+     int j = 10;
 
      for (int i=0; i<input.size();i++){
          j+=5;
          outFile << "2,"<< j << ",note_on_c,1," << input.at(i)<<",100\n";
          j+=5;
-         outFile << "2,"<< j << ",note_on_c,1," << input.at(i)<<",0\n";
+         outFile << "2,"<< j << ",note_off_c,1," << input.at(i)<<",0\n";
 
      }
 
      outFile <<"2, "<< j <<",End_track\n";
-     outFile <<"2,0,End_of_file\n";
+     outFile <<"0,0,End_of_file\n";
+     outFile.close();
+
 
      endFile.close();
-     outFile.close();
 
     std::string command3="mv sonata.csv ../midicsv-csvmidi/sonata.csv";
     system(command3.c_str());
