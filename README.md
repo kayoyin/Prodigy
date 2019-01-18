@@ -20,6 +20,9 @@ For the course of the project we divided ourselves into two teams, the "Translat
 
 You can listen to an album of music produced by different models we trained [here](https://soundcloud.com/kayo-yin/sets/prodigy)
 
+You can also download a pre-trained model we provide [here](https://drive.google.com/file/d/1facBLd9K4M_szjrW6URXR8SIwUQE4yfr/view?usp=sharing)
+
+
 <a name="usage"></a>
 ## 2. Usage Instructions 
 
@@ -52,7 +55,7 @@ From here on, the user can decide which method to employ.
 
 ### Method 1: Starting from Scratch
 
-Firstly, the user must ensure that his/her selected MIDI files is stored in the folder called, *music_gen* in his/her local copy of the repository. From here, it is necesarry to make use of our provided translating algorithms to create a csv file which the model can train on. Notice that there are two script that are given in the main folder: translatescript and backscript. These two scipts are deisgned to ensure fluidity for the user and automate the translating and retranslating process. 
+Firstly, the user must ensure that his/her selected MIDI files is stored in the folder called, *music_gen* in his/her local copy of the repository. From here, it is necesarry to make use of our provided translating algorithms to create a csv file which the model can train on. Notice that there are two scripts that are given in the main folder: translatescript and backscript. These two scripts are designed to ensure fluidity for the user and automate the translating and retranslating process. 
 
 
 Running two following commands will change translatescript to executable, and then make use of the translating script. 
