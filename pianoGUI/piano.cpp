@@ -513,7 +513,7 @@ void piano::on_commandLinkButton_4_clicked() //train
                 }
                 else{
                     out.push_back(1);
-                    it++;
+
                 }
             }
         }
