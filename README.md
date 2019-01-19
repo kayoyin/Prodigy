@@ -37,7 +37,7 @@ The above script will equally make and build the project, creating the necessary
 ## Running the project
 
 
-Firstly, the user must ensure that his/her selected MIDI files is stored in the folder called, *music_gen* in the local repository. It is necessary to make use of our provided translating algorithms to create a csv file which the model can train on. Notice that there are two scripts that are given in the folder script: translatescript and backscript. These two scripts are designed to ensure fluidity for the user and automate the translating and retranslating process. 
+Firstly, the user must ensure that his/her selected MIDI files is stored in the folder called, `music_gen` in the local repository. It is necessary to make use of our provided translating algorithms to create a csv file which the model can train on. Notice that there are two scripts that are given in the folder script: translatescript and backscript. These two scripts are designed to ensure fluidity for the user and automate the translating and retranslating process. 
 
 
 Running three following commands will change `translatescript` to an executable. 
@@ -84,6 +84,7 @@ Below is further explanation on how each translating scripts work.
 - After having fetched the output from the model, we put it through `translateback` which outputs a final csv.
 - We output using `csvmidi` the final midi file to the main folder
 
+We provide two sample midi files in `music_gen`, as well as the already translated file `/utils/training.csv` and other files that could be used for training under `/samples`, and a composition from a trained model `sonata.csv` for users who would like to run some features without going through all the steps before.
 
 <a name="trans"></a>
 ## 3. Translating 
