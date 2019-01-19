@@ -65,7 +65,7 @@ Now, the last thing to do is translate the output of the neural network (.csv) i
 
 If the user is experiencing any trouble playing the midi file on their machine, [this website](https://www.onlineconverter.com/midi-to-mp3) can be used to convert to mp3. 
 
-Below is further explination on how the translating scripts work. 
+Below is further explanation on how the translating scripts work. 
 
 Explanation on steps taken by translatescript:
 - We are here making the executables first
