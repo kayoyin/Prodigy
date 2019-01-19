@@ -24,7 +24,7 @@ You can listen to an album of music produced by different models we trained [her
 
 In our design, the user has the freedom of choosing whichever music he or she likes to train the model on. In theory, the music the model produces will have similar stylistics features as the training data. To evaluate the "friendliness to translation" of the music, the user can use our translating evaluation algorithm (*see end of the translating section for more information*).  
 
-Before beginning the composition progress, it is necessary to install mlpack (the library used to implement the neural network) and all its dependencies. 
+Before beginning the composition progress, it is necessary to install mlpack (the library used to implement the neural network) and all its dependencies. Make sure you have a stable internet connection for installation, and we suggest at least 50 GB of storage on your machine to run all features of the project.
 
 ## Installing the dependencies
 
@@ -190,17 +190,17 @@ Temperature will rescale the logits before putting them through the softmax func
 
 In our project, each combination of notes from the training set were encoded by a unique integer, which limits the combinations of notes the model can produce to ones it has already seen during training. Another way to encode music would be to give each note a unique character, then encode combinations of notes as combinations of these characters. This encoding is more complex but would be a more realistic modelization of true music composition.
 
-Furthermore, we can add complexity by finding a better way to encode rhythm. Currently, the scope of our training music is limited to music containing notes with lower velocities. This is due to the way we translate MIDI files. In particularly the tick like representation of music and the duration of time that note is help adds complexity to the translating dictionary. !!!! translating human verify the above/make more complete please, talk about shifts?
+Furthermore, we can add complexity by finding a better way to encode rhythm. Currently, the scope of our training music is limited to music containing notes with lower velocities. This is due to the way we translate MIDI files. In particularly the tick like representation of music and the duration of time that note is help adds complexity to the translating dictionary. 
 
 ### Make the trained models less dependent on the training data
 
 This issue is related to the above idea. In our current implementation, one significant contraint is that each trained model can only be used with the specific dictionary map between integers and notes related to its training set. This is why although we have several different trained models, we have only provided one for the user to play around with in the scope of this project. We would like to have a more generalized trained models that would all use the same dictionary mapping, so that with the same translation codes, the user will be able to test several different models.
 
-For completeness, we have still uploaded some of our trained models in this repository [here](https://github.com/kayoyin/ProdigyModels), which you can clone, if you have git lfs installed, by running 
+For completeness, we have still uploaded some of our trained models in [this repository](https://github.com/kayoyin/ProdigyModels), which you can clone with `git lfs` by running 
 ```
 $> git lfs clone https://github.com/kayoyin/ProdigyModels.git
 ```
-*note that this will take several minutes due to the large file sizes*
+*note that cloning the entire repository will take up at least 1GB of storage and will take several minutes due to the large file sizes*
 
 ### Accuracy measure used to keep track of training
 
