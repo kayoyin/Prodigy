@@ -45,10 +45,13 @@ Running two following commands will change `translatescript` to an `executable`,
     $> chmod +x translatescript
     $> ./translatescript
 
-The `translatescript` translates and merges all the midi files in a format ready to use for the neural network. Moreover, it saves the output csv file in the utils folder. From there on, the training function automatically loads the data. Since all the data is properly formatted for use, the user can start traing the model. To do this, simply run the following command in terminal: 
+The `translatescript` translates and merges all the midi files in a format ready to use for the neural network. Moreover, it saves the output csv file in the utils folder. From there on, the training function automatically loads the data. Since all the data is properly formatted for use, the user can start traing the model. To do this, simply run the following commands in terminal: 
 
+    $> cd build
     $> ./train
     
+Note that the first time the above command is run, there might be a message `[WARN] Unable to open file...` which you can ignore.
+
 Once training is complete (do not be alarmed if this takes time), simply run the following command to start composing music: 
 
     $> ./compose
