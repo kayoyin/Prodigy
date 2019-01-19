@@ -15,6 +15,7 @@ for filename in music_gen/*.mid; do mv "$filename" ./; done;
 
 for filename in  ./*.mid; do mv "$filename" midicsv-csvmidi; done;
 cd midicsv-csvmidi;
+for filename in music/*.mid; do rm "$filename"; done; 
 for filename in ./*.mid; do mv "$filename" music; done;
 echo $PWD;
 
