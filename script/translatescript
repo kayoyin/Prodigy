@@ -26,15 +26,15 @@ done;
 for filename in music/*.csv; do mv "$filename" ./; done;
 for filename in music/*.mid; do mv "$filename" ./; done;
 
+
+#Now as said in the ReadMe we will merge all the csv
+for filename in *csv; do ./merge "$fiename"; done;
+mv test.csv ../;
 for filename in *.csv; do mv "$filename" csvs; done;
 for filename in *.mid; do mv "$filename" ../; done;
 
-#Now as said in the ReadMe, merging all the csvs to a merged one
-for filename in csvs/*.csv; do ./merge "$filename"; done
-
 #Moving the merged csv to the right directory then translating it + other details. The translation will be an actual csv file which is stored in utils
 echo $PWD;
-mv test.csv ../;
 cd ../; for filename in  *.mid; do mv "$filename" music_gen; done;
 cd Translation; [ -e test.csvs] &&  rm test.csv; mv translateback ../;
 cd ../; mv test.csv Translation; cd Translation;
