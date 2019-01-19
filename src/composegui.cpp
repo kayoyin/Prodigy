@@ -80,8 +80,8 @@ int main () {
   mat tempDataset;
   const int rho = 20; // must be the same rho as the one used to train the model
   const int sequence_length = rho; // length of sequence taken into consideration during training
-  const int size_music = 300; //must be a multiple of sequence_length
-  const int size_notes = 60; //size of dictionary used
+  const int size_music = 300; //number of notes in composed music: must be a multiple of sequence_length
+  const int size_notes = 72; //size of dictionary used
     
   cout << "Loading trained model ..." << endl;
   RNN<> model(rho); 
