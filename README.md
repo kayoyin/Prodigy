@@ -163,16 +163,16 @@ To have the network generate music, we then load the previously trained model. E
 
 Since we had some time left at the end of the project, we took on an additional challange of complementing the project by created a GUI where users play a tune on a digital piano which the model uses as the beginning of its composition. This is clearly an extension and indepednt from our initial goal. Since this was not part of our original design, the code was not optimized for this use. Though, we thought it could be a fun add-on and pursued it nonetheless. Our GUI is therefore still in its initial stages and has potential erros and bugs. Since we spent time on it and we think it's a creative extension, we will include it as a idea to be perfected later on nonetheless.
 
-The idea is to create a more creative option, designed for the musically inclided users. By running the interface using QT, the user is able to compose a short extract using a digital keyboard, which the model will use as the beginning of the music it composes. To see a preface of the GUI ensure you have QT creator installed on your machine. From there, open the `piano.pro` file (located in the `pianoGUI` folder) in QT and run it using the QT interface. This will create a build folder in your local copy of the repository called "build", open the folder and click the on the file named `piano.exe`, from here, user instructions are self explanatory. This shows the idea behind the GUI we had in mind though it still does not function perfectly yet! 
+The idea is to create a more creative option, designed for the musically inclided users. By running the interface using QT, the user is able to compose a short extract using a digital keyboard, which the model will use as the beginning of the music it composes. To see a preface of the GUI ensure you have QT creator installed on your machine. From there, open the `piano.pro` file (located in the `pianoGUI` folder) in QT and run the project using the QT interface. From here, user instructions will be self explanatory. This shows the idea behind the GUI we had in mind though it still does not function perfectly yet! 
 
-For the User interface in the making ,with the help of Qt creayor, we tried to make it as user friendly as possible. with thorough steps and guidelines on the main window that a user can read while running the program. 
+With the help of Qt creator, we tried to make it as user friendly as possible with thorough steps and guidelines on the main window that the user can read while running the program. 
 
 There are 3 main parts of the GUI:
 
 - The virtual piano. 
-which is a 3 octaves virtual piano that we implemented with an accurate sound of every notes will be played when pressed.
+A 3 octaves virtual piano that we implemented where an accurate sound of each note will be played when pressed.
 - A list view.
-this list view will help the user to remember the history of all the notes that they pressed. This box will also be added with various actions that the user did (e.g. "start / stop recording" , "training", etc)
+This list view will help the user to remember the history of all the notes that they pressed. This box will also be added with various actions that the user did (e.g. "start / stop recording" , "training", etc)
 - Buttons
 These buttons will aid and lead the user to eventually play their own made .mid file
 
