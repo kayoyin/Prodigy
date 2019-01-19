@@ -1,0 +1,22 @@
+#!/bin/bash
+
+#Going into the right directory
+cd ../;
+cd Translation;
+cp test.csv ../;
+cp header.csv ../;
+cd ../;
+cd utils;
+cp sonata.csv ../;
+cd ../;
+
+#After having fetched the ouptut from Neural network, we put it trough translateback which outputs a final csv.
+./translateback;
+mv otranslateb.csv midicsv-csvmidi;
+cd midicsv-csvmidi;
+
+#Having the right final csv, we output using csvmidi the final midi file that is kept in the main folder
+./csvmidi otranslateb.csv final.mid;
+mv final.mid ../;
+cd ../;
+rm test.csv; rm header.csv; rm sonata.csv; 

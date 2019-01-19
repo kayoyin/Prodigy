@@ -1,0 +1,42 @@
+#!/bin/bash
+
+#We are here making the executables first
+cd ../;
+cd midicsv-csvmidi;
+make;
+cd ../;
+cd Translation;
+make;
+cd ../;
+
+#Having the to put the midi files that the user added in the right directory
+echo $PWD; 
+for filename in music_gen/*.mid; do mv "$filename" ./; done;
+
+for filename in  ./*.mid; do mv "$filename" midicsv-csvmidi; done;
+cd midicsv-csvmidi;
+for filename in ./*.mid; do mv "$filename" music; done;
+echo $PWD;
+
+#Creating all the csvs from the midi files that were moved accordingly
+for filename in music/*.mid; do ./midicsv "$filename" "$filename.csv";
+done;
+
+for filename in music/*.csv; do mv "$filename" ./; done;
+for filename in music/*.mid; do mv "$filename" ./; done;
+
+for filename in *.csv; do mv "$filename" csvs; done;
+for filename in *.mid; do mv "$filename" ../; done;
+
+#Now as said in the ReadMe, merging all the csvs to a merged one
+for filename in csvs/*.csv; do ./merge "$filename"; done
+
+#Moving the merged csv to the right directory then translating it + other details. The translation will be an actual csv file which is stored in utils
+echo $PWD;
+mv test.csv ../;
+cd ../; for filename in  *.mid; do mv "$filename" music_gen; done;
+cd Translation; [ -e test.csvs] &&  rm test.csv; mv translateback ../;
+cd ../; mv test.csv Translation; cd Translation;
+./translate; 
+rm translate; mv training.csv ../;
+cd ../; mv training.csv utils; cd midicsv-csvmidi; rm midicsv; rm merge;
