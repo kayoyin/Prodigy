@@ -22,9 +22,9 @@ You can listen to an album of music produced by different models we trained [her
 <a name="usage"></a>
 ## 2. Usage Instructions 
 
-In our design, the user has the freedom of choosing whichever music he or she likes to train the model on. In theory, the music the model produces will have similar stylistics features as the training data. To evualate the "friendliness to translation" of the music, the user can use our translating evaluation algorithm (*see end of the translating section for more information*).  
+In our design, the user has the freedom of choosing whichever music he or she likes to train the model on. In theory, the music the model produces will have similar stylistics features as the training data. To evaluate the "friendliness to translation" of the music, the user can use our translating evaluation algorithm (*see end of the translating section for more information*).  
 
-Before beginning the composition procress, it is necessary to install mlpack (the library used to implement the neural network) and all its dependencies. 
+Before beginning the composition progress, it is necessary to install mlpack (the library used to implement the neural network) and all its dependencies. 
 
 ## Installing the dependencies
 
@@ -59,10 +59,11 @@ Once training is complete (do not be alarmed if this takes time), simply run the
 
 Now, the last thing to do is translate the output of the neural network (.csv) into an audiofile (.mid). The backscript automatically loads the output file and saves the audio file as *final.mid* in the main folder of the repository. Run the following commands to execute this: 
 
+    $> cd ..
     $> chmod +x backscript
     $> ./backscript
 
-If the user is experiencing any trouble playing the midi file on their machine, the following website can be used to convert to mp3: https://www.onlineconverter.com/midi-to-mp3. 
+If the user is experiencing any trouble playing the midi file on their machine, [this website](https://www.onlineconverter.com/midi-to-mp3) can be used to convert to mp3. 
 
 Below is further explination on how the translating scripts work. 
 
