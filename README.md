@@ -50,7 +50,7 @@ The `translatescript` translates and merges all the midi files in a format ready
     $> cd build
     $> ./train
     
-Note that the first time the above command is run, there might be a message `[WARN] Unable to open file...` which you can ignore.
+Note that the first time the above command is run, there might be a message `[WARN] Unable to open file...` which you can ignore. Because in our implementation, 100 data points are taken at each iteration of training, a training data with less than 100 notes will lead to a runtime error.
 
 Once training is complete (do not be alarmed if this takes time), simply run the following command to start composing music: 
 
