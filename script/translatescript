@@ -23,12 +23,13 @@ echo $PWD;
 for filename in music/*.mid; do ./midicsv "$filename" "$filename.csv";
 done;
 
+for filename in music/*csv; do echo "$filename"; done;
 for filename in music/*.csv; do mv "$filename" ./; done;
 for filename in music/*.mid; do mv "$filename" ./; done;
 
 
 #Now as said in the ReadMe we will merge all the csv
-for filename in *csv; do ./merge "$fiename"; done;
+for filename in *.csv; do ./merge "$filename"; done;
 mv test.csv ../;
 for filename in *.csv; do mv "$filename" csvs; done;
 for filename in *.mid; do mv "$filename" ../; done;
@@ -39,5 +40,8 @@ cd ../; for filename in  *.mid; do mv "$filename" music_gen; done;
 cd Translation; [ -e test.csvs] &&  rm test.csv; mv translateback ../;
 cd ../; mv test.csv Translation; cd Translation;
 ./translate; 
-rm translate; mv training.csv ../;
-cd ../; mv training.csv utils; cd midicsv-csvmidi; rm midicsv; rm merge;
+rm translate;
+echo $PWD;
+mv training.csv ../;
+cd ../; for filename in *.csv; do echo "$filename"; done;
+mv training.csv utils; cd midicsv-csvmidi; rm midicsv; rm merge;
