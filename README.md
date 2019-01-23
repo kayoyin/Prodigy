@@ -9,6 +9,7 @@
 4. [Neural Network](#network)
 5. [Bonus: The GUI](#gui)
 6. [What Next?](#ext)
+7. [The Team](#team)
 
 
 <a name="project"></a>
@@ -212,3 +213,15 @@ Some of the training data used for these models can be found [here](https://gith
 Initially, we implemented a very naive accuracy measure where we simply calculate the percentage of notes the model outputs that coincides with actual notes from the training set. This measure is misleading and not well-suited in the scope of this project, as a model we would consider very good at producing music does not, and should not even have a high accuracy during training. We therefore removed this measure, and judge our models qualitatively. Evaluating the accuracy of the music leads to a fundamental question of how to classify what music is considered as "good". Answering such a question might require developing a criteria based on musical theory.
 
 
+<a name="team"></a>
+## 7. The Team
+
+Project Leader: [Kayo Yin](https://github.com/kayoyin)
+
+Translators team: [Raymond Diab](https://github.com/RayDiab) (Team Leader), [Michael Chan](https://github.com/aka9), [Anaëlle Touré](https://github.com/AnaToure)
+
+Builders team: [Kayo Yin](https://github.com/kayoyin) (Team Leader), [Elzette Janse van Rensburg](https://github.com/elzette-janse), [Nicholas Setijabudiharsa](https://github.com/Nicholas-t)
+
+GUI: [Nicholas Setijabudiharsa](https://github.com/Nicholas-t) (Team Leader), [Junki Hong](https://github.com/pencilpal2)
+
+Data and testing: Harriet Hughes, [Junki Hong](https://github.com/pencilpal2)
