@@ -159,19 +159,18 @@ int main()
 
     write_output(translated);
 
-    //Uncomment the code below if you want to see the list of notes.
-    /*
+
     for (std::vector<int>::iterator it = translated.begin() ; it != translated.end(); ++it){
         std::cout << *it << "   ";
-    }*/
+    }
 
-    /*for (std::vector<std::string>::iterator it = notes.begin() ; it != notes.end(); ++it){
+    for (std::vector<std::string>::iterator it = notes.begin() ; it != notes.end(); ++it){
         std::cout << *it << "   ";
     }
-    */
-   /*for (std::set<std::string>::iterator it = pitches.begin() ; it != pitches.end(); ++it){
+    
+    for (std::set<std::string>::iterator it = pitches.begin() ; it != pitches.end(); ++it){
         std::cout << *it << "   " << trans[*it] <<std::endl;
-    }*/
+    }
     
     
 
